@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:appcompat="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.home_pc.myclassifiedads.main.NavigationActivity">
+    <item android:id="@+id/LogOut" android:title="@string/LogOut"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_search"
+        android:title="Search"
+        appcompat:actionViewClass="android.support.v7.widget.SearchView"
+        appcompat:showAsAction="always"/>
+</menu>

@@ -1,0 +1,53 @@
+<resources>
+
+    <string name="app_name">MyClassifiedAds</string>
+    <string name="LogOut">Logout</string>
+    <string name="Exit">Exit</string>
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_sign_up">SignUp</string>
+    <string name="title_activity_sign_up2">SignUp</string>
+    <string name="title_activity_user_choice">User Choice</string>
+    <string name="title_activity_main_view">My ClassifiedAds</string>
+    <string name="drawer_open">Open drawer</string>
+    <string name="drawer_close">Close drawer</string>
+    <string name="search_hint">Type and Search..</string>
+    <string name="title_activity_search_result">My Classified Results</string>
+
+    <string name="locateOnMap"><u>LOCATE ON MAP</u></string>
+    <string name="upload"><u>Upload Pics</u></string>
+    <string name="uploadSingle"><u>Upload Pic</u></string>
+    <string name="profilePic"><u>Upload Profile Pic</u></string>
+    <string name="forgotPassword"><u>Forgot Password?</u></string>
+    <string name="action_settings">Settings</string>
+    <string name="saleStatus">Select a status</string>
+    <string name="conditionStatus">Select condition</string>
+
+    <string-array name="status">
+        <item>Sold</item>
+        <item>ForSale</item>
+    </string-array>
+    <string-array name="conditions">
+        <item>New</item>
+        <item>Used</item>
+    </string-array>
+    <string-array name="jobTiming">
+        <item>PartTime</item>
+        <item>FullTime</item>
+    </string-array>
+    <string-array name="saleType">
+        <item>ForSale</item>
+        <item>Rent</item>
+        <item>Lease</item>
+    </string-array>
+
+    <string name="title_activity_shop_signup">SignUp For Shop</string>
+    <string name="title_activity_shop_signup2">SignUp For Shop</string>
+    <string name="title_activity_org_signup">SignUp For Organization</string>
+    <string name="title_activity_org_signup2">SignUp For Organization</string>
+    <string name="title_activity_contacts_add">Add Contacts</string>
+    <string name="title_activity_wanted_add">Add Wanted Ads</string>
+    <string name="title_activity_sales_add">Add Sales Ads</string>
+    <string name="title_activity_real_estate_add">Add RealEstate Ads</string>
+    <string name="title_activity_job_add">Add Job Vacancy Ads</string>
+
+</resources>

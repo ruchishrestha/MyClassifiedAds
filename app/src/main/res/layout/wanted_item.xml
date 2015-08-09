@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/wantedBackView"
+    android:layout_width="match_parent"
+    android:layout_height="205dp"
+    card_view:cardCornerRadius="4dp"
+    android:layout_margin="5dp">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/wantedTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="House Cleaner wanted!!"
+            android:maxLines="1"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toStartOf="@+id/wantedPopupMenu"
+            android:layout_toLeftOf="@+id/wantedPopupMenu"/>
+
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/wantedImageHolder"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            card_view:cardCornerRadius="2dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_below="@+id/wantedTitle">
+
+            <ImageView
+                android:id="@+id/wantedImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </android.support.v7.widget.CardView>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/wantedTitle"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/threedots"
+            android:layout_marginRight="15dp"
+            android:id="@+id/wantedPopupMenu"/>
+
+        <TextView
+            android:id="@+id/wantedAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:text="Kalimati, Kathmandu"
+            android:layout_toRightOf="@+id/wantedImageHolder"
+            android:layout_below="@+id/wantedTitle"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"/>
+
+        <TextView
+            android:id="@+id/wantedContact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:text="4244545"
+            android:ellipsize="end"
+            android:layout_toRightOf="@+id/wantedImageHolder"
+            android:layout_below="@+id/wantedAddress"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/wantedUserId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User ID"
+            android:textSize="16sp"
+            android:layout_below="@+id/wantedImageHolder"
+            android:layout_marginTop="3dp"
+            android:layout_marginLeft="10dp"/>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

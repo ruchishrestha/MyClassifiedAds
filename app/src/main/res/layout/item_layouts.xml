@@ -1,0 +1,581 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<!--<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="400dp"
+    android:layout_height="580dp"
+    android:layout_gravity="center">-->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/itemBackView"
+                android:layout_width="match_parent"
+                android:layout_height="205dp"
+                card_view:cardCornerRadius="4dp"
+                android:layout_margin="5dp">
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/adTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Patan Hospital Patan Hospital"
+                        android:maxLines="1"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toStartOf="@+id/popupMenu"
+                        android:layout_toLeftOf="@+id/popupMenu"/>
+
+                    <android.support.v7.widget.CardView
+                        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/imageHolder"
+                        android:layout_width="110dp"
+                        android:layout_height="110dp"
+                        card_view:cardCornerRadius="2dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_below="@+id/adTitle">
+
+                        <ImageView
+                            android:id="@+id/adImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </android.support.v7.widget.CardView>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/adTitle"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/threedots"
+                        android:layout_marginRight="15dp"
+                        android:id="@+id/popupMenu"/>
+
+                    <TextView
+                        android:id="@+id/aDdress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:text="Lagankhel, Lalitpur"
+                        android:layout_toRightOf="@+id/imageHolder"
+                        android:layout_below="@+id/adTitle"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"/>
+
+                    <TextView
+                        android:id="@+id/adContact"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:text="5544545"
+                        android:ellipsize="end"
+                        android:layout_toRightOf="@+id/imageHolder"
+                        android:layout_below="@+id/aDdress"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"/>
+
+                    <TextView
+                        android:id="@+id/userId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="User ID"
+                        android:textSize="16sp"
+                        android:layout_below="@+id/imageHolder"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginLeft="10dp"/>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/wantedBackView"
+                android:layout_width="match_parent"
+                android:layout_height="205dp"
+                card_view:cardCornerRadius="4dp"
+                android:layout_margin="5dp">
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/wantedTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="House Cleaner wanted!!"
+                        android:maxLines="1"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toStartOf="@+id/wantedPopupMenu"
+                        android:layout_toLeftOf="@+id/wantedPopupMenu"/>
+
+                    <android.support.v7.widget.CardView
+                        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/wantedImageHolder"
+                        android:layout_width="110dp"
+                        android:layout_height="110dp"
+                        card_view:cardCornerRadius="2dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_below="@+id/wantedTitle">
+
+                        <ImageView
+                            android:id="@+id/wantedImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </android.support.v7.widget.CardView>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/wantedTitle"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/threedots"
+                        android:layout_marginRight="15dp"
+                        android:id="@+id/wantedPopupMenu"/>
+
+                    <TextView
+                        android:id="@+id/wantedAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:text="Kalimati, Kathmandu"
+                        android:layout_toRightOf="@+id/wantedImageHolder"
+                        android:layout_below="@+id/wantedTitle"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"/>
+
+                    <TextView
+                        android:id="@+id/wantedContact"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:text="4244545"
+                        android:ellipsize="end"
+                        android:layout_toRightOf="@+id/wantedImageHolder"
+                        android:layout_below="@+id/wantedAddress"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"/>
+
+                    <TextView
+                        android:id="@+id/wantedUserId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="User ID"
+                        android:textSize="16sp"
+                        android:layout_below="@+id/wantedImageHolder"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginLeft="10dp"/>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/salesBackView"
+                android:layout_width="match_parent"
+                android:layout_height="205dp"
+                card_view:cardCornerRadius="4dp"
+                android:layout_margin="5dp">
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/salesTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Mobile for sale!!"
+                        android:maxLines="1"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toStartOf="@+id/salesPopupMenu"
+                        android:layout_toLeftOf="@+id/salesPopupMenu"/>
+
+                    <android.support.v7.widget.CardView
+                        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/salesImageHolder"
+                        android:layout_width="110dp"
+                        android:layout_height="110dp"
+                        card_view:cardCornerRadius="2dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_below="@+id/salesTitle">
+
+                        <ImageView
+                            android:id="@+id/salesImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </android.support.v7.widget.CardView>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/salesTitle"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/threedots"
+                        android:layout_marginRight="15dp"
+                        android:id="@+id/salesPopupMenu"/>
+
+                    <TextView
+                        android:id="@+id/salesPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="NPR.10000"
+                        android:layout_toRightOf="@+id/salesImageHolder"
+                        android:layout_toEndOf="@+id/salesImageHolder"
+                        android:layout_below="@+id/salesTitle"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"/>
+
+                    <TextView
+                        android:id="@+id/salesStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="Unsold"
+                        android:ellipsize="end"
+                        android:layout_toRightOf="@+id/salesPrice"
+                        android:layout_toEndOf="@+id/salesPrice"
+                        android:layout_below="@+id/salesTitle"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"/>
+
+                    <TextView
+                        android:id="@+id/salesCondition"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="New"
+                        android:ellipsize="end"
+                        android:layout_toRightOf="@+id/salesImageHolder"
+                        android:layout_toEndOf="@+id/salesImageHolder"
+                        android:layout_below="@+id/salesPrice"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"/>
+
+                    <TextView
+                        android:id="@+id/salesBrand"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="TouchKon"
+                        android:ellipsize="end"
+                        android:layout_toRightOf="@+id/salesImageHolder"
+                        android:layout_toEndOf="@+id/salesImageHolder"
+                        android:layout_below="@+id/salesCondition"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"/>
+
+                    <TextView
+                        android:id="@+id/salesModel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="M505"
+                        android:ellipsize="end"
+                        android:layout_toRightOf="@+id/salesImageHolder"
+                        android:layout_toEndOf="@+id/salesImageHolder"
+                        android:layout_below="@+id/salesBrand"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"/>
+
+                    <TextView
+                        android:id="@+id/salesUserId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="User ID"
+                        android:textSize="16sp"
+                        android:layout_below="@+id/salesImageHolder"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginLeft="10dp"/>
+
+                    <RatingBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:numStars="5"
+                        android:stepSize="1.2"
+                        android:rating="0"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_alignBottom="@+id/salesUserId"
+                        android:layout_alignRight="@+id/salesPopupMenu"
+                        android:layout_alignEnd="@+id/salesPopupMenu"
+                        android:layout_marginBottom="3dp"/>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/realEstateBackView"
+                android:layout_width="match_parent"
+                android:layout_height="205dp"
+                card_view:cardCornerRadius="4dp"
+                android:layout_margin="5dp">
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/realEstateTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Bunglow for Sale!!!"
+                        android:maxLines="1"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toStartOf="@+id/realEstatePopupMenu"
+                        android:layout_toLeftOf="@+id/realEstatePopupMenu"/>
+
+                    <android.support.v7.widget.CardView
+                        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/realEstateImageHolder"
+                        android:layout_width="110dp"
+                        android:layout_height="110dp"
+                        card_view:cardCornerRadius="2dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_below="@+id/realEstateTitle">
+
+                        <ImageView
+                            android:id="@+id/realEstateImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </android.support.v7.widget.CardView>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/realEstateTitle"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/threedots"
+                        android:layout_marginRight="15dp"
+                        android:id="@+id/realEstatePopupMenu"/>
+
+                    <TextView
+                        android:id="@+id/realEstatePrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="NPR.1000000"
+                        android:layout_toRightOf="@+id/realEstateImageHolder"
+                        android:layout_toEndOf="@+id/realEstateImageHolder"
+                        android:layout_below="@+id/realEstateTitle"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"/>
+
+                    <TextView
+                        android:id="@+id/realEstateStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="Unsold"
+                        android:ellipsize="end"
+                        android:layout_toRightOf="@+id/realEstatePrice"
+                        android:layout_toEndOf="@+id/realEstatePrice"
+                        android:layout_below="@+id/realEstateTitle"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"/>
+
+                    <TextView
+                        android:id="@+id/realEstateAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="Kalanki, Kathmandu"
+                        android:ellipsize="end"
+                        android:layout_toRightOf="@+id/realEstateImageHolder"
+                        android:layout_toEndOf="@+id/realEstateImageHolder"
+                        android:layout_below="@+id/realEstatePrice"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"/>
+
+                    <TextView
+                        android:id="@+id/realEstateContact"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="4356656"
+                        android:ellipsize="end"
+                        android:layout_toRightOf="@+id/realEstateImageHolder"
+                        android:layout_toEndOf="@+id/realEstateImageHolder"
+                        android:layout_below="@+id/realEstateAddress"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"/>
+
+                    <TextView
+                        android:id="@+id/realEstateUserId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="User ID"
+                        android:textSize="16sp"
+                        android:layout_below="@+id/realEstateImageHolder"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginLeft="10dp"/>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/jobsBackView"
+                android:layout_width="match_parent"
+                android:layout_height="205dp"
+                card_view:cardCornerRadius="4dp"
+                android:layout_margin="5dp">
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/jobsTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Vacancy!!!"
+                        android:maxLines="1"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toStartOf="@+id/jobsPopupMenu"
+                        android:layout_toLeftOf="@+id/jobsPopupMenu"/>
+
+                    <android.support.v7.widget.CardView
+                        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/jobsImageHolder"
+                        android:layout_width="110dp"
+                        android:layout_height="110dp"
+                        card_view:cardCornerRadius="2dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_below="@+id/jobsTitle">
+
+                        <ImageView
+                            android:id="@+id/jobsImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </android.support.v7.widget.CardView>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/jobsTitle"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/threedots"
+                        android:layout_marginRight="15dp"
+                        android:id="@+id/jobsPopupMenu"/>
+
+                    <TextView
+                        android:id="@+id/jobsCategory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="Database Administrator"
+                        android:layout_toRightOf="@+id/jobsImageHolder"
+                        android:layout_toEndOf="@+id/jobsImageHolder"
+                        android:layout_below="@+id/jobsTitle"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"/>
+
+                    <TextView
+                        android:id="@+id/jobsStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="Unoccupied"
+                        android:ellipsize="end"
+                        android:layout_toRightOf="@+id/jobsImageHolder"
+                        android:layout_toEndOf="@+id/jobsImageHolder"
+                        android:layout_below="@+id/jobsCategory"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"/>
+
+                    <TextView
+                        android:id="@+id/jobVacancies"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="1"
+                        android:ellipsize="end"
+                        android:layout_toRightOf="@+id/jobsImageHolder"
+                        android:layout_toEndOf="@+id/jobsImageHolder"
+                        android:layout_below="@+id/jobsStatus"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"/>
+
+                    <TextView
+                        android:id="@+id/jobsSalary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="NPR.30000"
+                        android:ellipsize="end"
+                        android:layout_toRightOf="@+id/jobsImageHolder"
+                        android:layout_toEndOf="@+id/jobsImageHolder"
+                        android:layout_below="@+id/jobVacancies"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"/>
+
+                    <TextView
+                        android:id="@+id/jobsUserId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="User ID"
+                        android:textSize="16sp"
+                        android:layout_below="@+id/jobsImageHolder"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginLeft="10dp"/>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

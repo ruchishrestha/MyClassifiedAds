@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="400dp"
+    android:layout_height="580dp"
+    android:layout_gravity="center">-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
+            <HorizontalScrollView
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/horizontalScroll"
+                android:background="#C6D7D2" >
+
+                <LinearLayout
+                    android:id="@+id/container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/img1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="imageclick"/>
+                    <ImageView
+                        android:id="@+id/img2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="imageclick"/>
+                    <ImageView
+                        android:id="@+id/img3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="imageclick"/>
+                    <ImageView
+                        android:id="@+id/img4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="imageclick"/>
+                    <ImageView
+                        android:id="@+id/img5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="imageclick"/>
+                    <ImageView
+                        android:id="@+id/img6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="imageclick"/>
+                    <ImageView
+                        android:id="@+id/img7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="imageclick"/>
+                    <ImageView
+                        android:id="@+id/img8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="imageclick"/>
+                    <ImageView
+                        android:id="@+id/img9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="imageclick"/>
+                    <ImageView
+                        android:id="@+id/img10"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:onClick="imageclick"
+                        android:background="#dadadc"/>
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/uploadPics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/upload"
+                android:textSize="16sp"/>
+
+            <!--<TextView
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:text="Title:"
+                android:textSize="16dp"
+                android:layout_marginTop="30dp"
+                android:textColor="#000000"
+                />-->
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:id="@+id/title"
+                android:background="@drawable/shape_edittext"
+                android:layout_marginTop="20dp"
+                android:inputType="text"
+                android:hint="Title.."
+                android:textSize="16dp"
+                android:paddingLeft="5dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Description:"
+                android:textSize="16dp"
+                android:textColor="#000000"
+                android:layout_marginTop="10dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/description"
+                android:background="@drawable/shape_edittext"
+                android:lines="8"
+                android:inputType="textMultiLine"
+                android:hint="Type here.."
+                android:layout_marginTop="5dp"
+                android:ems="10"
+                android:gravity="top|left"
+                android:cursorVisible="true"
+                android:paddingLeft="5dp"
+                android:textSize="16sp" />
+
+            <!--<TextView
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:text="House No:"
+                android:textSize="16sp"
+                android:textColor="#000000"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/house_no" />-->
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@drawable/shape_edittext"
+                android:layout_marginTop="10dp"
+                android:inputType="text"
+                android:hint="House No./Building No."
+                android:textSize="16sp"
+                android:paddingLeft="5dp"
+                android:id="@+id/houseBuildingNo"/>
+
+            <!--<TextView
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:text="Property type:"
+                android:textSize="16dp"
+                android:textColor="#000000"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/ptype"
+                android:layout_below="@+id/house_no" />-->
+
+            <!--<EditText
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@drawable/shape_edittext"
+                android:layout_marginTop="10dp"
+                android:inputType="text"
+                android:hint="Property Type.."
+                android:textSize="16sp"
+                android:paddingLeft="5dp"
+                android:id="@+id/propertyType"/>-->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Property Type:"
+                    android:textSize="16sp"
+                    android:textColor="#000000"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/propertyType" />
+
+                <Spinner
+                    android:id="@+id/propertyTypeList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@+id/propertyType"/>
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="30dp"
+                    android:text="Sale Type:"
+                    android:textSize="16sp"
+                    android:textColor="#000000"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@+id/propertyTypeList"
+                    android:id="@+id/saleType" />
+
+                <Spinner
+                    android:id="@+id/saleTypeList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@+id/saleType"
+                    android:layout_below="@+id/propertyTypeList"
+                    android:entries="@array/saleType" />
+
+            </RelativeLayout>
+
+            <!--<TextView
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:text="Price:"
+                android:textSize="16sp"
+                android:textColor="#000000"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_below="@+id/address"
+                android:id="@+id/price" />-->
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@drawable/shape_edittext"
+                android:inputType="number"
+                android:textSize="16sp"
+                android:hint="NPR."
+                android:paddingLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:id="@+id/realEstatePrice" />
+
+            <!-- <TextView
+                 android:layout_width="150dp"
+                 android:layout_height="30dp"
+                 android:text="Address:"
+                 android:textSize="16sp"
+                 android:textColor="#000000"
+                 android:layout_marginTop="10dp"
+                 android:layout_marginLeft="10dp"
+                 android:layout_below="@+id/ptype"
+                 android:id="@+id/address" />-->
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@drawable/shape_edittext"
+                android:layout_marginTop="10dp"
+                android:inputType="text"
+                android:hint="Address.."
+                android:textSize="16sp"
+                android:paddingLeft="5dp"
+                android:id="@+id/aDdress" />
+
+            <!-- <TextView
+                 android:layout_width="150dp"
+                 android:layout_height="30dp"
+                 android:text="Contact:"
+                 android:textSize="16dp"
+                 android:textColor="#000000"
+                 android:layout_marginTop="10dp"
+                 android:layout_marginLeft="10dp"
+                 android:layout_below="@+id/price"
+                 android:id="@+id/contact"/>-->
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@drawable/shape_edittext"
+                android:inputType="phone"
+                android:textSize="16sp"
+                android:paddingLeft="5dp"
+                android:hint="ContactNo."
+                android:layout_marginTop="10dp"
+                android:id="@+id/realEstateContact"/>
+
+           <!-- <TextView
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:text="Mobile:"
+                android:textSize="16dp"
+                android:textColor="#000000"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_below="@+id/contact"
+                android:id="@+id/mobile"
+                />-->
+
+            <EditText
+                android:id="@+id/mobileNo"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@drawable/shape_edittext"
+                android:inputType="phone"
+                android:textSize="16sp"
+                android:paddingLeft="5dp"
+                android:hint="MobileNo."
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:id="@+id/locateOnMap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/locateOnMap"
+                android:textSize="16sp"
+                android:layout_marginTop="15dp"
+                android:textColor="#bb5756e6"
+                android:textStyle="bold"
+                android:gravity="left"/>
+
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="34dp"
+                android:text="Save"
+                android:id="@+id/saveButton"
+                android:gravity="center"
+                android:layout_marginTop="15dp"
+                android:textSize="20dp"
+                android:background="@drawable/shape"
+                android:layout_gravity="center_horizontal"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

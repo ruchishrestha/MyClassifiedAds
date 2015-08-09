@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      tools:context="com.example.home_pc.myclassifiedads.userlogin.UserChoice">
+<!--<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="400dp"
+  android:layout_height="580dp"
+  android:layout_gravity="center"
+  tools:context="com.example.home_pc.myclassifiedads.user_login.UserChoice">-->
+
+      <ImageView
+          android:layout_width="150dp"
+          android:layout_height="200dp"
+          android:id="@+id/individual"
+          android:layout_gravity="start|top"
+          android:layout_marginLeft="25dp"
+          android:layout_marginTop="20dp"
+          android:src="@drawable/individual"/>
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Individual"
+          android:textStyle="bold"
+          android:id="@+id/txt_ind"
+          android:layout_gravity="start|top"
+          android:layout_marginLeft="65dp"
+          android:layout_marginTop="200dp" />
+
+      <ImageView
+          android:layout_width="150dp"
+          android:layout_height="200dp"
+          android:id="@+id/shops"
+          android:layout_gravity="end|top"
+          android:layout_marginRight="25dp"
+          android:layout_marginTop="20dp"
+          android:src="@drawable/shop" />
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Shops"
+          android:textStyle="bold"
+          android:id="@+id/txt_shop"
+          android:layout_gravity="end|top"
+          android:layout_marginRight="77dp"
+          android:layout_marginTop="200dp" />
+
+      <ImageView
+          android:layout_width="150dp"
+          android:layout_height="200dp"
+          android:id="@+id/organization"
+          android:layout_gravity="center"
+          android:layout_marginTop="60dp"
+          android:src="@drawable/org" />
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Organization"
+          android:textStyle="bold"
+          android:id="@+id/txt_org"
+          android:layout_gravity="center"
+          android:layout_marginTop="150dp" />
+
+</FrameLayout>
+
