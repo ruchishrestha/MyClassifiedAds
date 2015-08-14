@@ -49,5 +49,20 @@
     <string name="title_activity_sales_add">Add Sales Ads</string>
     <string name="title_activity_real_estate_add">Add RealEstate Ads</string>
     <string name="title_activity_job_add">Add Job Vacancy Ads</string>
+    <string name="title_activity_contact_view_detail">Contact View Detail</string>
+    <string name="title_fragment_contactsinlist">All Contacts</string>
+    <string name="title_fragment_contactsinmap">View in Map</string>
+    <string name="title_fragment_wantedinlist">All Wanted list</string>
+    <string name="title_fragment_wantedinmap">View in Map</string>
+
+    <string name="title_section1"><b>ALL ADS</b></string>
+    <string name="title_section2"><b>TOP ADS</b></string>
+    <string name="title_section3"><b>NEW ADS</b></string>
+
+    <string name="locinmap"><i><u>View on Map</u></i></string>
+    <string name="comment"><i><u>Your comments here</u></i></string>
+
+
+
 
 </resources>

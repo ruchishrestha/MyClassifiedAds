@@ -1,7 +1,7 @@
 package com.example.home_pc.myclassifiedads.main;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -49,6 +49,7 @@ public class NavigationActivity extends ActionBarActivity {
     private TextView userNameTextView,userIdTextView,salesTitleTextView;
     private ToggleButton navDrawerListToggleButton,salesListToggleButton;
     private Boolean navDrawerListToggle;
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private FrameLayout salesListLayout;
     private LinearLayout drawerLinearLayout,salesMainLayout;
@@ -238,6 +239,9 @@ public class NavigationActivity extends ActionBarActivity {
                 fragment = new WantedFragment();
                 break;
             case 4:
+              /*  getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame, SalesFragment.newInstance(), SalesFragment.TAG).commit();*/
                 fragment = new SalesFragment();
                 break;
             case 5:
@@ -266,7 +270,7 @@ public class NavigationActivity extends ActionBarActivity {
                 break;
         }
 
-        FragmentManager frgManager = getFragmentManager();
+        FragmentManager frgManager = getSupportFragmentManager();
         frgManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
         navDrawerUpperItemListView.setItemChecked(listItemPosition, true);
