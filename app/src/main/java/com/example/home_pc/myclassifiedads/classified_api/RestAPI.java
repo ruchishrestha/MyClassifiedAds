@@ -100,134 +100,6 @@ public class RestAPI {
 		return finalValue;
 	}
 
-    public JSONObject CreateIndividualProfile(String userName,String passWord,String firstName,String middleName,String lastName,String aDdress,String contactNo,String mobileNo,String emailId,String webSite,String profilePic) throws Exception {
-        JSONObject result = null;
-        JSONObject o = new JSONObject();
-        JSONObject p = new JSONObject();
-        o.put("interface","RestAPI");
-        o.put("method", "CreateIndividualProfile");
-        p.put("userName",mapObject(userName));
-        p.put("passWord",mapObject(passWord));
-        p.put("firstName",mapObject(firstName));
-        p.put("middleName",mapObject(middleName));
-        p.put("lastName",mapObject(lastName));
-        p.put("aDdress",mapObject(aDdress));
-        p.put("contactNo",mapObject(contactNo));
-        p.put("mobileNo",mapObject(mobileNo));
-        p.put("emailId",mapObject(emailId));
-        p.put("webSite",mapObject(webSite));
-        p.put("profilePic",mapObject(profilePic));
-        o.put("parameters", p);
-        String s = o.toString();
-        String r = load(s);
-        result = new JSONObject(r);
-        return result;
-    }
-
-    public JSONObject CreateOrganizationProfile(String userName,String passWord,String organizationName,String registrationNo,String aDdress,String contactNo,String mobileNo,String emailId,String webSite,double latitude,double longitude,String organizationPicture) throws Exception {
-        JSONObject result = null;
-        JSONObject o = new JSONObject();
-        JSONObject p = new JSONObject();
-        o.put("interface","RestAPI");
-        o.put("method", "CreateOrganizationProfile");
-        p.put("userName",mapObject(userName));
-        p.put("passWord",mapObject(passWord));
-        p.put("organizationName",mapObject(organizationName));
-        p.put("registrationNo",mapObject(registrationNo));
-        p.put("aDdress",mapObject(aDdress));
-        p.put("contactNo",mapObject(contactNo));
-        p.put("mobileNo",mapObject(mobileNo));
-        p.put("emailId",mapObject(emailId));
-        p.put("webSite",mapObject(webSite));
-        p.put("latitude",mapObject(latitude));
-        p.put("longitude",mapObject(longitude));
-        p.put("organizationPicture",mapObject(organizationPicture));
-        o.put("parameters", p);
-        String s = o.toString();
-        String r = load(s);
-        result = new JSONObject(r);
-        return result;
-    }
-
-    public JSONObject CreateShopProfile(String userName,String passWord,String shopName,String shopOwner,String panNo,String aDdress,String contactNo,String mobileNo,String emailId,String webSite,double latitude,double longitude,String shopPictureURL) throws Exception {
-        JSONObject result = null;
-        JSONObject o = new JSONObject();
-        JSONObject p = new JSONObject();
-        o.put("interface","RestAPI");
-        o.put("method", "CreateShopProfile");
-        p.put("userName",mapObject(userName));
-        p.put("passWord",mapObject(passWord));
-        p.put("shopName",mapObject(shopName));
-        p.put("shopOwner",mapObject(shopOwner));
-        p.put("panNo",mapObject(panNo));
-        p.put("aDdress",mapObject(aDdress));
-        p.put("contactNo",mapObject(contactNo));
-        p.put("mobileNo",mapObject(mobileNo));
-        p.put("emailId",mapObject(emailId));
-        p.put("webSite",mapObject(webSite));
-        p.put("latitude",mapObject(latitude));
-        p.put("longitude",mapObject(longitude));
-        p.put("shopPictureURL",mapObject(shopPictureURL));
-        o.put("parameters", p);
-        String s = o.toString();
-        String r = load(s);
-        result = new JSONObject(r);
-        return result;
-    }
-
-    public JSONObject UserAuthentication(String userName,String passWord) throws Exception {
-        JSONObject result = null;
-        JSONObject o = new JSONObject();
-        JSONObject p = new JSONObject();
-        o.put("interface","RestAPI");
-        o.put("method", "UserAuthentication");
-        p.put("userName",mapObject(userName));
-        p.put("passWord",mapObject(passWord));
-        o.put("parameters", p);
-        String s = o.toString();
-        String r = load(s);
-        result = new JSONObject(r);
-        return result;
-    }
-
-    public JSONObject GetUserDetail(String userName,String userCategory) throws Exception {
-        JSONObject result = null;
-        JSONObject o = new JSONObject();
-        JSONObject p = new JSONObject();
-        o.put("interface","RestAPI");
-        o.put("method", "GetUserDetail");
-        p.put("userName",mapObject(userName));
-        p.put("userCategory",mapObject(userCategory));
-        o.put("parameters", p);
-        String s = o.toString();
-        String r = load(s);
-        result = new JSONObject(r);
-        return result;
-    }
-
-    public JSONObject PushAdstoSales(String adid,String username,String title,String ad_desc,String brand,double price,String ad_stat,String condition,String timeused,long contact) throws Exception {
-        JSONObject result = null;
-        JSONObject o = new JSONObject();
-        JSONObject p = new JSONObject();
-        o.put("interface","RestAPI");
-        o.put("method", "PushAdstoSales");
-        p.put("adid",mapObject(adid));
-        p.put("username",mapObject(username));
-        p.put("title",mapObject(title));
-        p.put("ad_desc",mapObject(ad_desc));
-        p.put("brand",mapObject(brand));
-        p.put("price",mapObject(price));
-        p.put("ad_stat",mapObject(ad_stat));
-        p.put("condition",mapObject(condition));
-        p.put("timeused",mapObject(timeused));
-        p.put("contact",mapObject(contact));
-        o.put("parameters", p);
-        String s = o.toString();
-        String r = load(s);
-        result = new JSONObject(r);
-        return result;
-    }
-
     public JSONObject GetSalesDetail() throws Exception {
         JSONObject result = null;
         JSONObject o = new JSONObject();
@@ -255,12 +127,92 @@ public class RestAPI {
         return result;
     }
 
-    public JSONObject GetContactsList() throws Exception {
+    public JSONObject GetContactsList(String category) throws Exception {
         JSONObject result = null;
         JSONObject o = new JSONObject();
         JSONObject p = new JSONObject();
         o.put("interface","RestAPI");
         o.put("method", "GetContactsList");
+        p.put("category",mapObject(category));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject GetContactDetails(int adid,String category) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetContactDetails");
+        p.put("adid",mapObject(adid));
+        p.put("category",mapObject(category));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject GetMyComment(int adid,String username,String category) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetMyComment");
+        p.put("adid",mapObject(adid));
+        p.put("username",mapObject(username));
+        p.put("category",mapObject(category));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject GetAllComments(int adid,String category) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetAllComments");
+        p.put("adid",mapObject(adid));
+        p.put("category",mapObject(category));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject PushComments(String category,String username,int adid,String commentText) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "PushComments");
+        p.put("category",mapObject(category));
+        p.put("username",mapObject(username));
+        p.put("adid",mapObject(adid));
+        p.put("commentText",mapObject(commentText));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject PushtoWatchlist(int adid,String category,String username) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "PushtoWatchlist");
+        p.put("adid",mapObject(adid));
+        p.put("category",mapObject(category));
+        p.put("username",mapObject(username));
         o.put("parameters", p);
         String s = o.toString();
         String r = load(s);

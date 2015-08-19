@@ -61,6 +61,10 @@
 
     <string name="locinmap"><i><u>View on Map</u></i></string>
     <string name="comment"><i><u>Your comments here</u></i></string>
+    <string name="title_activity_all_comments">AllCommentsActivity</string>
+    <string name="watchlist">Add to watchlist</string>
+
+    <string name="hello_world">Hello world!</string>
 
 
 

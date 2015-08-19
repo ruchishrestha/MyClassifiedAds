@@ -50,12 +50,15 @@ public class NavigationActivity extends ActionBarActivity {
     private ToggleButton navDrawerListToggleButton,salesListToggleButton;
     private Boolean navDrawerListToggle;
     private static final String TAG = MainActivity.class.getSimpleName();
+    String contacts="contacts";
+    String wanted="wanted";
 
     private FrameLayout salesListLayout;
     private LinearLayout drawerLinearLayout,salesMainLayout;
 
     private CustomDrawerAdapter upperDrawerListAdapter,salesListAdapter,lowerDrawerListAdapter;
     private List<DrawerItem> upperDrawerListItems,salesListItems,lowerDrawerListItems;
+
 
 
     @Override
@@ -237,6 +240,7 @@ public class NavigationActivity extends ActionBarActivity {
                 break;
             case 3:
                 fragment = new WantedFragment();
+
                 break;
             case 4:
               /*  getSupportFragmentManager()

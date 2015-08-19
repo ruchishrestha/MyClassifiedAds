@@ -1,11 +1,15 @@
 package com.example.home_pc.myclassifiedads.contacts;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.home_pc.myclassifiedads.R;
@@ -30,10 +35,13 @@ import java.util.List;
  */
 public class ContactsListFragment extends Fragment {
     RecyclerView contactsList;
-    ArrayList<ContactsAdObject> contactsAdObjects;
-
+    SwipeRefreshLayout mswipeRefreshLayout;
+    ProgressDialog progressDialog;
+    ArrayList<ContactsAdObject> cObject;
     Context context;
     ContactAdsAdapter contactAdsAdapter;
+    String tableCategory;
+    ImageView popupMenu;
 
     public ContactsListFragment() {
     }
@@ -44,10 +52,9 @@ public class ContactsListFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.ads_recycler_view, container,
                 false);
-        contactsAdObjects = new ArrayList<ContactsAdObject>();
-
-        contactsAdObjects=getArguments().getParcelableArrayList("contactList");
+        tableCategory=getArguments().getString("tableCategory");
         contactsList=(RecyclerView) view.findViewById(R.id.cardList);
+        mswipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipeRefreshLayout);
         context=getActivity();
         setHasOptionsMenu(true);
         contactsList.setHasFixedSize(true);
@@ -56,41 +63,63 @@ public class ContactsListFragment extends Fragment {
         contactsList.setLayoutManager(llm);
         loadContactAds();
 
+        mswipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadContactAds();
+                onItemLoadComplete();
+            }
+        });
+
         return view;
     }
 
+    public void onItemLoadComplete(){
+        mswipeRefreshLayout.setRefreshing(false);
+    }
+
     public void loadContactAds(){
-        new AsyncLoadContactAds().execute();
+        new AsyncLoadContactAds().execute(tableCategory);
     }
 
 
     protected class AsyncLoadContactAds extends
-            AsyncTask<Void, Void, ArrayList<ContactsAdObject>> {
-        ArrayList<ContactsAdObject> cObject;
+            AsyncTask<String, Void, ArrayList<ContactsAdObject>> {
+
 
         @Override
-        protected ArrayList<ContactsAdObject> doInBackground(Void... params) {
+        protected ArrayList<ContactsAdObject> doInBackground(String... params) {
 
             RestAPI api = new RestAPI();
             try {
                 cObject=new ArrayList<ContactsAdObject>();
-                JSONObject jsonObj = api.GetContactsList();
+                JSONObject jsonObj = api.GetContactsList(params[0]);
                 JSONParser parser = new JSONParser();
                 cObject = parser.parseContactsList(jsonObj);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 Log.d("AsyncLoadContactList", e.getMessage());
             }
-            //   contactsAdObject.add(new ContactsAdObject(1,bitmap,"sasz1973","Windows 10 installation","jwagal","987654"));*//*
             return cObject;
         }
 
         @Override
+        protected void onPreExecute(){
+            progressDialog=new ProgressDialog(getActivity());
+            progressDialog.setMessage("Loading...");
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setIndeterminate(true);
+            progressDialog.show();
+
+        }
+
+        @Override
         protected void onPostExecute(ArrayList<ContactsAdObject> result) {
-          /* contactsAdObject.add(new ContactsAdObject(1,result.get(0).ad_insertdate,
-                   result.get(0).contactImage,result.get(0).username,result.get(0).title,result.get(0).ad_description,result.get(0).contacts_category,
-                   result.get(0).address,result.get(0).contactNo,result.get(0).email,result.get(0).latitude,result.get(0).longitute);
-*/          contactAdsAdapter =new ContactAdsAdapter(context,result);
+            if(progressDialog.isShowing()){
+                progressDialog.dismiss();
+            }
+
+            contactAdsAdapter =new ContactAdsAdapter(context,result,tableCategory);
             contactsList.setAdapter(contactAdsAdapter);
 
         }

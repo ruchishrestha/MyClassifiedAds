@@ -41,7 +41,7 @@ public class ContactsFragment extends Fragment {
 
     private PagerSlidingTabStrip fragmentTabs;
     private SectionsPagerAdapter sectionsPagerAdapter;
-    private android.support.v4.app.Fragment selectFragment;
+    private Fragment selectFragment;
     private ViewPager viewPager;
    public ArrayList<ContactsAdObject> contactsAdObject;
     Context context;
@@ -55,19 +55,16 @@ public class ContactsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        args=new Bundle();
+        contactsAdObject=new ArrayList<ContactsAdObject>();
 
         View v = inflater.inflate(R.layout.tab_fragments, container, false);
         fragmentTabs= (PagerSlidingTabStrip) v.findViewById(R.id.fragment_tabs);
         viewPager = (ViewPager) v.findViewById(R.id.fragmentPager);
-        args=new Bundle();
-        contactsAdObject=new ArrayList<ContactsAdObject>();
-        loadContactAds();
         sectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(sectionsPagerAdapter);
         viewPager.setCurrentItem(0,false);
         fragmentTabs.setViewPager(viewPager);
-
         return v;
 
     }
@@ -85,12 +82,12 @@ public class ContactsFragment extends Fragment {
 
         public Fragment fragmentSelection(int fragmentPosition){
 
-
+            Bundle args=new Bundle();
+            args.putString("tableCategory","contacts");
             switch (fragmentPosition) {
                 case 0:
                     selectFragment= new ContactsListFragment();
-                    args.putParcelableArrayList("contactList",contactsAdObject);
-                    selectFragment.setArguments(args);
+                   selectFragment.setArguments(args);
                     break;
                 case 1:
                     selectFragment= new ContactsMapFragment();
@@ -121,41 +118,6 @@ public class ContactsFragment extends Fragment {
         }
     }
 
-    public void loadContactAds(){
-        new AsyncLoadContactAds().execute();
-    }
-
-
-    protected class AsyncLoadContactAds extends
-            AsyncTask<Void, Void, ArrayList<ContactsAdObject>> {
-        ArrayList<ContactsAdObject> cObject;
-
-        @Override
-        protected ArrayList<ContactsAdObject> doInBackground(Void... params) {
-
-            RestAPI api = new RestAPI();
-            try {
-                cObject=new ArrayList<ContactsAdObject>();
-                JSONObject jsonObj = api.GetContactsList();
-                JSONParser parser = new JSONParser();
-                cObject = parser.parseContactsList(jsonObj);
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                Log.d("AsyncLoadContactList", e.getMessage());
-            }
-         //   contactsAdObject.add(new ContactsAdObject(1,bitmap,"sasz1973","Windows 10 installation","jwagal","987654"));*//*
-            return cObject;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<ContactsAdObject> result) {
-          /* contactsAdObject.add(new ContactsAdObject(1,result.get(0).ad_insertdate,
-                   result.get(0).contactImage,result.get(0).username,result.get(0).title,result.get(0).ad_description,result.get(0).contacts_category,
-                   result.get(0).address,result.get(0).contactNo,result.get(0).email,result.get(0).latitude,result.get(0).longitute);
-*/
-            contactsAdObject=result;
-        }
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu,MenuInflater inflater){

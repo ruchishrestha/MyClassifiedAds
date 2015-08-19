@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
+    android:id="@+id/ll"
     android:layout_margin="10dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,14 +38,12 @@
                 android:id="@+id/ad_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Windows 10 installation"
                 android:textSize="18sp"
                 />
             <TextView
                 android:id="@+id/category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Repairing"
                 android:layout_marginTop="15dp"
                 android:textSize="14sp"/>
 
@@ -65,7 +65,6 @@
                     android:id="@+id/username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="sasz1973"
                     android:textSize="12sp"
                     android:textColor="#0000ff"
                     />
@@ -94,7 +93,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="Contact for clean windows 10 installation for free!!!!Hurry up!!"
         android:textSize="14sp"/>
 
     <View
@@ -122,7 +120,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:text="97347384"/>
+          />
     </LinearLayout>
 
     <LinearLayout
@@ -140,7 +138,6 @@
             android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ruchi@yahoo.com"
             android:textSize="14sp"/>
     </LinearLayout>
 
@@ -159,7 +156,6 @@
             android:id="@+id/address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Kumaripati, Lalitpur"
             android:textSize="14sp"/>
     </LinearLayout>
 

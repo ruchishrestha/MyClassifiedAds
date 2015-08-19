@@ -9,42 +9,52 @@ import java.io.Serializable;
 /**
  * Created by Home-PC on 7/25/2015.
  */
-public class ContactsAdObject implements Parcelable{
+public class ContactsAdObject /*implements Parcelable*/{
 
-   String contactImage;
-    String title,ad_description,address,contactNo,email,username,contacts_category,ad_insertdate;
+    String adImage;
+    String title,ad_description,address,contactNo,email,username,Category,ad_insertdate,tableCategory,viewerUsername;
     Double latitude,longitute;
-    int contactID;
+    int adid;
 
 
-    public ContactsAdObject(int contactID,String ad_insertdate,String contactImage,String username,String title,String ad_description,String contacts_category,String address,String contactNo,String email,Double latitude,Double longitute){
-        this.contactID=contactID;
+    public ContactsAdObject(int adid,String ad_insertdate,String username,String title,String ad_description,String Category,String address,String contactNo,String email,Double latitude,Double longitute,String adImage){
+        this.adid=adid;
         this.ad_insertdate=ad_insertdate;
-        this.contactImage=contactImage;
         this.username=username;
         this.title=title;
         this.ad_description=ad_description;
-        this.contacts_category=contacts_category;
+        this.Category=Category;
         this.address=address;
         this.contactNo=contactNo;
         this.email=email;
         this.latitude=latitude;
         this.longitute=longitute;
+        this.adImage=adImage;
     }
 
-    public ContactsAdObject(int contactID,String contactImage,String username,String title,String address,String contactNo,Double latitude,Double longitute){
-        this.contactID=contactID;
-        this.contactImage=contactImage;
+    public ContactsAdObject(int adid,String adImage,String username,String title,String address,String contactNo){
+        this.adid=adid;
+        this.adImage=adImage;
         this.username=username;
         this.title=title;
         this.address=address;
         this.contactNo=contactNo;
-        this.latitude=latitude;
-        this.longitute=longitute;
     }
 
-    public void setContactImage(String contactImage){this.contactImage=contactImage;}
-    public String getContactImage(){return this.contactImage;}
+    public ContactsAdObject(int adid,String tableCategory){
+        this.adid=adid;
+        this.tableCategory=tableCategory;
+    }
+
+    public ContactsAdObject(int adid,String tableCategory,String viewerUsername){
+        this.adid=adid;
+        this.tableCategory=tableCategory;
+        this.viewerUsername=viewerUsername;
+
+    }
+
+    public void setAdImage(String adImage){this.adImage=adImage;}
+    public String getAdImage(){return this.adImage;}
     public void settitle(String title){this.title=title;}
     public String gettitle(){return this.title;}
     public void setAd_description(String ad_description){this.ad_description=ad_description;}
@@ -61,49 +71,5 @@ public class ContactsAdObject implements Parcelable{
     public Double getLongitute(){return this.longitute ;}
 
 
-    public static final Parcelable.Creator<ContactsAdObject> CREATOR = new Parcelable.Creator<ContactsAdObject>() {
-        public ContactsAdObject createFromParcel(Parcel in) {
-            return new ContactsAdObject(in);
-        }
 
-        public ContactsAdObject[] newArray(int size) {
-            return new ContactsAdObject[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(ad_insertdate);
-        dest.writeString(contactImage);
-        dest.writeString(title);
-        dest.writeString(ad_description);
-        dest.writeString(address);
-        dest.writeString(contactNo);
-        dest.writeString(email);
-        dest.writeInt(contactID);
-        dest.writeString(username);
-        dest.writeString(contacts_category);
-        dest.writeDouble(latitude);
-        dest.writeDouble(longitute);
-    }
-
-    public ContactsAdObject(Parcel in){
-        contactImage=in.readString();
-        ad_insertdate=in.readString();
-        title=in.readString();
-        ad_description=in.readString();
-        address=in.readString();
-        contactNo=in.readString();
-        email=in.readString();
-        contactID=in.readInt();
-        username=in.readString();
-        contacts_category=in.readString();
-        latitude=in.readDouble();
-        longitute=in.readDouble();
-    }
 }
