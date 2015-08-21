@@ -1,6 +1,8 @@
 package com.example.home_pc.myclassifiedads.contacts;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 import com.example.home_pc.myclassifiedads.R;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
 import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
+import com.example.home_pc.myclassifiedads.main.MainActivity;
 
 import org.json.JSONObject;
 import org.w3c.dom.Text;
@@ -35,18 +38,19 @@ public class ContactAdsAdapter extends RecyclerView.Adapter<ContactAdsAdapter.Vi
     private ArrayList<ContactsAdObject> contactsAdObjects;
     View view;
     Intent intent;
-    String tableCategory;
+    String tableCategory,userID;
 
-    public ContactAdsAdapter(Context context,ArrayList<ContactsAdObject> contactsAdObjects,String tableCategory) {
+    public ContactAdsAdapter(Context context,ArrayList<ContactsAdObject> contactsAdObjects,String tableCategory,String userID) {
         this.context=context;
         this.contactsAdObjects=contactsAdObjects;
         this.tableCategory=tableCategory;
+        this.userID=userID;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         protected ImageView adImage;
-        protected TextView adTitle,aDdress,adContact,userId;
+        protected TextView adTitle,aDdress,adContact,username;
         public ImageView popupMenu;
 
         public ViewHolder(View v) {
@@ -55,7 +59,7 @@ public class ContactAdsAdapter extends RecyclerView.Adapter<ContactAdsAdapter.Vi
             adTitle=(TextView)v.findViewById(R.id.adTitle);
             adContact=(TextView)v.findViewById(R.id.adContact);
             aDdress=(TextView)v.findViewById(R.id.aDdress);
-            userId=(TextView)v.findViewById(R.id.userId);
+            username=(TextView)v.findViewById(R.id.userId);
             popupMenu=(ImageView)v.findViewById(R.id.popupMenu);
         }
     }
@@ -76,7 +80,7 @@ public class ContactAdsAdapter extends RecyclerView.Adapter<ContactAdsAdapter.Vi
         holder.adTitle.setText(cao.title);
         holder.adContact.setText(cao.contactNo);
         holder.aDdress.setText(cao.address);
-        holder.userId.setText(cao.username);
+        holder.username.setText(cao.username);
 
        view.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -84,7 +88,7 @@ public class ContactAdsAdapter extends RecyclerView.Adapter<ContactAdsAdapter.Vi
                intent = new Intent(v.getContext(), ContactViewDetail.class);
                Bundle bundle = new Bundle();
                bundle.putInt("adid", cao.adid);
-               bundle.putString("viewerUsername", cao.username);
+               bundle.putString("userID", userID);
                bundle.putString("tableCategory", tableCategory);
                intent.putExtras(bundle);
                context.startActivity(intent);
@@ -94,7 +98,6 @@ public class ContactAdsAdapter extends RecyclerView.Adapter<ContactAdsAdapter.Vi
         holder.popupMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //openpopupmenu(v,cao);
                 final PopupMenu popup = new PopupMenu(v.getContext(), v);
                 popup.inflate(R.menu.overflow_popup_menu);
                 popup.show();
@@ -103,11 +106,14 @@ public class ContactAdsAdapter extends RecyclerView.Adapter<ContactAdsAdapter.Vi
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()){
                             case R.id.item_watchlist:
-                                ContactsAdObject co=new ContactsAdObject(cao.adid,cao.tableCategory,cao.viewerUsername);
-                                Toast.makeText(context,""+cao.tableCategory,Toast.LENGTH_LONG).show();
-                               // new AsyncSavetoWatchlist().execute(co);
+                                if (userID.equals("Guest")) {
+                                    navigatetohome();
+                                }
+                                else {
+                                    ContactsAdObject co=new ContactsAdObject(cao.adid,tableCategory,userID);
+                                    new AsyncSavetoWatchlist().execute(co);
+                                }
                         }
-
                         return true;
                     }
                 });
@@ -116,33 +122,65 @@ public class ContactAdsAdapter extends RecyclerView.Adapter<ContactAdsAdapter.Vi
 
     }
 
+    public void navigatetohome(){
+        final AlertDialog alertDialog = new AlertDialog.Builder(
+                context).create();
+        alertDialog.setMessage("Please create your account first or Login");
+        alertDialog.setIcon(R.drawable.backward);
+        alertDialog.setTitle("The Classified Ads App");
+        alertDialog.setButton2("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(context, MainActivity.class);
+                context.startActivity(intent);
+            }
+        });
+        alertDialog.setButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
+
 
     protected class AsyncSavetoWatchlist extends
-            AsyncTask<ContactsAdObject, Void, Integer> {
+            AsyncTask<ContactsAdObject, Void, Boolean> {
 
-        Integer a=0;
+        Boolean flag=false;
         @Override
-        protected Integer doInBackground(ContactsAdObject... params) {
+        protected Boolean doInBackground(ContactsAdObject... params) {
             RestAPI api = new RestAPI();
             try {
-                JSONObject jsonObject = api.PushtoWatchlist(params[0].adid, params[0].tableCategory, params[0].viewerUsername);
+                JSONObject jsonObject = api.PushtoWatchlist(params[0].adid, params[0].tableCategory, params[0].userID);
                 JSONParser parser = new JSONParser();
-              a= parser.parseReturnedValue(jsonObject);
+              flag= parser.parseReturnedValue(jsonObject);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 Log.d("AsyncSavetoWatchlist", e.getMessage().toString());
             }
-            return a;
+            return flag;
         }
 
         @Override
-        protected void onPostExecute(Integer result) {
-            if(result==1){
-                Toast.makeText(context,"Already added",Toast.LENGTH_LONG).show();
-        }
-            else{
-                Toast.makeText(context,"Added to watchlist",Toast.LENGTH_LONG).show();
+        protected void onPostExecute(Boolean result) {
+            final AlertDialog alertDialog = new AlertDialog.Builder(
+                    context).create();
+            if(result==true){
+                alertDialog.setMessage("Added to watchlist");
+               // Toast.makeText(context,"Added to watchlist",Toast.LENGTH_LONG).show();
             }
+            else{
+                alertDialog.setMessage("Already added");
+            }
+            alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    alertDialog.dismiss();
+                }
+            });
+            alertDialog.show();
         }
     }
 

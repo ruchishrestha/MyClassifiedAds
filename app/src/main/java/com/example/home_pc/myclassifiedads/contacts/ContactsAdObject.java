@@ -12,12 +12,12 @@ import java.io.Serializable;
 public class ContactsAdObject /*implements Parcelable*/{
 
     String adImage;
-    String title,ad_description,address,contactNo,email,username,Category,ad_insertdate,tableCategory,viewerUsername;
+    String title,ad_description,address,contactNo,email,username,Category,ad_insertdate,tableCategory,userID;
     Double latitude,longitute;
     int adid;
 
 
-    public ContactsAdObject(int adid,String ad_insertdate,String username,String title,String ad_description,String Category,String address,String contactNo,String email,Double latitude,Double longitute,String adImage){
+    public ContactsAdObject(int adid,String ad_insertdate,String username,String title,String ad_description,String Category,String contactNo,String address,String email,Double latitude,Double longitute,String adImage){
         this.adid=adid;
         this.ad_insertdate=ad_insertdate;
         this.username=username;
@@ -46,10 +46,10 @@ public class ContactsAdObject /*implements Parcelable*/{
         this.tableCategory=tableCategory;
     }
 
-    public ContactsAdObject(int adid,String tableCategory,String viewerUsername){
+    public ContactsAdObject(int adid,String tableCategory,String userID){
         this.adid=adid;
         this.tableCategory=tableCategory;
-        this.viewerUsername=viewerUsername;
+        this.userID=userID;
 
     }
 

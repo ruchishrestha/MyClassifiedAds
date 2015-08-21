@@ -8,27 +8,45 @@ import java.util.ArrayList;
  * Created by Home-PC on 7/27/2015.
  */
 public class RealEstatesAdObject {
-    ArrayList<Bitmap> realEstateImages;
-    String title,description,houseNo,propertyType,saleType,aDdress,contactNo,mobileNo,email;
-    Double latitude,longitute;
+    String[] realEstateImages;int realestateID;
+    String title,description,houseNo,propertyType,saleType,aDdress,contactNo,mobileNo,email,username,userID,ad_insertdate,tableCategory;
+    Double latitude,longitute,price;
 
-    public RealEstatesAdObject (ArrayList<Bitmap> realEstateImages,String title,String description,String houseNo,String propertyType,String saleType,String aDdress,String contactNo,String mobileNo,String email,Double latitude,Double longitute ){
-        this.realEstateImages=realEstateImages;
+    public RealEstatesAdObject (int realestateID,String ad_insertdate,String username,String title,String description,String houseNo,String propertyType,String saleType,Double price,String aDdress,String contactNo,String mobileNo,Double latitude,Double longitute ){
+        this.realestateID=realestateID;
+        this.ad_insertdate=ad_insertdate;
+        this.username=username;
         this.title=title;
         this.description=description;
         this.houseNo=houseNo;
+        this.price=price;
         this.propertyType=propertyType;
         this.saleType=saleType;
         this.aDdress=aDdress;
         this.contactNo=contactNo;
         this.mobileNo=mobileNo;
-        this.email=email;
         this.latitude=latitude;
         this.longitute=longitute;
     }
 
-    public void setRealEstateImages(ArrayList<Bitmap> realEstateImages){this.realEstateImages=realEstateImages;}
-    public ArrayList<Bitmap> getRealEstateImages(){return this.realEstateImages;}
+    public RealEstatesAdObject(int realestateID,String title,Double price,String saleType,String aDdress,String contactNo,String username){
+        this.realestateID=realestateID;
+        this.title=title;
+        this.price=price;
+        this.saleType=saleType;
+        this.aDdress=aDdress;
+        this.contactNo=contactNo;
+        this.username=username;
+
+    }
+
+    public RealEstatesAdObject(int realestateID,String tableCategory,String userID){
+        this.realestateID=realestateID;
+        this.tableCategory=tableCategory;
+        this.userID=userID;
+    }
+
+
     public void settitle(String title){this.title=title;}
     public String gettitle(){return this.title;}
     public void setDescription(String description){this.description=description;}

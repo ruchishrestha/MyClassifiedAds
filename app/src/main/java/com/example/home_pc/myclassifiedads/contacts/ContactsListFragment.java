@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.home_pc.myclassifiedads.R;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
@@ -28,7 +26,7 @@ import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * Created by Ruchi on 2015-08-12.
@@ -40,8 +38,7 @@ public class ContactsListFragment extends Fragment {
     ArrayList<ContactsAdObject> cObject;
     Context context;
     ContactAdsAdapter contactAdsAdapter;
-    String tableCategory;
-    ImageView popupMenu;
+    String tableCategory,userID;
 
     public ContactsListFragment() {
     }
@@ -53,6 +50,7 @@ public class ContactsListFragment extends Fragment {
         View view = inflater.inflate(R.layout.ads_recycler_view, container,
                 false);
         tableCategory=getArguments().getString("tableCategory");
+        userID=getArguments().getString("userID");
         contactsList=(RecyclerView) view.findViewById(R.id.cardList);
         mswipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipeRefreshLayout);
         context=getActivity();
@@ -118,10 +116,10 @@ public class ContactsListFragment extends Fragment {
             if(progressDialog.isShowing()){
                 progressDialog.dismiss();
             }
-
-            contactAdsAdapter =new ContactAdsAdapter(context,result,tableCategory);
-            contactsList.setAdapter(contactAdsAdapter);
-
+            if(result!=null){
+                contactAdsAdapter =new ContactAdsAdapter(context,result,tableCategory,userID);
+                contactsList.setAdapter(contactAdsAdapter);
+            }
         }
     }
 

@@ -33,7 +33,7 @@ public class WantedFragment extends Fragment {
     private Fragment selectFragment;
     private ViewPager viewPager;
     public ArrayList<ContactsAdObject> contactsAdObject;
-    Context context;
+    String userID;
     public Bundle args;
 
     public WantedFragment() {
@@ -50,6 +50,7 @@ public class WantedFragment extends Fragment {
         View v = inflater.inflate(R.layout.tab_fragments, container, false);
         fragmentTabs= (PagerSlidingTabStrip) v.findViewById(R.id.fragment_tabs);
         viewPager = (ViewPager) v.findViewById(R.id.fragmentPager);
+        userID=getArguments().getString("userID");
         sectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(sectionsPagerAdapter);
         viewPager.setCurrentItem(0,false);
@@ -72,6 +73,7 @@ public class WantedFragment extends Fragment {
 
             Bundle args=new Bundle();
             args.putString("tableCategory","wanted");
+            args.putString("userID",userID);
             switch (fragmentPosition) {
                 case 0:
                     selectFragment= new ContactsListFragment();

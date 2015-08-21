@@ -1,5 +1,7 @@
 package com.example.home_pc.myclassifiedads.contacts;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +28,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.example.home_pc.myclassifiedads.R;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
 import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
+import com.example.home_pc.myclassifiedads.main.MainActivity;
 
 import org.json.JSONObject;
 
@@ -44,7 +47,7 @@ public class ContactsFragment extends Fragment {
     private Fragment selectFragment;
     private ViewPager viewPager;
    public ArrayList<ContactsAdObject> contactsAdObject;
-    Context context;
+    String userID;
     public Bundle args;
 
 
@@ -60,10 +63,11 @@ public class ContactsFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.tab_fragments, container, false);
         fragmentTabs= (PagerSlidingTabStrip) v.findViewById(R.id.fragment_tabs);
+        userID=getArguments().getString("userID");
         viewPager = (ViewPager) v.findViewById(R.id.fragmentPager);
         sectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(sectionsPagerAdapter);
-        viewPager.setCurrentItem(0,false);
+        viewPager.setCurrentItem(0, false);
         fragmentTabs.setViewPager(viewPager);
         return v;
 
@@ -84,6 +88,7 @@ public class ContactsFragment extends Fragment {
 
             Bundle args=new Bundle();
             args.putString("tableCategory","contacts");
+            args.putString("userID",userID);
             switch (fragmentPosition) {
                 case 0:
                     selectFragment= new ContactsListFragment();
@@ -128,10 +133,35 @@ public class ContactsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId()==R.id.addads){
-            Intent intent = new Intent(getActivity(), ContactsAddActivity.class);
-            startActivity(intent);
+            if(userID.equals("Guest")){
+                popupalert();
+            }else{
+                Intent intent = new Intent(getActivity(), ContactsAddActivity.class);
+                startActivity(intent);
+            }
         }
         return false;
+    }
+
+    public void popupalert(){
+        final AlertDialog alertDialog = new AlertDialog.Builder(
+                getActivity()).create();
+        alertDialog.setMessage("Please Login or Sign Up");
+        alertDialog.setIcon(R.drawable.backward);
+        alertDialog.setButton2("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        alertDialog.setButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 
     public int dptopx(float dp){

@@ -21,6 +21,8 @@
     <string name="action_settings">Settings</string>
     <string name="saleStatus">Select a status</string>
     <string name="conditionStatus">Select condition</string>
+    <string name="responsibility"><b>Responsibility:</b></string>
+    <string name="skills"><b>Skills:</b></string>
 
     <string-array name="status">
         <item>Sold</item>
@@ -61,10 +63,12 @@
 
     <string name="locinmap"><i><u>View on Map</u></i></string>
     <string name="comment"><i><u>Your comments here</u></i></string>
-    <string name="title_activity_all_comments">AllCommentsActivity</string>
+    <string name="title_activity_all_comments">All Comments</string>
     <string name="watchlist">Add to watchlist</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_real_estate_view_detail">Real Estate</string>
+    <string name="title_activity_job_detail">JobDetailActivity</string>
 
 
 

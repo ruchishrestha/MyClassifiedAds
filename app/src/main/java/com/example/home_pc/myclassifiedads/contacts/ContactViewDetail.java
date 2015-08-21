@@ -1,7 +1,9 @@
 package com.example.home_pc.myclassifiedads.contacts;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -33,6 +35,7 @@ import android.widget.Toast;
 import com.example.home_pc.myclassifiedads.R;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
 import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
+import com.example.home_pc.myclassifiedads.main.MainActivity;
 
 import org.json.JSONObject;
 
@@ -41,12 +44,13 @@ import java.util.ArrayList;
 public class ContactViewDetail extends ActionBarActivity {
     ArrayList<ContactsAdObject> contactsAdObject=null;
     ImageView contact_photo,comment_cancel,comment_save,read_comment;
-    TextView category,username,ad_description,ad_title,contactNo,address,email,comment,commentText,postedDate,commenterUsername,myComments;
+    TextView category,username,ad_description,ad_title,contactNo,address,email,comment,commentText,postedDate,commenterUsername,myComments,
+    ad_postedDate;
     Bitmap bitmap;
     Integer adid;
     CardView commentContacts;
     ProgressDialog progressDialog;
-    String viewerUsername,tableCategory;
+    String userID,tableCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +58,7 @@ public class ContactViewDetail extends ActionBarActivity {
         setContentView(R.layout.contact_details);
 
         adid=getIntent().getExtras().getInt("adid");
-        viewerUsername=getIntent().getExtras().getString("viewerUsername");
+        userID=getIntent().getExtras().getString("userID");
         tableCategory=getIntent().getExtras().getString("tableCategory");
         contact_photo=(ImageView)findViewById(R.id.contact_photo);
         category=(TextView)findViewById(R.id.category);
@@ -66,6 +70,7 @@ public class ContactViewDetail extends ActionBarActivity {
         email=(TextView)findViewById(R.id.email);
         comment=(TextView)findViewById(R.id.comment);
         postedDate=(TextView)findViewById(R.id.postedDate);
+        ad_postedDate=(TextView)findViewById(R.id.ad_postedDate);
         commenterUsername=(TextView)findViewById(R.id.comenterUsername);
         myComments=(TextView)findViewById(R.id.myComments);
         commentContacts=(CardView)findViewById(R.id.commentContacts);
@@ -78,7 +83,11 @@ public class ContactViewDetail extends ActionBarActivity {
         comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initiatePopupWindow();
+                if(userID.equals("Guest")){
+                    popupalert();
+                }else{
+                    initiatePopupWindow();
+                }
             }
         });
 
@@ -89,6 +98,26 @@ public class ContactViewDetail extends ActionBarActivity {
 
             }
         });
+    }
+
+    public void popupalert(){
+        final AlertDialog alertDialog = new AlertDialog.Builder(
+                this).create();
+        alertDialog.setMessage("Please Login or Sign Up");
+        alertDialog.setButton2("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        alertDialog.setButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 
     protected class AsyncLoadContactDetail extends
@@ -119,7 +148,10 @@ public class ContactViewDetail extends ActionBarActivity {
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progressDialog.setIndeterminate(true);
             progressDialog.show();
-            loadMyComments(adid, viewerUsername);
+            if(userID!="Guest"){
+                loadMyComments(adid, userID);
+            }
+
         }
 
 
@@ -138,12 +170,13 @@ public class ContactViewDetail extends ActionBarActivity {
             address.setText(result.get(0).address);
             contactNo.setText(result.get(0).contactNo);
             email.setText(result.get(0).email);
+            ad_postedDate.setText(result.get(0).ad_insertdate);
 
         }
     }
 
-    public void loadMyComments(int adid,String Username){
-       CommentObject commentObject=new CommentObject(adid,Username,tableCategory);
+    public void loadMyComments(int adid,String userID){
+       CommentObject commentObject=new CommentObject(adid,userID,tableCategory);
         new AsyncLoadMyComments().execute(commentObject);
     }
 
@@ -158,7 +191,7 @@ public class ContactViewDetail extends ActionBarActivity {
             ArrayList<CommentObject> myCommentObject = new ArrayList<CommentObject>();
             RestAPI api = new RestAPI();
             try {
-                JSONObject jsonObj = api.GetMyComment(params[0].adid, params[0].username, params[0].tableCategory);
+                JSONObject jsonObj = api.GetMyComment(params[0].adid, params[0].userID, params[0].tableCategory);
                 JSONParser parser = new JSONParser();
                 myCommentObject = parser.parseComment(jsonObj);
 
@@ -174,9 +207,11 @@ public class ContactViewDetail extends ActionBarActivity {
         protected void onPostExecute(ArrayList<CommentObject> result) {
             // TODO Auto-generated method stub
             if(result==null){
+                //Toast.makeText(getApplicationContext(),""+result.get(0).userID,Toast.LENGTH_LONG).show();
                 commentContacts.setVisibility(View.GONE);
             }
             else{
+
                 commentContacts.setVisibility(View.VISIBLE);
                 postedDate.setText("Posted on: "+result.get(0).commentDate);
                 commenterUsername.setText("Posted by: "+result.get(0).username);
@@ -227,7 +262,7 @@ public class ContactViewDetail extends ActionBarActivity {
     }
 
     public void save_comment(String commentText){
-        CommentObject commentObject=new CommentObject(tableCategory,viewerUsername,adid,commentText);
+        CommentObject commentObject=new CommentObject(tableCategory,userID,adid,commentText);
         new AsyncSaveComment().execute(commentObject);
     }
 
@@ -241,7 +276,7 @@ public class ContactViewDetail extends ActionBarActivity {
 
             RestAPI api = new RestAPI();
             try {
-                api.PushComments(params[0].tableCategory,params[0].username,params[0].adid,params[0].commentText);
+                api.PushComments(params[0].tableCategory,params[0].userID,params[0].adid,params[0].commentText);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 Log.d("AsyncSaveComment", e.getMessage());
@@ -253,7 +288,7 @@ public class ContactViewDetail extends ActionBarActivity {
         @Override
         protected void onPostExecute(Void result) {
             // TODO Auto-generated method stub
-            loadMyComments(adid,username.getText().toString());
+            loadMyComments(adid,userID);
         }
     }
 

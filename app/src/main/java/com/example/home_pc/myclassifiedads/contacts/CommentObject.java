@@ -4,8 +4,8 @@ package com.example.home_pc.myclassifiedads.contacts;
  * Created by Ruchi on 2015-08-12.
  */
 public class CommentObject {
-    String tableCategory,username,commentText,commentDate;
-    int adid;
+   public String tableCategory,username,commentText,commentDate,userID;
+   public int adid;
 
     public CommentObject(String commentDate,String username,String commentText){
         this.commentDate=commentDate;
@@ -13,15 +13,15 @@ public class CommentObject {
         this.commentText=commentText;
     }
 
-    public CommentObject(int adid,String username,String tableCategory){
+    public CommentObject(int adid,String userID,String tableCategory){
         this.adid=adid;
         this.tableCategory=tableCategory;
-        this.username=username;
+        this.userID=userID;
     }
 
-    public CommentObject(String tableCategory,String username,int adid,String commentText){
+    public CommentObject(String tableCategory,String userID,int adid,String commentText){
         this.tableCategory=tableCategory;
-        this.username=username;
+        this.userID=userID;
         this.adid=adid;
         this.commentText=commentText;
     }

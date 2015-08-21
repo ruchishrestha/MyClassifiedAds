@@ -49,7 +49,7 @@
             android:layout_alignTop="@+id/jobsTitle"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:background="@drawable/threedots"
+            android:background="@drawable/ic_action_overflow"
             android:layout_marginRight="15dp"
             android:id="@+id/jobsPopupMenu"/>
 
@@ -62,21 +62,21 @@
             android:layout_toRightOf="@+id/jobsImageHolder"
             android:layout_toEndOf="@+id/jobsImageHolder"
             android:layout_below="@+id/jobsTitle"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="7dp"
             android:layout_marginLeft="10dp"/>
 
         <TextView
-            android:id="@+id/jobsStatus"
+            android:id="@+id/jobVacancies1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="Unoccupied"
+            android:text="Vacancy available:"
             android:ellipsize="end"
             android:layout_toRightOf="@+id/jobsImageHolder"
             android:layout_toEndOf="@+id/jobsImageHolder"
             android:layout_below="@+id/jobsCategory"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"/>
+        android:layout_marginTop="7dp"/>
 
         <TextView
             android:id="@+id/jobVacancies"
@@ -85,11 +85,10 @@
             android:textSize="16sp"
             android:text="1"
             android:ellipsize="end"
-            android:layout_toRightOf="@+id/jobsImageHolder"
-            android:layout_toEndOf="@+id/jobsImageHolder"
-            android:layout_below="@+id/jobsStatus"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"/>
+            android:layout_alignTop="@+id/jobVacancies1"
+            android:layout_toRightOf="@+id/jobVacancies1"
+            android:layout_toEndOf="@+id/jobVacancies1"
+            android:layout_marginLeft="5dp"/>
 
         <TextView
             android:id="@+id/jobsSalary"
@@ -102,7 +101,8 @@
             android:layout_toEndOf="@+id/jobsImageHolder"
             android:layout_below="@+id/jobVacancies"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"/>
+            android:layout_marginTop="7dp"
+            android:textColor="#ff0000"/>
 
         <TextView
             android:id="@+id/jobsUserId"

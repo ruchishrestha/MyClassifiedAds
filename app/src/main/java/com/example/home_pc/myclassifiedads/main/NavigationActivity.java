@@ -91,7 +91,7 @@ public class NavigationActivity extends ActionBarActivity {
         //INPUT from user database
         profilePicImageView.setImageResource(R.drawable.default_pic);
         userNameTextView.setText("Satendra Shakya");
-        userIdTextView.setText("mr.cool");
+        userIdTextView.setText("abc");
 
 
         // Add Drawer Items to dataList and set the drawer
@@ -230,6 +230,7 @@ public class NavigationActivity extends ActionBarActivity {
     public void selectNavDrawerItem(int navDrawerItemPosition,int listItemPosition,List<DrawerItem> datalist){
         Fragment fragment = null;
         Bundle args = new Bundle();
+        args.putString("userID", userIdTextView.getText().toString());
         switch (navDrawerItemPosition) {
 
             case 0:
@@ -237,10 +238,11 @@ public class NavigationActivity extends ActionBarActivity {
                 break;
             case 2:
                 fragment = new ContactsFragment();
+                fragment.setArguments(args);
                 break;
             case 3:
                 fragment = new WantedFragment();
-
+                fragment.setArguments(args);
                 break;
             case 4:
               /*  getSupportFragmentManager()
@@ -250,9 +252,11 @@ public class NavigationActivity extends ActionBarActivity {
                 break;
             case 5:
                 fragment = new RealEstateFragment();
+                fragment.setArguments(args);
                 break;
             case 6:
                 fragment = new JobFragment();
+                fragment.setArguments(args);
                 break;
             case 8:
                 fragment = new AboutFragment();

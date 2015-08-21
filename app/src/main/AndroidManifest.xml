@@ -150,11 +150,20 @@
         </activity>
         <activity
             android:name=".contacts.ContactViewDetail"
-            android:label="@string/title_activity_contact_view_detail" >
+            android:label="@string/title_activity_contact_view_detail"
+            android:parentActivityName=".main.NavigationActivity" >
         </activity>
         <activity
             android:name=".contacts.AllCommentsActivity"
             android:label="@string/title_activity_all_comments" >
+        </activity>
+        <activity
+            android:name=".realestates.RealEstateViewDetail"
+            android:label="@string/title_activity_real_estate_view_detail" >
+        </activity>
+        <activity
+            android:name=".jobs.JobDetailActivity"
+            android:label="@string/title_activity_job_detail" >
         </activity>
     </application>
 
