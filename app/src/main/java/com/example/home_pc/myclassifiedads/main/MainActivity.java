@@ -78,6 +78,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void guestButtonClick(){
         Intent guestIntent = new Intent(this,NavigationActivity.class);
+        guestIntent.putExtra("UserName","Guest");
         startActivity(guestIntent);
     }
 

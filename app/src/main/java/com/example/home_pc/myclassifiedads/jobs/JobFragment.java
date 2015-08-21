@@ -52,7 +52,7 @@ public class JobFragment extends Fragment {
         View view = inflater.inflate(R.layout.ads_recycler_view, container,
                 false);
         setHasOptionsMenu(true);
-        userID=getArguments().getString("userID");
+        userID=getArguments().getString("userName");
         jobList=(RecyclerView) view.findViewById(R.id.cardList);
         mswipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipeRefreshLayout);
         context=getActivity();
@@ -105,7 +105,7 @@ public class JobFragment extends Fragment {
         protected void onPreExecute(){
             progressDialog=new ProgressDialog(getActivity());
             progressDialog.setMessage("Loading...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setIndeterminate(true);
             progressDialog.show();
 

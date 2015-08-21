@@ -52,6 +52,7 @@ public class NavigationActivity extends ActionBarActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     String contacts="contacts";
     String wanted="wanted";
+    String userName;
 
     private FrameLayout salesListLayout;
     private LinearLayout drawerLinearLayout,salesMainLayout;
@@ -88,10 +89,12 @@ public class NavigationActivity extends ActionBarActivity {
 
         navDrawerListToggle = false;
 
+        userName = getIntent().getStringExtra("UserName");
+
         //INPUT from user database
         profilePicImageView.setImageResource(R.drawable.default_pic);
         userNameTextView.setText("Satendra Shakya");
-        userIdTextView.setText("abc");
+        userIdTextView.setText(userName);
 
 
         // Add Drawer Items to dataList and set the drawer
@@ -230,7 +233,7 @@ public class NavigationActivity extends ActionBarActivity {
     public void selectNavDrawerItem(int navDrawerItemPosition,int listItemPosition,List<DrawerItem> datalist){
         Fragment fragment = null;
         Bundle args = new Bundle();
-        args.putString("userID", userIdTextView.getText().toString());
+
         switch (navDrawerItemPosition) {
 
             case 0:
@@ -238,11 +241,9 @@ public class NavigationActivity extends ActionBarActivity {
                 break;
             case 2:
                 fragment = new ContactsFragment();
-                fragment.setArguments(args);
                 break;
             case 3:
                 fragment = new WantedFragment();
-                fragment.setArguments(args);
                 break;
             case 4:
               /*  getSupportFragmentManager()
@@ -252,11 +253,10 @@ public class NavigationActivity extends ActionBarActivity {
                 break;
             case 5:
                 fragment = new RealEstateFragment();
-                fragment.setArguments(args);
                 break;
             case 6:
                 fragment = new JobFragment();
-                fragment.setArguments(args);
+
                 break;
             case 8:
                 fragment = new AboutFragment();
@@ -277,7 +277,8 @@ public class NavigationActivity extends ActionBarActivity {
             default:
                 break;
         }
-
+        args.putString("userName", userName);
+        fragment.setArguments(args);
         FragmentManager frgManager = getSupportFragmentManager();
         frgManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
