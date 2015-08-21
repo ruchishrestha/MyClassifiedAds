@@ -209,17 +209,11 @@ public class JobDetailActivity extends ActionBarActivity {
             email.setText(result.get(0).emailId);
             addres.setText(result.get(0).aDdress);
             vaccancyNo.setText(result.get(0).vaccancyNo);
-
-              jobs_image =ImageLoaderAPI.AzureImageDownloader(result.get(0).logoURL);
-//              jobs_image= Bitmap.createScaledBitmap(jobs_image, dptopx(150), dptopx(150), true);
-                jobsImage.setImageBitmap(jobs_image);
-
-            Toast.makeText(getApplicationContext(),""+result.get(0).logoURL,Toast.LENGTH_LONG).show();
-
+            new AsyncLoadImage().execute(result.get(0).logoURL);
         }
     }
 
-    public void loadMyComments(int adid,String userID){
+        public void loadMyComments(int adid,String userID){
         CommentObject commentObject=new CommentObject(adid,userID,"Job");
         new AsyncLoadMyComments().execute(commentObject);
     }
@@ -303,6 +297,29 @@ public class JobDetailActivity extends ActionBarActivity {
             loadMyComments(jobID,userID);
         }
     }
+
+        protected class AsyncLoadImage extends
+            AsyncTask<String, Void, Bitmap> {
+
+            @Override
+            protected Bitmap doInBackground(String... params) {
+                // TODO Auto-generated method stub
+                try {
+                    jobs_image = ImageLoaderAPI.AzureImageDownloader(params[0]);
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    Log.d("AsyncLoadImage", e.getMessage());
+                }
+
+                return jobs_image;
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap result){
+                jobs_image=Bitmap.createScaledBitmap(result,dptopx(140),dptopx(140),true);
+                jobsImage.setImageBitmap(jobs_image);
+            }
+        }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -8,7 +8,7 @@ import android.graphics.Bitmap;
 public class JobAdsObject {
 
     String title,ad_postedDate,logoURL,ad_description,username,responsibility,skills,jobCategory,jobCategoryOthers,
-            jobTime,vaccancyNo,salary,aDdress,contactNo,emailId,webSite;
+            jobTime,vaccancyNo,salary,aDdress,contactNo,emailId,webSite,tableCategory,userID;
     Double latitude,longitude;
     int jobID;
 
@@ -41,6 +41,12 @@ public class JobAdsObject {
        this.username=usernme;
        this.logoURL=logoURL;
    }
+
+    public JobAdsObject(int jobID,String tableCategory,String userID){
+        this.jobID=jobID;
+        this.tableCategory=tableCategory;
+        this.userID=userID;
+    }
 
     public String getTitle() {
         return title;
