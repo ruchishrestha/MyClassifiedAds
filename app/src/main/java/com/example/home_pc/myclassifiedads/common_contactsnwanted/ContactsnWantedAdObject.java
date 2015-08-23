@@ -25,7 +25,7 @@ public class ContactsnWantedAdObject /*implements Parcelable*/{
         this.adImageURL = adImageURL;
     }
 
-    public ContactsnWantedAdObject(int adid, String ad_insertdate, String userName, String title, String description, String category, String contactNo, String aDdress, String emailId, Double latitude, Double longitute, String adImageURL){
+    public ContactsnWantedAdObject(int adid, String ad_insertdate, String userName, String title, String description, String category, String contactNo,String mobileNo, String aDdress, String emailId, Double latitude, Double longitute, String adImageURL){
         this.adid=adid;
         this.ad_insertdate=ad_insertdate;
         this.userName =userName;
@@ -34,19 +34,21 @@ public class ContactsnWantedAdObject /*implements Parcelable*/{
         this.category=category;
         this.aDdress=aDdress;
         this.contactNo=contactNo;
+        this.mobileNo=mobileNo;
         this.emailId=emailId;
         this.latitude=latitude;
         this.longitute=longitute;
         this.adImageURL=adImageURL;
     }
 
-    public ContactsnWantedAdObject(int adid, String adImageURL, String userName, String title, String aDdress, String contactNo){
+    public ContactsnWantedAdObject(int adid, String adImageURL, String userName, String title, String aDdress, String contactNo,String mobileNo){
         this.adid=adid;
         this.adImageURL=adImageURL;
         this.userName =userName;
         this.title=title;
         this.aDdress=aDdress;
         this.contactNo=contactNo;
+        this.mobileNo=mobileNo;
     }
 
     public ContactsnWantedAdObject(int adid, String tableCategory){
