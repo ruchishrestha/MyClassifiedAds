@@ -1,43 +1,51 @@
 package com.example.home_pc.myclassifiedads.common_contactsnwanted;
 
-import android.graphics.Bitmap;
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import java.io.Serializable;
-
 /**
  * Created by Home-PC on 7/25/2015.
  */
 public class ContactsnWantedAdObject /*implements Parcelable*/{
 
-    String adImage;
-    String title,ad_description,address,contactNo,email,username,Category,ad_insertdate,tableCategory,userID;
+    String adImageURL;
+    String title,description,aDdress,contactNo,mobileNo,emailId,userName,category,ad_insertdate,tableCategory,userID;
     Double latitude,longitute;
     int adid;
 
 
-    public ContactsnWantedAdObject(int adid, String ad_insertdate, String username, String title, String ad_description, String Category, String contactNo, String address, String email, Double latitude, Double longitute, String adImage){
-        this.adid=adid;
-        this.ad_insertdate=ad_insertdate;
-        this.username=username;
-        this.title=title;
-        this.ad_description=ad_description;
-        this.Category=Category;
-        this.address=address;
-        this.contactNo=contactNo;
-        this.email=email;
-        this.latitude=latitude;
-        this.longitute=longitute;
-        this.adImage=adImage;
+    public ContactsnWantedAdObject(String userName, String title, String description, String aDdress, String contactNo, String mobileNo, String emailId, String category, Double latitude, Double longitute, String adImageURL) {
+        this.userName = userName;
+        this.title = title;
+        this.description = description;
+        this.aDdress = aDdress;
+        this.contactNo = contactNo;
+        this.mobileNo = mobileNo;
+        this.emailId = emailId;
+        this.category = category;
+        this.latitude = latitude;
+        this.longitute = longitute;
+        this.adImageURL = adImageURL;
     }
 
-    public ContactsnWantedAdObject(int adid, String adImage, String username, String title, String address, String contactNo){
+    public ContactsnWantedAdObject(int adid, String ad_insertdate, String userName, String title, String description, String category, String contactNo, String aDdress, String emailId, Double latitude, Double longitute, String adImageURL){
         this.adid=adid;
-        this.adImage=adImage;
-        this.username=username;
+        this.ad_insertdate=ad_insertdate;
+        this.userName =userName;
         this.title=title;
-        this.address=address;
+        this.description=description;
+        this.category=category;
+        this.aDdress=aDdress;
+        this.contactNo=contactNo;
+        this.emailId=emailId;
+        this.latitude=latitude;
+        this.longitute=longitute;
+        this.adImageURL=adImageURL;
+    }
+
+    public ContactsnWantedAdObject(int adid, String adImageURL, String userName, String title, String aDdress, String contactNo){
+        this.adid=adid;
+        this.adImageURL=adImageURL;
+        this.userName =userName;
+        this.title=title;
+        this.aDdress=aDdress;
         this.contactNo=contactNo;
     }
 
@@ -53,18 +61,41 @@ public class ContactsnWantedAdObject /*implements Parcelable*/{
 
     }
 
-    public void setAdImage(String adImage){this.adImage=adImage;}
-    public String getAdImage(){return this.adImage;}
+    public void setAdImage(String adImageURL){this.adImageURL=adImageURL;}
+    public String getAdImage(){return this.adImageURL;}
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     public void settitle(String title){this.title=title;}
     public String gettitle(){return this.title;}
-    public void setAd_description(String ad_description){this.ad_description=ad_description;}
-    public String getAd_Description (){return this.ad_description;}
+    public void setDescription(String description){this.description=description;}
+    public String getDescription (){return this.description;}
     public void setContactNo(String contactNo){this.contactNo=contactNo;}
     public String getContactNo(){return this.contactNo;}
-    public void setemail(String email){this.email=email;}
-    public String getemail(){return this.email;}
-    public void setaddress(String address){this.address=address;}
-    public String getaddress(){return this.address ;}
+    public String getMobileNo() {
+        return mobileNo;
+    }
+    public void setMobileNo(String mobileNo) {
+        this.mobileNo = mobileNo;
+    }
+    public void setemail(String emailId){this.emailId=emailId;}
+    public String getemail(){return this.emailId;}
+    public void setaDdress(String aDdress){this.aDdress=aDdress;}
+    public String getaDdress(){return this.aDdress ;}
     public void setLatitude(Double latitude){this.latitude=latitude;}
     public Double getLatitude(){return this.latitude;}
     public void setLongitute(Double longitute){this.longitute=longitute;}

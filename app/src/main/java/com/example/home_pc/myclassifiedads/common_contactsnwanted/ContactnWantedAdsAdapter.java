@@ -76,8 +76,8 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
        // holder.adImage.setImageBitmap(bitmap);
         holder.adTitle.setText(cao.title);
         holder.adContact.setText(cao.contactNo);
-        holder.aDdress.setText(cao.address);
-        holder.username.setText(cao.username);
+        holder.aDdress.setText(cao.aDdress);
+        holder.username.setText(cao.userName);
 
        view.setOnClickListener(new View.OnClickListener() {
            @Override
