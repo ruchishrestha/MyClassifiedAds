@@ -12,12 +12,12 @@ import java.io.Serializable;
 public class ContactsnWantedAdObject /*implements Parcelable*/{
 
     String adImage;
-    String title,ad_description,address,contactNo,email,username,Category,ad_insertdate,tableCategory,userID;
+    String title,ad_description,address,contactNo,email,username,Category,ad_insertdate,tableCategory,userID,mobileNo;
     Double latitude,longitute;
     int adid;
 
 
-    public ContactsnWantedAdObject(int adid, String ad_insertdate, String username, String title, String ad_description, String Category, String contactNo, String address, String email, Double latitude, Double longitute, String adImage){
+    public ContactsnWantedAdObject(int adid, String ad_insertdate, String username, String title, String ad_description, String Category, String contactNo,String mobileNo, String address, String email, Double latitude, Double longitute, String adImage){
         this.adid=adid;
         this.ad_insertdate=ad_insertdate;
         this.username=username;
@@ -26,19 +26,21 @@ public class ContactsnWantedAdObject /*implements Parcelable*/{
         this.Category=Category;
         this.address=address;
         this.contactNo=contactNo;
+        this.mobileNo=mobileNo;
         this.email=email;
         this.latitude=latitude;
         this.longitute=longitute;
         this.adImage=adImage;
     }
 
-    public ContactsnWantedAdObject(int adid, String adImage, String username, String title, String address, String contactNo){
+    public ContactsnWantedAdObject(int adid, String adImage, String username, String title, String address, String contactNo,String mobileNo){
         this.adid=adid;
         this.adImage=adImage;
         this.username=username;
         this.title=title;
         this.address=address;
         this.contactNo=contactNo;
+        this.mobileNo=mobileNo;
     }
 
     public ContactsnWantedAdObject(int adid, String tableCategory){

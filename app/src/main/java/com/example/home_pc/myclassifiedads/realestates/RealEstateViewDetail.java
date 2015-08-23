@@ -1,14 +1,17 @@
 package com.example.home_pc.myclassifiedads.realestates;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,12 +20,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.home_pc.myclassifiedads.R;
+import com.example.home_pc.myclassifiedads.classified_api.ImageLoaderAPI;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
 import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
 import com.example.home_pc.myclassifiedads.comments.AllCommentsActivity;
@@ -35,7 +40,7 @@ import java.util.ArrayList;
 
 public class RealEstateViewDetail extends ActionBarActivity {
     ArrayList<RealEstatesAdObject> realEstatesAdObjects=null;
-    ImageView realestate_picture,comment_cancel,comment_save,read_comment,img1,img2,img3,img4,img5,img6;
+    ImageView realestate_picture,comment_cancel,comment_save,read_comment;
     TextView username,ad_description,ad_title,saleType,price,contactNo,aDdress,
             comment,commentText,postedDate,houseNo,propertyType,mobileNo,commenterUsername,myComments,
             ad_postedDate;
@@ -43,6 +48,9 @@ public class RealEstateViewDetail extends ActionBarActivity {
     CardView commentRealestate;
     ProgressDialog progressDialog;
     String userID;
+    ArrayList<Bitmap> realestate_pics;
+    ArrayList<ImageView> img;
+    HorizontalScrollView horizontalScrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +60,13 @@ public class RealEstateViewDetail extends ActionBarActivity {
 
         realestateID=getIntent().getExtras().getInt("realestateID");
         userID=getIntent().getExtras().getString("userID");
-        img1=(ImageView)findViewById(R.id.img1);
-        img2=(ImageView)findViewById(R.id.img2);
-        img3=(ImageView)findViewById(R.id.img3);
-        img4=(ImageView)findViewById(R.id.img4);
-        img5=(ImageView)findViewById(R.id.img5);
-        img6=(ImageView)findViewById(R.id.img6);
+        img=new ArrayList<>();
+        img.add((ImageView)findViewById(R.id.img1));
+        img.add((ImageView)findViewById(R.id.img2));
+        img.add((ImageView)findViewById(R.id.img3));
+        img.add((ImageView)findViewById(R.id.img4));
+        img.add((ImageView)findViewById(R.id.img5));
+        img.add((ImageView)findViewById(R.id.img6));
         ad_title=(TextView)findViewById(R.id.adTitle);
         ad_description=(TextView)findViewById(R.id.ad_description);
         saleType=(TextView)findViewById(R.id.saleType);
@@ -70,6 +79,7 @@ public class RealEstateViewDetail extends ActionBarActivity {
         mobileNo=(TextView)findViewById(R.id.mobileNo);
         aDdress=(TextView)findViewById(R.id.address);
         comment=(TextView)findViewById(R.id.comment);
+        horizontalScrollView=(HorizontalScrollView)findViewById(R.id.horizontalScroll);
         postedDate=(TextView)findViewById(R.id.postedDate);
         commenterUsername=(TextView)findViewById(R.id.comenterUsername);
         myComments=(TextView)findViewById(R.id.myComments);
@@ -104,14 +114,14 @@ public class RealEstateViewDetail extends ActionBarActivity {
         final AlertDialog alertDialog = new AlertDialog.Builder(
                 this).create();
         alertDialog.setMessage("Please Login or Sign Up");
-        alertDialog.setButton2("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,"OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
         });
-        alertDialog.setButton("CANCEL", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
@@ -123,6 +133,7 @@ public class RealEstateViewDetail extends ActionBarActivity {
     protected class AsyncLoadRealestateDetail extends
             AsyncTask<Integer, Void, ArrayList<RealEstatesAdObject>> {
 
+        @SuppressLint("LongLogTag")
         @Override
         protected ArrayList<RealEstatesAdObject> doInBackground(Integer ...params) {
             // TODO Auto-generated method stub
@@ -135,7 +146,7 @@ public class RealEstateViewDetail extends ActionBarActivity {
 
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                Log.d("AsyncLoadDeptDetails", e.getMessage());
+                Log.d("AsyncLoadRealEstateDetails", e.getMessage());
             }
 
             return realEstatesAdObjects;
@@ -146,11 +157,11 @@ public class RealEstateViewDetail extends ActionBarActivity {
         protected void onPreExecute(){
             progressDialog=new ProgressDialog(RealEstateViewDetail.this);
             progressDialog.setMessage("Loading...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setIndeterminate(true);
             progressDialog.show();
             if(!userID.equals("Guest")){
-                loadMyComments(realestateID, userID);
+                loadMyComments();
             }
 
         }
@@ -171,7 +182,7 @@ public class RealEstateViewDetail extends ActionBarActivity {
             houseNo.setText(result.get(0).houseNo);
             propertyType.setText(result.get(0).propertyType);
             aDdress.setText(result.get(0).aDdress);
-            contactNo.setText(result.get(0).contactNo);
+            contactNo.setText(Html.fromHtml("<u>"+result.get(0).contactNo+"</u>"));
             mobileNo.setText(result.get(0).mobileNo);
             new AsyncLoadImages().execute(result.get(0).realestateID);
 
@@ -220,21 +231,20 @@ public class RealEstateViewDetail extends ActionBarActivity {
     }
 
     public void save_comment(String commentText){
-        CommentObject commentObject=new CommentObject("RealEstate",userID,realestateID,commentText);
-        new AsyncSaveComment().execute(commentObject);
+        new AsyncSaveComment().execute(commentText);
     }
 
 
     protected class AsyncSaveComment extends
-            AsyncTask<CommentObject, Void,Void > {
+            AsyncTask<String, Void,Void > {
 
         @Override
-        protected Void doInBackground(CommentObject ...params) {
+        protected Void doInBackground(String  ...params) {
             // TODO Auto-generated method stub
 
             RestAPI api = new RestAPI();
             try {
-                api.PushComments(params[0].tableCategory,params[0].userID,params[0].adid,params[0].commentText);
+                api.PushComments("RealEstate",userID,realestateID,params[0]);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 Log.d("AsyncSaveComment", ""+e);
@@ -246,25 +256,24 @@ public class RealEstateViewDetail extends ActionBarActivity {
         @Override
         protected void onPostExecute(Void result) {
             // TODO Auto-generated method stub
-           loadMyComments(realestateID,userID);
+           loadMyComments();
         }
     }
 
-    public void loadMyComments(int adid,String userID){
-        CommentObject commentObject=new CommentObject(adid,userID,"RealEstate");
-        new AsyncLoadMyComments().execute(commentObject);
+    public void loadMyComments(){
+        new AsyncLoadMyComments().execute();
     }
 
     protected class AsyncLoadMyComments extends
-            AsyncTask<CommentObject, Void, ArrayList<CommentObject>> {
+            AsyncTask<Void, Void, ArrayList<CommentObject>> {
 
         @Override
-        protected ArrayList<CommentObject> doInBackground(CommentObject... params) {
+        protected ArrayList<CommentObject> doInBackground(Void... params) {
             // TODO Auto-generated method stub
             ArrayList<CommentObject> myCommentObject = new ArrayList<CommentObject>();
             RestAPI api = new RestAPI();
             try {
-                JSONObject jsonObj = api.GetMyComment(params[0].adid, params[0].userID,params[0].tableCategory);
+                JSONObject jsonObj = api.GetMyComment(realestateID,userID,"RealEstate");
                 JSONParser parser = new JSONParser();
                 myCommentObject = parser.parseComment(jsonObj);
 
@@ -294,21 +303,45 @@ public class RealEstateViewDetail extends ActionBarActivity {
     }
 
     protected class AsyncLoadImages extends
-            AsyncTask<Integer, Void, ArrayList<RealEstatesAdObject>> {
-ArrayList<RealEstatesAdObject> realestate_pictures=new ArrayList<>();
+            AsyncTask<Integer, Void, ArrayList<Bitmap>> {
+ArrayList<Bitmap> realestate_pics=null;
+        ArrayList<String> realestate_pictures=null;
+
         @Override
-        protected ArrayList<RealEstatesAdObject> doInBackground(Integer... params) {
+        protected ArrayList<Bitmap> doInBackground(Integer... params) {
             RestAPI api=new RestAPI();
+            realestate_pictures=new ArrayList<>();
+            realestate_pics=new ArrayList<>();
             try{
-                /*JSONObject jsonObj = api.GetImages(params[0].realestateID);
+                JSONObject jsonObj = api.GetAllImages(params[0]);
                 JSONParser parser = new JSONParser();
-                realestate_pictures = parser.parseImages(jsonObj);*/
-            }
-            catch (Exception e){
-                Log.d("AsyncLoadImaged=>",e.getMessage());
+                realestate_pictures = parser.parseReturnedURLs(jsonObj);
+                if(realestate_pictures==null){
+                    realestate_pics=null;
+                }else{
+                    realestate_pics= ImageLoaderAPI.AzureImageDownloader(realestate_pictures);
+                }
+
 
             }
-            return realestate_pictures;
+            catch (Exception e){
+                Log.d("AsyncLoadAllImages=>",e.getMessage());
+
+            }
+            return realestate_pics;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Bitmap> result){
+            if(result!=null){
+                for(int i=0;i<result.size();i++){
+                    img.get(i).setVisibility(View.VISIBLE);
+                    img.get(i).setImageBitmap(Bitmap.createScaledBitmap(result.get(i),dptopx(150),dptopx(150),true));
+                }
+                }else{
+                horizontalScrollView.setVisibility(View.GONE);
+            }
+
         }
         }
 

@@ -103,7 +103,7 @@ public class ContactsnWantedListFragment extends Fragment {
         protected void onPreExecute(){
             progressDialog=new ProgressDialog(getActivity());
             progressDialog.setMessage("Loading...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setIndeterminate(true);
             progressDialog.show();
 

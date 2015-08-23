@@ -86,7 +86,7 @@ public class RestAPI {
 						&& method.getName().startsWith("get")) {
 					String key = method.getName().substring(3);
 					try {
-						Object obj = method.invoke(o);
+						Object obj = method.invoke(o, null);
 						Object value = mapObject(obj);
 						map.put(key, value);
 						finalValue = new JSONObject(map);
@@ -572,6 +572,34 @@ public class RestAPI {
         o.put("interface","RestAPI");
         o.put("method", "GetJobsDetail");
         p.put("jobID",mapObject(jobID));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject GetRealestatePictureURL(int adid) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetRealestatePictureURL");
+        p.put("adid",mapObject(adid));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject GetAllImages(int adid) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetAllImages");
+        p.put("adid",mapObject(adid));
         o.put("parameters", p);
         String s = o.toString();
         String r = load(s);

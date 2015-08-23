@@ -128,7 +128,7 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
 
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                Log.d("AsyncLoadDeptDetails", e.getMessage());
+                Log.d("AsyncLoadContactDetails", e.getMessage());
             }
 
             return contactsAdObject;
@@ -138,11 +138,11 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
         protected void onPreExecute(){
             progressDialog=new ProgressDialog(ContactsnWantedViewDetail.this);
             progressDialog.setMessage("Loading...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setIndeterminate(true);
             progressDialog.show();
             if(!userID.equals("Guest")){
-                loadMyComments(adid, userID);
+                loadMyComments();
             }
 
         }
@@ -168,23 +168,22 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
         }
     }
 
-    public void loadMyComments(int adid,String userID){
-       CommentObject commentObject=new CommentObject(adid,userID,tableCategory);
-        new AsyncLoadMyComments().execute(commentObject);
+    public void loadMyComments(){
+        new AsyncLoadMyComments().execute();
     }
 
 
 
     protected class AsyncLoadMyComments extends
-            AsyncTask<CommentObject, Void, ArrayList<CommentObject>> {
+            AsyncTask<Void, Void, ArrayList<CommentObject>> {
 
         @Override
-        protected ArrayList<CommentObject> doInBackground(CommentObject... params) {
+        protected ArrayList<CommentObject> doInBackground(Void... params) {
             // TODO Auto-generated method stub
             ArrayList<CommentObject> myCommentObject = new ArrayList<CommentObject>();
             RestAPI api = new RestAPI();
             try {
-                JSONObject jsonObj = api.GetMyComment(params[0].adid, params[0].userID, params[0].tableCategory);
+                JSONObject jsonObj = api.GetMyComment(adid,userID,tableCategory);
                 JSONParser parser = new JSONParser();
                 myCommentObject = parser.parseComment(jsonObj);
 
@@ -255,21 +254,20 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
     }
 
     public void save_comment(String commentText){
-        CommentObject commentObject=new CommentObject(tableCategory,userID,adid,commentText);
-        new AsyncSaveComment().execute(commentObject);
+        new AsyncSaveComment().execute(commentText);
     }
 
 
     protected class AsyncSaveComment extends
-            AsyncTask<CommentObject, Void,Void > {
+            AsyncTask<String, Void,Void > {
 
         @Override
-        protected Void doInBackground(CommentObject ...params) {
+        protected Void doInBackground(String ...params) {
             // TODO Auto-generated method stub
 
             RestAPI api = new RestAPI();
             try {
-                api.PushComments(params[0].tableCategory,params[0].userID,params[0].adid,params[0].commentText);
+                api.PushComments(tableCategory,userID,adid,params[0]);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 Log.d("AsyncSaveComment", ""+e);
@@ -281,7 +279,7 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
         @Override
         protected void onPostExecute(Void result) {
             // TODO Auto-generated method stub
-            loadMyComments(adid,userID);
+            loadMyComments();
         }
     }
 

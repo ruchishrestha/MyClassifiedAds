@@ -77,7 +77,46 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         final JobAdsObject jao=jobAdsObjects.get(position);
+        holder.jobsTitle.setText(jao.title);
+        holder.jobsCategory.setText(jao.jobCategory);
+        holder.jobsVaccancies.setText(jao.vaccancyNo);
+        holder.jobsSalary.setText("NPR."+jao.salary);
+        holder.jobsUserID.setText(jao.userName);
         new AsyncLoadImage(position,holder,jao).execute(jao.logoURL);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(v.getContext(), JobDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("jobID", jao.jobID);
+                bundle.putString("userID", userID);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
+
+        holder.jobsPopupMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final PopupMenu popup = new PopupMenu(v.getContext(), v);
+                popup.inflate(R.menu.overflow_popup_menu);
+                popup.show();
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
+                            case R.id.item_watchlist:
+                                if (userID.equals("Guest")) {
+                                    navigatetohome();
+                                } else {
+                                    new AsyncSavetoWatchlist().execute(jao.jobID);
+                                }
+                        }
+                        return true;
+                    }
+                });
+            }
+        });
 
     }
 
@@ -87,14 +126,14 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
         alertDialog.setMessage("Please create your account first or Login");
         alertDialog.setIcon(R.drawable.backward);
         alertDialog.setTitle("The Classified Ads App");
-        alertDialog.setButton2("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,"OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(context, MainActivity.class);
                 context.startActivity(intent);
             }
         });
-        alertDialog.setButton("CANCEL", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
@@ -103,14 +142,14 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
         alertDialog.show();
     }
     protected class AsyncSavetoWatchlist extends
-            AsyncTask<JobAdsObject, Void, Boolean> {
+            AsyncTask<Integer, Void, Boolean> {
 
         Boolean flag=false;
         @Override
-        protected Boolean doInBackground(JobAdsObject... params) {
+        protected Boolean doInBackground(Integer... params) {
             RestAPI api = new RestAPI();
             try {
-                JSONObject jsonObject = api.PushtoWatchlist(params[0].jobID, params[0].tableCategory, params[0].userID);
+                JSONObject jsonObject = api.PushtoWatchlist(params[0],"job",userID);
                 JSONParser parser = new JSONParser();
                 flag= parser.parseReturnedValue(jsonObject);
             } catch (Exception e) {
@@ -124,14 +163,13 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
         protected void onPostExecute(Boolean result) {
             final AlertDialog alertDialog = new AlertDialog.Builder(
                     context).create();
-            if(result){
+            if (result) {
                 alertDialog.setMessage("Added to watchlist");
                 // Toast.makeText(context,"Added to watchlist",Toast.LENGTH_LONG).show();
-            }
-            else{
+            } else {
                 alertDialog.setMessage("Already added");
             }
-            alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+            alertDialog.setButton(DialogInterface.BUTTON_NEUTRAL,"OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     alertDialog.dismiss();
@@ -169,49 +207,7 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
         @Override
         protected void onPostExecute(Bitmap result){
             jobs_image=Bitmap.createScaledBitmap(result, dptopx(100), dptopx(100), true);
-            System.out.println(pos);
             holder.jobsImage.setImageBitmap(jobs_image);
-            holder.jobsTitle.setText(jobAdsObject.title);
-            holder.jobsCategory.setText(jobAdsObject.jobCategory);
-            holder.jobsVaccancies.setText(jobAdsObject.vaccancyNo);
-            holder.jobsSalary.setText("NPR."+jobAdsObject.salary);
-            holder.jobsUserID.setText(jobAdsObject.userName);
-
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    intent = new Intent(v.getContext(), JobDetailActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("jobID", jobAdsObject.jobID);
-                    bundle.putString("userID", userID);
-                    intent.putExtras(bundle);
-                    context.startActivity(intent);
-                }
-            });
-
-            holder.jobsPopupMenu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final PopupMenu popup = new PopupMenu(v.getContext(), v);
-                    popup.inflate(R.menu.overflow_popup_menu);
-                    popup.show();
-                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            switch (menuItem.getItemId()) {
-                                case R.id.item_watchlist:
-                                    if (userID.equals("Guest")) {
-                                        navigatetohome();
-                                    } else {
-                                        JobAdsObject co = new JobAdsObject(jobAdsObject.jobID, "job", userID);
-                                        new AsyncSavetoWatchlist().execute(co);
-                                    }
-                            }
-                            return true;
-                        }
-                    });
-                }
-            });
         }
 
     }

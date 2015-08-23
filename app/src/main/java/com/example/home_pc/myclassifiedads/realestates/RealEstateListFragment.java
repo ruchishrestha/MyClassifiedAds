@@ -90,7 +90,7 @@ public class RealEstateListFragment extends Fragment {
                 realEstatesAdObjects = parser.parseRealestateList(jsonObj);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                Log.d("AsyncLoadContactList", e.getMessage());
+                Log.d("AsyncLoadRealEstateList", e.getMessage());
             }
             return realEstatesAdObjects;
         }
@@ -99,7 +99,7 @@ public class RealEstateListFragment extends Fragment {
         protected void onPreExecute(){
             progressDialog=new ProgressDialog(getActivity());
             progressDialog.setMessage("Loading...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setIndeterminate(true);
             progressDialog.show();
 

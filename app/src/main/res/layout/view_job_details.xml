@@ -18,7 +18,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:text="ajsjbfdbfdsjbfjdsbfjdjfbj"
                 android:layout_marginTop="10dp"
                 />
             <LinearLayout
@@ -55,13 +54,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:textSize="14sp"
-                        android:text="sdfdsfds"/>
+                        android:textSize="14sp" />
                     <TextView
                         android:id="@+id/salary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="120000"
                         android:textColor="#ff0000"
                         android:textSize="14sp"
                         android:layout_marginTop="10dp"/>
@@ -85,7 +82,6 @@
                             android:layout_height="wrap_content"
                             android:textSize="12sp"
                             android:textColor="#0000ff"
-                            android:text="sdfdsfds"
                             />
 
 
@@ -97,7 +93,6 @@
                         android:textSize="12sp"
                         android:textColor="#000000"
                         android:layout_marginTop="10dp"
-                        android:text="12/89/097"
                         />
                 </LinearLayout>
 </LinearLayout>
@@ -113,7 +108,6 @@
                 android:id="@+id/ad_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="sfdfdfdgafdgfdgfdfdfdkgnfgnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn"
                 android:textSize="14sp"
                 />
             <View
@@ -134,7 +128,6 @@
                 android:id="@id/responsibility"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="fsdfdsfdfddadgafgfdngjfngjfngjnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn"
                 android:textSize="14sp"
                 android:layout_marginTop="10dp"/>
             <View
@@ -153,7 +146,6 @@
                 android:id="@+id/skills"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="snfjnfjdsnjfdnfjdnfdnjf"
                 android:textSize="14sp"
                 android:layout_marginTop="10dp"/>
             <View
@@ -167,7 +159,6 @@
                 android:id="@id/jobTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5-10am"
                 android:textSize="14sp"
                 />
             <LinearLayout
@@ -200,7 +191,6 @@
                 android:id="@id/contact"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="432234223"
                 android:layout_marginTop="10dp"
                 />
             <TextView
@@ -214,7 +204,6 @@
                 android:id="@+id/website"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="sfdsfdfds.com"
                 android:textSize="14sp"/>
             <TextView
                 android:id="@+id/address"
@@ -281,8 +270,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="12sp"
-                        android:layout_marginTop="2dp"
-                        android:text="Posted Date: 12/08/10"/>
+                        android:layout_marginTop="2dp" />
 
                     <TextView
                         android:id="@+id/comenterUsername"
@@ -290,7 +278,6 @@
                         android:layout_height="wrap_content"
                         android:textSize="12sp"
                         android:textColor="#000000"
-                        android:text="By ruchi"
                         android:layout_marginTop="2dp"/>
 
                     <TextView

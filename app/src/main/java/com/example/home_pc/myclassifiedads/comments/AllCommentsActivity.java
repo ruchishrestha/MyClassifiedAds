@@ -48,12 +48,12 @@ public class AllCommentsActivity extends ActionBarActivity {
         tableCategory= getIntent().getExtras().getString("category");
 
 
-        loadallcomments(adid, tableCategory);
+        loadallcomments();
 
         mswipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadallcomments(adid, tableCategory);
+                loadallcomments();
                 onItemLoadComplete();
             }
         });
@@ -65,20 +65,19 @@ public class AllCommentsActivity extends ActionBarActivity {
     }
 
 
-    public void loadallcomments(int adid,String tableCategory){
-        CommentObject commentObject=new CommentObject(adid,tableCategory);
-        new AsyncLoadAllComments().execute(commentObject);
+    public void loadallcomments(){
+        new AsyncLoadAllComments().execute();
     }
 
     protected class AsyncLoadAllComments extends
-            AsyncTask<CommentObject,Void,ArrayList<CommentObject>> {
+            AsyncTask<Void,Void,ArrayList<CommentObject>> {
 
         @Override
-        protected ArrayList<CommentObject> doInBackground(CommentObject... params) {
+        protected ArrayList<CommentObject> doInBackground(Void... params) {
             ArrayList<CommentObject> allcomments=new ArrayList<CommentObject>();
             RestAPI api=new RestAPI();
             try{
-                JSONObject jsonObj = api.GetAllComments(params[0].adid,params[0].tableCategory);
+                JSONObject jsonObj = api.GetAllComments(adid,tableCategory);
                 JSONParser parser = new JSONParser();
                 allcomments = parser.parseComment(jsonObj);
 

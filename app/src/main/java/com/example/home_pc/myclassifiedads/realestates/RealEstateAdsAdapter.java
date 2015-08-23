@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
@@ -17,10 +18,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.home_pc.myclassifiedads.R;
+import com.example.home_pc.myclassifiedads.classified_api.ImageLoaderAPI;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
 import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
 import com.example.home_pc.myclassifiedads.mainactivity.MainActivity;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -78,6 +81,7 @@ public class RealEstateAdsAdapter extends RecyclerView.Adapter<RealEstateAdsAdap
         holder.realEstateAddress.setText(reo.aDdress);
         holder.realEstateContact.setText(reo.contactNo);
         holder.username.setText(reo.userName);
+        new AsyncLoadImage(position,holder).execute(reo.realestateID);
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,8 +109,8 @@ public class RealEstateAdsAdapter extends RecyclerView.Adapter<RealEstateAdsAdap
                                 if (userID.equals("Guest")) {
                                     navigatetohome();
                                 } else {
-                                    RealEstatesAdObject co = new RealEstatesAdObject(reo.realestateID, "RealEstate", userID);
-                                    new AsyncSavetoWatchlist().execute(co);
+
+                                    new AsyncSavetoWatchlist().execute(reo.realestateID);
                                 }
                         }
                         return true;
@@ -122,14 +126,14 @@ public class RealEstateAdsAdapter extends RecyclerView.Adapter<RealEstateAdsAdap
         alertDialog.setMessage("Please create your account first or Login");
         alertDialog.setIcon(R.drawable.backward);
         alertDialog.setTitle("The Classified Ads App");
-        alertDialog.setButton2("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(context, MainActivity.class);
                 context.startActivity(intent);
             }
         });
-        alertDialog.setButton("CANCEL", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
@@ -140,14 +144,14 @@ public class RealEstateAdsAdapter extends RecyclerView.Adapter<RealEstateAdsAdap
 
 
     protected class AsyncSavetoWatchlist extends
-            AsyncTask<RealEstatesAdObject, Void, Boolean> {
+            AsyncTask<Integer, Void, Boolean> {
 
         Boolean flag=false;
         @Override
-        protected Boolean doInBackground(RealEstatesAdObject... params) {
+        protected Boolean doInBackground(Integer... params) {
             RestAPI api = new RestAPI();
             try {
-                JSONObject jsonObject = api.PushtoWatchlist(params[0].realestateID, params[0].tableCategory, params[0].userID);
+                JSONObject jsonObject = api.PushtoWatchlist(params[0],"RealEstate",userID);
                 JSONParser parser = new JSONParser();
                 flag= parser.parseReturnedValue(jsonObject);
             } catch (Exception e) {
@@ -168,7 +172,7 @@ public class RealEstateAdsAdapter extends RecyclerView.Adapter<RealEstateAdsAdap
             else{
                 alertDialog.setMessage("Already added");
             }
-            alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+            alertDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     alertDialog.dismiss();
@@ -178,10 +182,60 @@ public class RealEstateAdsAdapter extends RecyclerView.Adapter<RealEstateAdsAdap
         }
     }
 
+    protected class AsyncLoadImage extends
+            AsyncTask<Integer, Void, Bitmap> {
+        int pos;
+        ViewHolder holder;
+        Bitmap realestatePic;
+        String picURL;
+
+        public AsyncLoadImage(int pos,ViewHolder holder) {
+            this.pos = pos;
+            this.holder = holder;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Integer... params) {
+            RestAPI api = new RestAPI();
+            try {
+                JSONObject jsonObject = api.GetRealestatePictureURL(params[0]);
+                JSONParser parser = new JSONParser();
+                picURL= parser.parseReturnedURL(jsonObject);
+                if(picURL!=null){
+                    realestatePic= ImageLoaderAPI.AzureImageDownloader(picURL);
+                }
+                else{
+                    realestatePic=null;
+                }
+
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                Log.d("AsyncLoadURl", e.getMessage());
+            }
+            return realestatePic;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result){
+            if(result!=null){
+                realestatePic=Bitmap.createScaledBitmap(result, dptopx(100), dptopx(100), true);
+                holder.realEstateImage.setImageBitmap(realestatePic);
+            }
+
+        }
+
+        }
+
+
     @Override
     public int getItemCount() {
         return realEstatesAdObjects.size();
     }
-
+    public int dptopx(float dp){
+        // Get the screen's density scale
+        final float scale = context.getResources().getDisplayMetrics().density;
+        // Convert the dps to pixels, based on density scale
+        return ((int) (dp * scale + 0.5f));
+    }
 
 }

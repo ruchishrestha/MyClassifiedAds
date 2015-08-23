@@ -94,7 +94,7 @@ public class JobDetailActivity extends ActionBarActivity {
         read_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                allCommentsPopup(jobID, "Job");
+                allCommentsPopup(jobID, "job");
 
             }
         });
@@ -104,14 +104,14 @@ public class JobDetailActivity extends ActionBarActivity {
         final AlertDialog alertDialog = new AlertDialog.Builder(
                 this).create();
         alertDialog.setMessage("Please Login or Sign Up");
-        alertDialog.setButton2("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
         });
-        alertDialog.setButton("CANCEL", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
@@ -168,7 +168,7 @@ public class JobDetailActivity extends ActionBarActivity {
 
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                Log.d("AsyncLoadDeptDetails", ""+e);
+                Log.d("AsyncLoadJobsDetails", ""+e);
             }
 
             return jobAdsObjects;
@@ -179,11 +179,11 @@ public class JobDetailActivity extends ActionBarActivity {
         protected void onPreExecute(){
             progressDialog=new ProgressDialog(JobDetailActivity.this);
             progressDialog.setMessage("Loading...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setIndeterminate(true);
             progressDialog.show();
             if(!userID.equals("Guest")){
-                loadMyComments(jobID, userID);
+                loadMyComments();
             }
         }
 
@@ -211,23 +211,22 @@ public class JobDetailActivity extends ActionBarActivity {
         }
     }
 
-        public void loadMyComments(int adid,String userID){
-        CommentObject commentObject=new CommentObject(adid,userID,"Job");
-        new AsyncLoadMyComments().execute(commentObject);
+        public void loadMyComments(){
+        new AsyncLoadMyComments().execute();
     }
 
 
 
     protected class AsyncLoadMyComments extends
-            AsyncTask<CommentObject, Void, ArrayList<CommentObject>> {
+            AsyncTask<Void, Void, ArrayList<CommentObject>> {
 
         @Override
-        protected ArrayList<CommentObject> doInBackground(CommentObject... params) {
+        protected ArrayList<CommentObject> doInBackground(Void... params) {
             // TODO Auto-generated method stub
             ArrayList<CommentObject> myCommentObject = new ArrayList<>();
             RestAPI api = new RestAPI();
             try {
-                JSONObject jsonObj = api.GetMyComment(params[0].adid, params[0].userID, params[0].tableCategory);
+                JSONObject jsonObj = api.GetMyComment(jobID, userID, "job");
                 JSONParser parser = new JSONParser();
                 myCommentObject = parser.parseComment(jsonObj);
 
@@ -266,21 +265,20 @@ public class JobDetailActivity extends ActionBarActivity {
     }
 
     public void save_comment(String commentText){
-        CommentObject commentObject=new CommentObject("Job",userID,jobID,commentText);
-        new AsyncSaveComment().execute(commentObject);
+        new AsyncSaveComment().execute(commentText);
     }
 
 
     protected class AsyncSaveComment extends
-            AsyncTask<CommentObject, Void,Void > {
+            AsyncTask<String, Void,Void > {
 
         @Override
-        protected Void doInBackground(CommentObject ...params) {
+        protected Void doInBackground(String ...params) {
             // TODO Auto-generated method stub
 
             RestAPI api = new RestAPI();
             try {
-                api.PushComments(params[0].tableCategory,params[0].userID,params[0].adid,params[0].commentText);
+                api.PushComments("job",userID,jobID,params[0]);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 Log.d("AsyncSaveComment", ""+e);
@@ -292,7 +290,7 @@ public class JobDetailActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(Void result) {
             // TODO Auto-generated method stub
-            loadMyComments(jobID,userID);
+            loadMyComments();
         }
     }
 

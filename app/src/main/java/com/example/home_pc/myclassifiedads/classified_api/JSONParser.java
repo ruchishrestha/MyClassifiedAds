@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -151,7 +152,7 @@ public class JSONParser {
             for(int i=0;i<jsonArray.length();i++)
             {
                 jsonObj=jsonArray.getJSONObject(i);
-                arrayList.add(new ContactsnWantedAdObject(jsonObj.getInt("adid"), jsonObj.getString("photo"),jsonObj.getString("username"),jsonObj.getString("title"),jsonObj.getString("addres"),jsonObj.getString("contact")));
+                arrayList.add(new ContactsnWantedAdObject(jsonObj.getInt("adid"), jsonObj.getString("photoURL"),jsonObj.getString("username"),jsonObj.getString("title"),jsonObj.getString("addres"),jsonObj.getString("contact"),jsonObj.getString("mobileNo")));
             }
 
         } catch (JSONException e) {
@@ -171,7 +172,7 @@ public class JSONParser {
             for(int i=0;i<jsonArray.length();i++)
             {
                 jsonObj=jsonArray.getJSONObject(i);
-                arrayList.add(new ContactsnWantedAdObject(jsonObj.getInt("adid"),jsonObj.getString("dateOnly"),jsonObj.getString("username"),jsonObj.getString("title"),jsonObj.getString("ad_description"),jsonObj.getString("Category"),jsonObj.getString("contact"),jsonObj.getString("addres"),jsonObj.getString("email"),jsonObj.getDouble("latitude"),jsonObj.getDouble("longitude"),jsonObj.getString("photo")));
+                arrayList.add(new ContactsnWantedAdObject(jsonObj.getInt("adid"),jsonObj.getString("dateOnly"),jsonObj.getString("username"),jsonObj.getString("title"),jsonObj.getString("ad_description"),jsonObj.getString("Category"),jsonObj.getString("contact"),jsonObj.getString("mobileNo"),jsonObj.getString("addres"),jsonObj.getString("email"),jsonObj.getDouble("latitude"),jsonObj.getDouble("longitude"),jsonObj.getString("photoURL")));
             }
 
         } catch (JSONException e) {
@@ -299,6 +300,43 @@ public class JSONParser {
             Log.d("JSONParser => parseJobDetails", e.getMessage());
         }
         return arrayList;
+    }
+
+    @SuppressLint("LongLogTag")
+    public String parseReturnedURL(JSONObject object){
+        String realestatePic=null;
+        try {
+            realestatePic = object.getString("Value");
+        }
+        catch (JSONException e) {
+            // TODO Auto-generated catch block
+            Log.d("JSONParser => parseURL", e.getMessage());
+        }
+        return realestatePic;
+    }
+
+    public ArrayList<String> parseReturnedURLs(JSONObject object){
+       ArrayList<String> realestatePic=null;
+
+        try {
+            realestatePic=new ArrayList<>();
+            {
+                JSONArray jsonArray = object.getJSONArray("Value");
+                if(jsonArray.length()==0){
+                    realestatePic=null;
+                }else{
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        realestatePic.add(jsonArray.get(i).toString());
+                    }
+                }
+            }
+
+        }
+        catch (JSONException e) {
+            // TODO Auto-generated catch block
+            Log.d("JSONParser => parseURLs", e.getMessage());
+        }
+        return realestatePic;
     }
 
 
