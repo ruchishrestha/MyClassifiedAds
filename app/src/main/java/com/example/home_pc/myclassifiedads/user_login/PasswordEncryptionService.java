@@ -28,12 +28,13 @@ package com.example.home_pc.myclassifiedads.user_login;
  */
 
 import android.util.Base64;
-import java.security.SecureRandom;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.SecretKeyFactory;
 
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 /*
  * PBKDF2 salted password hashing.
@@ -175,52 +176,6 @@ public class PasswordEncryptionService
     private static String toBase64(byte[] array)
     {
         return Base64.encodeToString(array, Base64.DEFAULT);
-    }
-
-    /**
-     * Tests the basic functionality of the PasswordEncryptionService class
-     *
-     * @param   args        ignored
-     */
-    public static void main(String[] args)
-    {
-        try
-        {
-            // Print out 10 hashes
-            for(int i = 0; i < 10; i++)
-                System.out.println(PasswordEncryptionService.createHash("p\r\nassw0Rd!"));
-
-            // Test password validation
-            boolean failure = false;
-            System.out.println("Running tests...");
-            for(int i = 0; i < 100; i++)
-            {
-                String password = ""+i;
-                String hash = createHash(password);
-                String secondHash = createHash(password);
-                if(hash.equals(secondHash)) {
-                    System.out.println("FAILURE: TWO HASHES ARE EQUAL!");
-                    failure = true;
-                }
-                String wrongPassword = ""+(i+1);
-                if(validatePassword(wrongPassword, hash)) {
-                    System.out.println("FAILURE: WRONG PASSWORD ACCEPTED!");
-                    failure = true;
-                }
-                if(!validatePassword(password, hash)) {
-                    System.out.println("FAILURE: GOOD PASSWORD NOT ACCEPTED!");
-                    failure = true;
-                }
-            }
-            if(failure)
-                System.out.println("TESTS FAILED!");
-            else
-                System.out.println("TESTS PASSED!");
-        }
-        catch(Exception ex)
-        {
-            System.out.println("ERROR: " + ex);
-        }
     }
 
 }

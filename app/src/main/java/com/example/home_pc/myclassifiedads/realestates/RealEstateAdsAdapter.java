@@ -19,12 +19,11 @@ import android.widget.TextView;
 import com.example.home_pc.myclassifiedads.R;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
 import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
-import com.example.home_pc.myclassifiedads.main.MainActivity;
+import com.example.home_pc.myclassifiedads.mainactivity.MainActivity;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Home-PC on 7/31/2015.
@@ -63,7 +62,7 @@ public class RealEstateAdsAdapter extends RecyclerView.Adapter<RealEstateAdsAdap
 
     @Override
     public RealEstateAdsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.realestate_item, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_realestate, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(view);
         return vh;
@@ -78,7 +77,7 @@ public class RealEstateAdsAdapter extends RecyclerView.Adapter<RealEstateAdsAdap
         holder.saleType.setText(reo.saleType);
         holder.realEstateAddress.setText(reo.aDdress);
         holder.realEstateContact.setText(reo.contactNo);
-        holder.username.setText(reo.username);
+        holder.username.setText(reo.userName);
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,7 +152,7 @@ public class RealEstateAdsAdapter extends RecyclerView.Adapter<RealEstateAdsAdap
                 flag= parser.parseReturnedValue(jsonObject);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                Log.d("AsyncSavetoWatchlist", e.getMessage().toString());
+                Log.d("AsyncSavetoWatchlist", e.getMessage());
             }
             return flag;
         }
@@ -162,7 +161,7 @@ public class RealEstateAdsAdapter extends RecyclerView.Adapter<RealEstateAdsAdap
         protected void onPostExecute(Boolean result) {
             final AlertDialog alertDialog = new AlertDialog.Builder(
                     context).create();
-            if(result==true){
+            if(result){
                 alertDialog.setMessage("Added to watchlist");
                 // Toast.makeText(context,"Added to watchlist",Toast.LENGTH_LONG).show();
             }

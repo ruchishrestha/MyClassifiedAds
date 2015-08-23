@@ -29,6 +29,8 @@ public class SalesFragment extends Fragment {
     ViewPager mViewPager;
     android.support.v4.app.Fragment fragment;
 
+    String userName,salesCategory;
+
     public static SalesFragment newInstance() {
         return new SalesFragment();
     }
@@ -49,6 +51,9 @@ public class SalesFragment extends Fragment {
         View view = inflater.inflate(R.layout.tabbed_fragment, container,
                 false);
         setHasOptionsMenu(true);
+
+        userName = getArguments().getString("UserName");
+        salesCategory = getArguments().getString("SalesCategory");
        /* mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 
         mViewPager = (ViewPager) view.findViewById(R.id.pager);
@@ -117,6 +122,8 @@ public class SalesFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId()==R.id.addads){
             Intent intent = new Intent(getActivity(),SalesAddActivity.class);
+            intent.putExtra("UserName",userName);
+            intent.putExtra("SalesCategory",salesCategory);
             startActivity(intent);
         }
         return false;

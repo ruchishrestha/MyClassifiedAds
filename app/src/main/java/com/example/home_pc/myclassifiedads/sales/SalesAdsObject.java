@@ -1,21 +1,18 @@
 package com.example.home_pc.myclassifiedads.sales;
 
-import android.graphics.Bitmap;
-
-import java.util.ArrayList;
-
 /**
  * Created by Home-PC on 7/31/2015.
  */
 public class SalesAdsObject {
 
-    ArrayList<Bitmap> uploadedImages;
-    String title,description,brand,modelNo,price,status,contactNo,condition,usedTime;
+    String userName,title,description,category,brand,modelNo,price,status,contactNo,condition,usedTime,rating;
 
-    public SalesAdsObject(ArrayList<Bitmap> uploadedImages, String title, String description, String brand, String modelNo, String price, String status, String contactNo, String condition, String usedTime) {
-        this.uploadedImages = uploadedImages;
+    public SalesAdsObject(String userName, String title, String description, String category, String brand, String modelNo, String price, String status, String contactNo, String condition, String usedTime, String rating) {
+        this.rating = rating;
+        this.userName = userName;
         this.title = title;
         this.description = description;
+        this.category = category;
         this.brand = brand;
         this.modelNo = modelNo;
         this.price = price;
@@ -25,12 +22,12 @@ public class SalesAdsObject {
         this.usedTime = usedTime;
     }
 
-    public ArrayList<Bitmap> getUploadedImages() {
-        return uploadedImages;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUploadedImages(ArrayList<Bitmap> uploadedImages) {
-        this.uploadedImages = uploadedImages;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String gettitle() {
@@ -103,5 +100,21 @@ public class SalesAdsObject {
 
     public void setUsedTime(String usedTime) {
         this.usedTime = usedTime;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
     }
 }

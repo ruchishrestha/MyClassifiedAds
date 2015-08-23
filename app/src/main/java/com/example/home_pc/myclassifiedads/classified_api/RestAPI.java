@@ -100,6 +100,311 @@ public class RestAPI {
 		return finalValue;
 	}
 
+    public JSONObject CreateIndividualProfile(String userName,String passWord,String firstName,String middleName,String lastName,String aDdress,String contactNo,String mobileNo,String emailId,String webSite,String profilePictureURL) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "CreateIndividualProfile");
+        p.put("userName",mapObject(userName));
+        p.put("passWord",mapObject(passWord));
+        p.put("firstName",mapObject(firstName));
+        p.put("middleName",mapObject(middleName));
+        p.put("lastName",mapObject(lastName));
+        p.put("aDdress",mapObject(aDdress));
+        p.put("contactNo",mapObject(contactNo));
+        p.put("mobileNo",mapObject(mobileNo));
+        p.put("emailId",mapObject(emailId));
+        p.put("webSite",mapObject(webSite));
+        p.put("profilePictureURL",mapObject(profilePictureURL));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject CreateOrganizationProfile(String userName,String passWord,String organizationName,String registrationNo,String aDdress,String contactNo,String mobileNo,String emailId,String webSite,double latitude,double longitude,String organizationPicture) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "CreateOrganizationProfile");
+        p.put("userName",mapObject(userName));
+        p.put("passWord",mapObject(passWord));
+        p.put("organizationName",mapObject(organizationName));
+        p.put("registrationNo",mapObject(registrationNo));
+        p.put("aDdress",mapObject(aDdress));
+        p.put("contactNo",mapObject(contactNo));
+        p.put("mobileNo",mapObject(mobileNo));
+        p.put("emailId",mapObject(emailId));
+        p.put("webSite",mapObject(webSite));
+        p.put("latitude",mapObject(latitude));
+        p.put("longitude",mapObject(longitude));
+        p.put("organizationPicture",mapObject(organizationPicture));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject CreateShopProfile(String userName,String passWord,String shopName,String shopOwner,String panNo,String aDdress,String contactNo,String mobileNo,String emailId,String webSite,double latitude,double longitude,String shopPictureURL) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "CreateShopProfile");
+        p.put("userName",mapObject(userName));
+        p.put("passWord",mapObject(passWord));
+        p.put("shopName",mapObject(shopName));
+        p.put("shopOwner",mapObject(shopOwner));
+        p.put("panNo",mapObject(panNo));
+        p.put("aDdress",mapObject(aDdress));
+        p.put("contactNo",mapObject(contactNo));
+        p.put("mobileNo",mapObject(mobileNo));
+        p.put("emailId",mapObject(emailId));
+        p.put("webSite",mapObject(webSite));
+        p.put("latitude",mapObject(latitude));
+        p.put("longitude",mapObject(longitude));
+        p.put("shopPictureURL",mapObject(shopPictureURL));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject UserAuthentication(String userName,String passWord) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "UserAuthentication");
+        p.put("userName",mapObject(userName));
+        p.put("passWord",mapObject(passWord));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject GetIndividualDetail(String userName) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetIndividualDetail");
+        p.put("userName",mapObject(userName));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject GetShopDetail(String userName) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetShopDetail");
+        p.put("userName",mapObject(userName));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject GetOrganizationDetail(String userName) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetOrganizationDetail");
+        p.put("userName",mapObject(userName));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject AddContactsAds(String userName,String title,String description,String category,String aDdress,String contactNo,String mobileNo,String emailId,String latitude,String longitude,String picURL) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "AddContactsAds");
+        p.put("userName",mapObject(userName));
+        p.put("title",mapObject(title));
+        p.put("description",mapObject(description));
+        p.put("category",mapObject(category));
+        p.put("aDdress",mapObject(aDdress));
+        p.put("contactNo",mapObject(contactNo));
+        p.put("mobileNo",mapObject(mobileNo));
+        p.put("emailId",mapObject(emailId));
+        p.put("latitude",mapObject(latitude));
+        p.put("longitude",mapObject(longitude));
+        p.put("picURL",mapObject(picURL));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject AddWantedAds(String userName,String title,String description,String category,String aDdress,String contactNo,String mobileNo,String emailId,String latitude,String longitude,String picURL) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "AddWantedAds");
+        p.put("userName",mapObject(userName));
+        p.put("title",mapObject(title));
+        p.put("description",mapObject(description));
+        p.put("category",mapObject(category));
+        p.put("aDdress",mapObject(aDdress));
+        p.put("contactNo",mapObject(contactNo));
+        p.put("mobileNo",mapObject(mobileNo));
+        p.put("emailId",mapObject(emailId));
+        p.put("latitude",mapObject(latitude));
+        p.put("longitude",mapObject(longitude));
+        p.put("picURL",mapObject(picURL));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject AddSalesAds(String userName,String title,String description,String brand,String model,String price,String salesStatus,String condition,String timeUsed,String contactNo,String avgRating,String salesCategory) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "AddSalesAds");
+        p.put("userName",mapObject(userName));
+        p.put("title",mapObject(title));
+        p.put("description",mapObject(description));
+        p.put("brand",mapObject(brand));
+        p.put("model",mapObject(model));
+        p.put("price",mapObject(price));
+        p.put("salesStatus",mapObject(salesStatus));
+        p.put("condition",mapObject(condition));
+        p.put("timeUsed",mapObject(timeUsed));
+        p.put("contactNo",mapObject(contactNo));
+        p.put("avgRating",mapObject(avgRating));
+        p.put("salesCategory",mapObject(salesCategory));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject AddtoSalesGallery(String salesId,String SalesCategory,ArrayList<String> pictureURL) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "AddtoSalesGallery");
+        p.put("salesId",mapObject(salesId));
+        p.put("SalesCategory",mapObject(SalesCategory));
+        p.put("pictureURL",mapObject(pictureURL));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject AddRealEstateAds(String userName,String title,String description,String houseNo,String propertyType,String saleType,String price,String aDdress,String contactNo,String mobileNo,double latitude,double longitude) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "AddRealEstateAds");
+        p.put("userName",mapObject(userName));
+        p.put("title",mapObject(title));
+        p.put("description",mapObject(description));
+        p.put("houseNo",mapObject(houseNo));
+        p.put("propertyType",mapObject(propertyType));
+        p.put("saleType",mapObject(saleType));
+        p.put("price",mapObject(price));
+        p.put("aDdress",mapObject(aDdress));
+        p.put("contactNo",mapObject(contactNo));
+        p.put("mobileNo",mapObject(mobileNo));
+        p.put("latitude",mapObject(latitude));
+        p.put("longitude",mapObject(longitude));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject AddtoRealEstateGallery(String realId,ArrayList<String> pictureURL) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "AddtoRealEstateGallery");
+        p.put("realId",mapObject(realId));
+        p.put("pictureURL",mapObject(pictureURL));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject AddJobAds(String userName,String jobTitle,String jobDescription,String responsibility,String skills,String jobCategory,String jobTiming,String vacancy,String salary,String aDdress,String contactNo,String emailId,String webSite,double latitude,double longitude,String organizationLogoURL) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "AddJobAds");
+        p.put("userName",mapObject(userName));
+        p.put("jobTitle",mapObject(jobTitle));
+        p.put("jobDescription",mapObject(jobDescription));
+        p.put("responsibility",mapObject(responsibility));
+        p.put("skills",mapObject(skills));
+        p.put("jobCategory",mapObject(jobCategory));
+        p.put("jobTiming",mapObject(jobTiming));
+        p.put("vacancy",mapObject(vacancy));
+        p.put("salary",mapObject(salary));
+        p.put("aDdress",mapObject(aDdress));
+        p.put("contactNo",mapObject(contactNo));
+        p.put("emailId",mapObject(emailId));
+        p.put("webSite",mapObject(webSite));
+        p.put("latitude",mapObject(latitude));
+        p.put("longitude",mapObject(longitude));
+        p.put("organizationLogoURL",mapObject(organizationLogoURL));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject UpdateJobAd(String jobId,String pictureURL) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "UpdateJobAd");
+        p.put("jobId",mapObject(jobId));
+        p.put("pictureURL",mapObject(pictureURL));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
     public JSONObject GetSalesDetail() throws Exception {
         JSONObject result = null;
         JSONObject o = new JSONObject();

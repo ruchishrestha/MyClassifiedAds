@@ -1,22 +1,40 @@
 package com.example.home_pc.myclassifiedads.jobs;
 
-import android.graphics.Bitmap;
-
 /**
  * Created by Home-PC on 7/31/2015.
  */
 public class JobAdsObject {
 
-    String title,ad_postedDate,logoURL,ad_description,username,responsibility,skills,jobCategory,jobCategoryOthers,
+    String title,ad_postedDate,logoURL, description,userName,responsibility,skills,jobCategory,
             jobTime,vaccancyNo,salary,aDdress,contactNo,emailId,webSite,tableCategory,userID;
     Double latitude,longitude;
     int jobID;
 
-    public JobAdsObject(String ad_postedDate,String username,String title, String ad_description, String responsibility, String skills, String jobCategory, String jobTime, String vaccancyNo, String salary, String aDdress, String contactNo, String emailId, String webSite, Double latitude,Double longitude,String logoURL) {
-        this.ad_postedDate=ad_postedDate;
-        this.username=username;
+    public JobAdsObject(String userName,String logoURL, String title, String description, String responsibility, String skills, String jobCategory, String jobTime, String vacancies, String salary, String aDdress, String contactNo, String emailId, String webSite, Double latitude,Double longitude) {
+        this.userName = userName;
+        this.logoURL = logoURL;
         this.title = title;
-        this.ad_description = ad_description;
+        this.description = description;
+        this.responsibility = responsibility;
+        this.skills = skills;
+        this.jobCategory = jobCategory;
+        this.jobTime = jobTime;
+        this.vaccancyNo = vacancies;
+        this.salary = salary;
+        this.aDdress = aDdress;
+        this.contactNo = contactNo;
+        this.emailId = emailId;
+        this.webSite = webSite;
+        this.latitude=latitude;
+        this.longitude=longitude;
+    }
+
+
+    public JobAdsObject(String ad_postedDate,String userName,String title, String description, String responsibility, String skills, String jobCategory, String jobTime, String vaccancyNo, String salary, String aDdress, String contactNo, String emailId, String webSite, Double latitude,Double longitude,String logoURL) {
+        this.ad_postedDate=ad_postedDate;
+        this.userName=userName;
+        this.title = title;
+        this.description = description;
         this.responsibility = responsibility;
         this.skills = skills;
         this.jobCategory = jobCategory;
@@ -32,13 +50,13 @@ public class JobAdsObject {
         this.logoURL=logoURL;
     }
 
-   public JobAdsObject(int jobID,String title,String jobCategory,String vaccancyNo,String salary,String usernme,String logoURL){
+   public JobAdsObject(int jobID,String title,String jobCategory,String vaccancyNo,String salary,String userName,String logoURL){
        this.jobID=jobID;
        this.title=title;
        this.jobCategory=jobCategory;
        this.vaccancyNo=vaccancyNo;
        this.salary=salary;
-       this.username=usernme;
+       this.userName=userName;
        this.logoURL=logoURL;
    }
 
@@ -48,7 +66,11 @@ public class JobAdsObject {
         this.userID=userID;
     }
 
-    public String getTitle() {
+    public String getUserName() {
+        return userName;
+    }
+
+    public String gettitle() {
         return title;
     }
 
@@ -64,12 +86,12 @@ public class JobAdsObject {
         return logoURL;
     }
 
-    public String getAd_description() {
-        return ad_description;
+    public String getDescription() {
+        return description;
     }
 
     public String getUsername() {
-        return username;
+        return userName;
     }
 
     public String getResponsibility() {
@@ -82,10 +104,6 @@ public class JobAdsObject {
 
     public String getJobCategory() {
         return jobCategory;
-    }
-
-    public String getJobCategoryOthers() {
-        return jobCategoryOthers;
     }
 
     public String getJobTime() {

@@ -1,16 +1,13 @@
 package com.example.home_pc.myclassifiedads.user_login;
 
-import android.graphics.Bitmap;
-
 /**
  * Created by Home-PC on 7/29/2015.
  */
 public class IndividualUser {
 
-    Bitmap profilePic;
-    String firstName,middleName,lastName,userName,passWord,aDdress,contactNo,mobileNo,emailId,webSite;
+    String firstName,middleName,lastName,userName,passWord,aDdress,contactNo,mobileNo,emailId,webSite,profilePicURL;
 
-    public IndividualUser(String userName,String passWord,String firstName,String middleName,String lastName,String aDdress,String contactNo,String mobileNo,String emailId,String webSite,Bitmap profilePic){
+    public IndividualUser(String userName,String passWord,String firstName,String middleName,String lastName,String aDdress,String contactNo,String mobileNo,String emailId,String webSite,String profilePicURL){
 
         this.userName=userName;
         this.passWord=passWord;
@@ -22,16 +19,29 @@ public class IndividualUser {
         this.mobileNo=mobileNo;
         this.emailId=emailId;
         this.webSite=webSite;
-        this.profilePic=profilePic;
+        this.profilePicURL=profilePicURL;
 
     }
 
-    public Bitmap getProfilePic() {
-        return profilePic;
+    public IndividualUser(String firstName, String middleName, String lastName, String passWord, String aDdress, String contactNo, String mobileNo, String emailId, String webSite, String profilePicURL) {
+        this.middleName = middleName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.passWord = passWord;
+        this.aDdress = aDdress;
+        this.contactNo = contactNo;
+        this.mobileNo = mobileNo;
+        this.emailId = emailId;
+        this.webSite = webSite;
+        this.profilePicURL = profilePicURL;
     }
 
-    public void setProfilePic(Bitmap profilePic) {
-        this.profilePic = profilePic;
+    public String getProfilePic() {
+        return profilePicURL;
+    }
+
+    public void setProfilePic(String profilePicURL) {
+        this.profilePicURL = profilePicURL;
     }
 
     public String getFirstName() {

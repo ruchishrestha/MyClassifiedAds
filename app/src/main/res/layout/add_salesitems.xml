@@ -20,7 +20,8 @@
             android:orientation="vertical"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="20dp">
 
             <HorizontalScrollView
                 android:orientation="horizontal"
@@ -98,17 +99,6 @@
                 android:text="@string/upload"
                 android:textSize="16sp"/>
 
-           <!-- <TextView
-                android:layout_width="50dp"
-                android:layout_height="30dp"
-                android:text="Title:"
-                android:textSize="16dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:textColor="#000000"
-                />-->
-
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
@@ -143,16 +133,6 @@
                 android:paddingLeft="5dp"
                 android:textSize="16sp" />
 
-            <!--<TextView
-                android:layout_width="150dp"
-                android:layout_height="30dp"
-                android:text="Brand:"
-                android:textSize="16dp"
-                android:textColor="#000000"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:id="@+id/brand"/>-->
-
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
@@ -174,17 +154,6 @@
                 android:textSize="16sp"
                 android:paddingLeft="5dp"
                 android:id="@+id/modelNo"/>
-
-            <!--<TextView
-                android:layout_width="150dp"
-                android:layout_height="30dp"
-                android:text="Price:"
-                android:textSize="16dp"
-                android:textColor="#000000"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:id="@+id/price"
-                android:layout_below="@+id/brand1" />-->
 
             <EditText
                 android:layout_width="match_parent"
@@ -219,18 +188,6 @@
                     android:prompt="@string/saleStatus"
                     android:entries="@array/status" />
 
-                <!--<TextView-->
-                    <!--android:layout_width="150dp"-->
-                    <!--android:layout_height="30dp"-->
-                    <!--android:text="Contact:"-->
-                    <!--android:textSize="16dp"-->
-                    <!--android:textColor="#000000"-->
-                    <!--android:layout_marginTop="10dp"-->
-                    <!--android:layout_marginLeft="10dp"-->
-                    <!--android:id="@+id/contact"-->
-                    <!--android:layout_below="@+id/status"-->
-                    <!--/>-->
-
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
@@ -264,18 +221,6 @@
                     android:entries="@array/conditions" />
 
             </RelativeLayout>
-
-            <!--<TextView
-                android:layout_width="150dp"
-                android:layout_height="30dp"
-                android:text="No. of year if used:"
-                android:textSize="16dp"
-                android:textColor="#000000"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:id="@+id/usedtime"
-                android:layout_below="@+id/condition"
-                />-->
 
             <EditText
                 android:layout_width="match_parent"

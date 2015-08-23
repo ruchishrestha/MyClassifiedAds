@@ -25,9 +25,9 @@ import android.widget.Toast;
 import com.example.home_pc.myclassifiedads.R;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
 import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
-import com.example.home_pc.myclassifiedads.contacts.AllCommentsActivity;
-import com.example.home_pc.myclassifiedads.contacts.CommentObject;
-import com.example.home_pc.myclassifiedads.main.MainActivity;
+import com.example.home_pc.myclassifiedads.comments.AllCommentsActivity;
+import com.example.home_pc.myclassifiedads.comments.CommentObject;
+import com.example.home_pc.myclassifiedads.mainactivity.MainActivity;
 
 import org.json.JSONObject;
 
@@ -35,7 +35,7 @@ import java.util.ArrayList;
 
 public class RealEstateViewDetail extends ActionBarActivity {
     ArrayList<RealEstatesAdObject> realEstatesAdObjects=null;
-    ImageView realestate_picture,comment_cancel,comment_save,read_comment;
+    ImageView realestate_picture,comment_cancel,comment_save,read_comment,img1,img2,img3,img4,img5,img6;
     TextView username,ad_description,ad_title,saleType,price,contactNo,aDdress,
             comment,commentText,postedDate,houseNo,propertyType,mobileNo,commenterUsername,myComments,
             ad_postedDate;
@@ -47,11 +47,17 @@ public class RealEstateViewDetail extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.real_estate_view);
+        setContentView(R.layout.view_realestate_details);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         realestateID=getIntent().getExtras().getInt("realestateID");
         userID=getIntent().getExtras().getString("userID");
+        img1=(ImageView)findViewById(R.id.img1);
+        img2=(ImageView)findViewById(R.id.img2);
+        img3=(ImageView)findViewById(R.id.img3);
+        img4=(ImageView)findViewById(R.id.img4);
+        img5=(ImageView)findViewById(R.id.img5);
+        img6=(ImageView)findViewById(R.id.img6);
         ad_title=(TextView)findViewById(R.id.adTitle);
         ad_description=(TextView)findViewById(R.id.ad_description);
         saleType=(TextView)findViewById(R.id.saleType);
@@ -143,7 +149,7 @@ public class RealEstateViewDetail extends ActionBarActivity {
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progressDialog.setIndeterminate(true);
             progressDialog.show();
-            if(userID!="Guest"){
+            if(!userID.equals("Guest")){
                 loadMyComments(realestateID, userID);
             }
 
@@ -156,7 +162,7 @@ public class RealEstateViewDetail extends ActionBarActivity {
             if(progressDialog.isShowing()){
                 progressDialog.dismiss();
             }
-            username.setText(result.get(0).username);
+            username.setText(result.get(0).userName);
             ad_title.setText(result.get(0).title);
             saleType.setText(result.get(0).saleType);
             price.setText("NPR." + (result.get(0).price).toString());
@@ -167,6 +173,7 @@ public class RealEstateViewDetail extends ActionBarActivity {
             aDdress.setText(result.get(0).aDdress);
             contactNo.setText(result.get(0).contactNo);
             mobileNo.setText(result.get(0).mobileNo);
+            new AsyncLoadImages().execute(result.get(0).realestateID);
 
         }
     }
@@ -230,7 +237,7 @@ public class RealEstateViewDetail extends ActionBarActivity {
                 api.PushComments(params[0].tableCategory,params[0].userID,params[0].adid,params[0].commentText);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                Log.d("AsyncSaveComment", e.getMessage());
+                Log.d("AsyncSaveComment", ""+e);
             }
             return null;
         }
@@ -263,7 +270,7 @@ public class RealEstateViewDetail extends ActionBarActivity {
 
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                Log.d("AsyncLoadMyComment", e.getMessage());
+                Log.d("AsyncLoadMyComment", ""+e);
             }
 
             return myCommentObject;
@@ -285,6 +292,25 @@ public class RealEstateViewDetail extends ActionBarActivity {
             }
         }
     }
+
+    protected class AsyncLoadImages extends
+            AsyncTask<Integer, Void, ArrayList<RealEstatesAdObject>> {
+ArrayList<RealEstatesAdObject> realestate_pictures=new ArrayList<>();
+        @Override
+        protected ArrayList<RealEstatesAdObject> doInBackground(Integer... params) {
+            RestAPI api=new RestAPI();
+            try{
+                /*JSONObject jsonObj = api.GetImages(params[0].realestateID);
+                JSONParser parser = new JSONParser();
+                realestate_pictures = parser.parseImages(jsonObj);*/
+            }
+            catch (Exception e){
+                Log.d("AsyncLoadImaged=>",e.getMessage());
+
+            }
+            return realestate_pictures;
+        }
+        }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

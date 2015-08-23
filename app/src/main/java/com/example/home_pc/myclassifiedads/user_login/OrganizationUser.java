@@ -1,18 +1,16 @@
 package com.example.home_pc.myclassifiedads.user_login;
 
-import android.graphics.Bitmap;
-
 /**
  * Created by Home-PC on 7/29/2015.
  */
 public class OrganizationUser {
 
-    Bitmap organizationPic;
-    String organizationName,aDdress,registrationNo,userName,passWord,contactNo,mobileNo,emailId,webSite;
+
+    String organizationName,aDdress,registrationNo,userName,passWord,contactNo,mobileNo,emailId,webSite,organizationPicURL;
     Double latitude,longitude;
 
-    public OrganizationUser(String userName, String passWord, String organizationName,String registrationNo, String aDdress, String contactNo, String mobileNo, String emailId, String webSite, Double latitude, Double longitude,Bitmap organizationPic) {
-        this.organizationPic = organizationPic;
+    public OrganizationUser(String userName, String passWord, String organizationName,String registrationNo, String aDdress, String contactNo, String mobileNo, String emailId, String webSite, Double latitude, Double longitude,String organizationPicURL) {
+        this.organizationPicURL = organizationPicURL;
         this.organizationName = organizationName;
         this.aDdress = aDdress;
         this.registrationNo = registrationNo;
@@ -26,12 +24,26 @@ public class OrganizationUser {
         this.longitude = longitude;
     }
 
-    public Bitmap getOrganizationPic() {
-        return organizationPic;
+    public OrganizationUser(String organizationName, String registrationNo, String passWord, String aDdress, String contactNo, String mobileNo, String emailId, String webSite, Double latitude, Double longitude, String organizationPicURL) {
+        this.organizationName = organizationName;
+        this.registrationNo = registrationNo;
+        this.passWord = passWord;
+        this.aDdress = aDdress;
+        this.contactNo = contactNo;
+        this.mobileNo = mobileNo;
+        this.emailId = emailId;
+        this.webSite = webSite;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.organizationPicURL = organizationPicURL;
     }
 
-    public void setOrganizationPic(Bitmap organizationPic) {
-        this.organizationPic = organizationPic;
+    public String getOrganizationPic() {
+        return organizationPicURL;
+    }
+
+    public void setOrganizationPic(String organizationPicURL) {
+        this.organizationPicURL = organizationPicURL;
     }
 
     public String getOrganizationName() {
@@ -66,11 +78,11 @@ public class OrganizationUser {
         this.userName = userName;
     }
 
-    public String getPassword() {
+    public String getPassWord() {
         return passWord;
     }
 
-    public void setPassword(String passWord) {
+    public void setPassWord(String passWord) {
         this.passWord = passWord;
     }
 

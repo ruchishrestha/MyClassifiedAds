@@ -52,7 +52,7 @@ public class JobFragment extends Fragment {
         View view = inflater.inflate(R.layout.ads_recycler_view, container,
                 false);
         setHasOptionsMenu(true);
-        userID=getArguments().getString("userName");
+        userID=getArguments().getString("UserName");
         jobList=(RecyclerView) view.findViewById(R.id.cardList);
         mswipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipeRefreshLayout);
         context=getActivity();
@@ -105,7 +105,7 @@ public class JobFragment extends Fragment {
         protected void onPreExecute(){
             progressDialog=new ProgressDialog(getActivity());
             progressDialog.setMessage("Loading...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progressDialog.setIndeterminate(true);
             progressDialog.show();
 
@@ -133,6 +133,7 @@ public class JobFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId()==R.id.addads){
             Intent intent = new Intent(getActivity(),JobAddActivity.class);
+            intent.putExtra("UserName",userID);
             startActivity(intent);
         }
         return false;

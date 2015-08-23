@@ -46,7 +46,7 @@ public class RealEstateFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.tab_fragments, container, false);
         fragmentTabs= (PagerSlidingTabStrip) v.findViewById(R.id.fragment_tabs);
-        userID=getArguments().getString("userID");
+        userID=getArguments().getString("UserName");
         viewPager = (ViewPager) v.findViewById(R.id.fragmentPager);
         sectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(sectionsPagerAdapter);
@@ -114,6 +114,7 @@ public class RealEstateFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId()==R.id.addads){
             Intent intent = new Intent(getActivity(),RealEstateAddActivity.class);
+            intent.putExtra("UserName",userID);
             startActivity(intent);
         }
         return false;

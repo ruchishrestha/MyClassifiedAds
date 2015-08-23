@@ -1,21 +1,33 @@
 package com.example.home_pc.myclassifiedads.realestates;
 
-import android.graphics.Bitmap;
-
-import java.util.ArrayList;
-
 /**
  * Created by Home-PC on 7/27/2015.
  */
 public class RealEstatesAdObject {
-    String[] realEstateImages;int realestateID;
-    String title,description,houseNo,propertyType,saleType,aDdress,contactNo,mobileNo,email,username,userID,ad_insertdate,tableCategory;
-    Double latitude,longitute,price;
+    String[] realEstateImages;
+    int realestateID;
+    String title,description,houseNo,propertyType,saleType,aDdress,contactNo,mobileNo,email,userName,userID,ad_insertdate,tableCategory;
+    Double latitude,longitude,price;
+
+    public RealEstatesAdObject (String userName,String title,String description,String houseNo,String propertyType,String saleType,String aDdress,String contactNo,String mobileNo,String email,Double latitude,Double longitude ){
+        this.userName = userName;
+        this.title=title;
+        this.description=description;
+        this.houseNo=houseNo;
+        this.propertyType=propertyType;
+        this.saleType=saleType;
+        this.aDdress=aDdress;
+        this.contactNo=contactNo;
+        this.mobileNo=mobileNo;
+        this.email=email;
+        this.latitude=latitude;
+        this.longitude=longitude;
+    }
 
     public RealEstatesAdObject (int realestateID,String ad_insertdate,String username,String title,String description,String houseNo,String propertyType,String saleType,Double price,String aDdress,String contactNo,String mobileNo,Double latitude,Double longitute ){
         this.realestateID=realestateID;
         this.ad_insertdate=ad_insertdate;
-        this.username=username;
+        this.userName =username;
         this.title=title;
         this.description=description;
         this.houseNo=houseNo;
@@ -26,7 +38,7 @@ public class RealEstatesAdObject {
         this.contactNo=contactNo;
         this.mobileNo=mobileNo;
         this.latitude=latitude;
-        this.longitute=longitute;
+        this.longitude =longitute;
     }
 
     public RealEstatesAdObject(int realestateID,String title,Double price,String saleType,String aDdress,String contactNo,String username){
@@ -36,7 +48,7 @@ public class RealEstatesAdObject {
         this.saleType=saleType;
         this.aDdress=aDdress;
         this.contactNo=contactNo;
-        this.username=username;
+        this.userName =username;
 
     }
 
@@ -47,11 +59,19 @@ public class RealEstatesAdObject {
     }
 
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public void settitle(String title){this.title=title;}
     public String gettitle(){return this.title;}
     public void setDescription(String description){this.description=description;}
     public String getDescription (){return this.description;}
-    public void setHouseNo(String HouseNo){this.houseNo=houseNo;}
+    public void setHouseNo(String houseNo){this.houseNo=houseNo;}
     public String getHouseNo (){return this.houseNo;}
     public void setPropertyType(String propertyType){this.propertyType=propertyType;}
     public String getPropertyType (){return this.propertyType;}
@@ -75,6 +95,6 @@ public class RealEstatesAdObject {
     public String getemail(){return this.email;}
     public void setLatitude(Double latitude){this.latitude=latitude;}
     public Double getLatitude(){return this.latitude;}
-    public void setLongitute(Double longitute){this.longitute=longitute;}
-    public Double getLongitute(){return this.longitute ;}
+    public void setLongitude(Double longitude){this.longitude = longitude;}
+    public Double getLongitude(){return this.longitude;}
 }

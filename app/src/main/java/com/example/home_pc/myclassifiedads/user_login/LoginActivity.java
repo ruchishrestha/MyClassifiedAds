@@ -2,8 +2,8 @@ package com.example.home_pc.myclassifiedads.user_login;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,14 +12,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.home_pc.myclassifiedads.main.NavigationActivity;
 import com.example.home_pc.myclassifiedads.R;
+import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
+import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
+import com.example.home_pc.myclassifiedads.mainactivity.NavigationActivity;
+
+import org.json.JSONObject;
 
 
 public class LoginActivity extends ActionBarActivity {
 
     Button logInButton;
     EditText userName,passWord;
+    String usrName,pasWord;
     TextView forgotPassWord;
 
     @Override
@@ -41,31 +46,57 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     public void log_inclick(){
-        if(userName.getText().equals("") || passWord.getText().equals("")){
-            Toast.makeText(this,"Enter Both Username and Password!!",Toast.LENGTH_SHORT).show();
+        if(userName.getText().toString().equals("") || passWord.getText().toString().equals("")){
+            Toast.makeText(this,"Missing Username or Password!!",Toast.LENGTH_SHORT).show();
         }
         else {
-            Intent loginintent = new Intent(this, NavigationActivity.class);
-            loginintent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            loginintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(loginintent);
-            finish();
+            usrName=userName.getText().toString();
+            pasWord=passWord.getText().toString();
+            logInButton.setEnabled(false);
+            new AsyncAuthenticateUser().execute();
         }
     }
 
-    protected class AsyncGetUserDetails extends
-            AsyncTask<Void, Void, IndividualUser> {
+    protected class AsyncAuthenticateUser extends
+            AsyncTask<Void, Void, String[]> {
 
-        IndividualUser userObject = null;
+        String[] userCategory={"","",""};
 
         @Override
-        protected IndividualUser doInBackground(Void... params) {
-            return userObject;
+        protected String[] doInBackground(Void... params) {
+            RestAPI api = new RestAPI();
+            try{
+                JSONObject jsonObject=api.UserAuthentication(usrName, pasWord);
+                JSONParser jsonParser=new JSONParser();
+                userCategory[0] = jsonParser.authenticateUser(jsonObject)[0];
+                userCategory[1] = jsonParser.authenticateUser(jsonObject)[1];
+                userCategory[2] = jsonParser.authenticateUser(jsonObject)[2];
+            }
+            catch(Exception e){
+                System.out.println("NOUSER: "+e);
+            }
+            return userCategory;
         }
 
         @Override
-        protected void onPostExecute(IndividualUser result) {
-
+        protected void onPostExecute(String[] result) {
+            System.out.println("RESULT: "+result[0]+" "+result[1]+" "+result[2]);
+            logInButton.setEnabled(true);
+            if(result[0].equals("False")){
+                System.out.println("WRONG: "+result[0]);
+            }
+            else {
+                Intent loginIntent = new Intent(getApplicationContext(), NavigationActivity.class);
+                loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                loginIntent.putExtra("Selection", 2);
+                loginIntent.putExtra("UserName", usrName);
+                loginIntent.putExtra("UserCategory", result[0]);
+                loginIntent.putExtra("FullUserName", result[1]);
+                loginIntent.putExtra("PictureURL", result[2]);
+                startActivity(loginIntent);
+                finish();
+            }
         }
     }
 

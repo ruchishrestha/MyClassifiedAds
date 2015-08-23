@@ -7,9 +7,10 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.home_pc.myclassifiedads.R;
+import com.example.home_pc.myclassifiedads.classified_api.ImageLoaderAPI;
+import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
+import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -30,6 +36,7 @@ public class SalesAddActivity extends ActionBarActivity {
     private ImageView[] uploadedImages;
     private TextView uploadPics,dialogOptionOne,dialogOptionTwo;
     private EditText title,description,brand,modelNo,price,contactNo,usedTime;
+    String userName,stitle,sdescription,scategory,sbrand,smodelNo,sprice,sstatus,scondition,scontactNo,susedTime,srating;
     private Spinner status,condition;
     private static int RESULT_LOAD_IMAGE = 1;
     private static int RESULT_CAMERA_IMAGE = 0;
@@ -38,6 +45,7 @@ public class SalesAddActivity extends ActionBarActivity {
     private int i;
     private Dialog dialog;
     private Button saveButton;
+    SalesAdsObject salesAdsObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +69,9 @@ public class SalesAddActivity extends ActionBarActivity {
         photosToUpload= new ArrayList<Bitmap>();
         tempPhotoView =new Bitmap[10];
 
+        userName = getIntent().getStringExtra("UserName");
+        scategory = getIntent().getStringExtra("SalesCategory");
+
         dialog=new Dialog(context);
         dialog.setContentView(R.layout.custom_dialog);
         dialogOptionOne=(TextView)dialog.findViewById(R.id.dialogOption1);
@@ -71,7 +82,7 @@ public class SalesAddActivity extends ActionBarActivity {
         description=(EditText) findViewById(R.id.description);
         brand = (EditText) findViewById(R.id.salesBrand);
         modelNo = (EditText) findViewById(R.id.modelNo);
-        contactNo=(EditText) findViewById(R.id.realEstateContact);
+        contactNo=(EditText) findViewById(R.id.salesContact);
         usedTime=(EditText) findViewById(R.id.usedTime);
         price = (EditText) findViewById(R.id.salesPrice);
         status= (Spinner) findViewById(R.id.salesStatus);
@@ -88,9 +99,24 @@ public class SalesAddActivity extends ActionBarActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                saveButtonClick();
             }
         });
+    }
+
+    public void saveButtonClick(){
+        stitle = title.getText().toString();
+        sdescription = description.getText().toString();
+        sbrand = brand.getText().toString();
+        smodelNo = modelNo.getText().toString();
+        sprice = price.getText().toString();
+        sstatus = status.getSelectedItem().toString();
+        scondition = condition.getSelectedItem().toString();
+        scontactNo = contactNo.getText().toString();
+        susedTime = usedTime.getText().toString();
+        srating = "0";
+        salesAdsObject = new SalesAdsObject(userName,stitle,sdescription,scategory,sbrand,smodelNo,sprice,sstatus,scontactNo,scondition,susedTime,srating);
+        new AsyncAddSalesAds().execute(salesAdsObject);
     }
 
     public void uploadPicsclick(){
@@ -106,7 +132,7 @@ public class SalesAddActivity extends ActionBarActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(
                             Intent.ACTION_PICK,
-                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, RESULT_LOAD_IMAGE);
                 }
             });
@@ -122,7 +148,7 @@ public class SalesAddActivity extends ActionBarActivity {
     }
 
     public void imageclick(View v){
-        if(i<9 && v.getId()==R.id.img10){return;}
+        if(i<9 && v.getId()== R.id.img10){return;}
         if(i>-1) {
             dialog.setTitle("Do you want to remove this photo?");
             dialogOptionOne.setText("Yes");
@@ -194,6 +220,40 @@ public class SalesAddActivity extends ActionBarActivity {
         final float scale = getResources().getDisplayMetrics().density;
         // Convert the dps to pixels, based on density scale
         return ((int) (dp * scale + 0.5f));
+    }
+
+    protected class AsyncAddSalesAds extends AsyncTask<SalesAdsObject,Void,String>{
+
+        String adID;
+        ArrayList<String> pictureURLs = new ArrayList<String>();
+        String result;
+        String alter;
+
+        @Override
+        protected String doInBackground(SalesAdsObject... params) {
+            RestAPI api = new RestAPI();
+
+            try {
+                JSONObject object = api.AddSalesAds(params[0].getUserName(), params[0].gettitle(), params[0].getDescription(), params[0].getBrand(), params[0].getModelNo(), params[0].getPrice(), params[0].getStatus(), params[0].getCondition(),params[0].getUsedTime(),params[0].getContactNo(),params[0].getRating(),params[0].getCategory());
+                JSONParser parser = new JSONParser();
+                adID = parser.getId(object);
+                alter = scategory.replace(" ","_");
+                pictureURLs = ImageLoaderAPI.AzureImageUploader(photosToUpload, "Sales" + alter + adID);
+
+                object = api.AddtoSalesGallery(adID, scategory, pictureURLs);
+                result = parser.getResult(object);
+            }
+            catch (Exception e){
+
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            System.out.println("Sales: "+result);
+        }
     }
 
     @Override

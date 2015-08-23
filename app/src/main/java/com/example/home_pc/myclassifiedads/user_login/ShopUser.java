@@ -1,20 +1,17 @@
 package com.example.home_pc.myclassifiedads.user_login;
 
-import android.graphics.Bitmap;
-
 /**
  * Created by Home-PC on 7/29/2015.
  */
 public class ShopUser {
 
-    Bitmap shopPic;
-    String shopName,owner,aDdress,panNo,userName,passWord,contactNo,mobileNo,emailId,webSite;
+    String shopName,owner,aDdress,panNo,userName,passWord,contactNo,mobileNo,emailId,webSite,shopPicURL;
     Double latitude,longitude;
 
-    public ShopUser(String userName,String passWord, String shopName,String owner, String panNo, String aDdress, String contactNo, String mobileNo, String emailId, String webSite,  Double latitude, Double longitude, Bitmap shopPic) {
-        this.shopPic = shopPic;
+    public ShopUser(String userName,String passWord, String shopName, String owner, String panNo, String aDdress, String contactNo, String mobileNo, String emailId, String webSite,  Double latitude, Double longitude, String shopPicURL) {
+        this.shopPicURL = shopPicURL;
         this.shopName = shopName;
-        this.owner=owner;
+        this.owner = owner;
         this.aDdress = aDdress;
         this.panNo = panNo;
         this.userName = userName;
@@ -27,12 +24,27 @@ public class ShopUser {
         this.longitude = longitude;
     }
 
-    public Bitmap getShopPic() {
-        return shopPic;
+    public ShopUser(String shopName, String owner, String passWord, String panNo, String aDdress, String contactNo, String mobileNo, String emailId, String webSite, Double latitude, Double longitude, String shopPicURL) {
+        this.shopName = shopName;
+        this.owner = owner;
+        this.passWord = passWord;
+        this.panNo = panNo;
+        this.aDdress = aDdress;
+        this.contactNo = contactNo;
+        this.mobileNo = mobileNo;
+        this.emailId = emailId;
+        this.webSite = webSite;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.shopPicURL = shopPicURL;
     }
 
-    public void setShopPic(Bitmap shopPic) {
-        this.shopPic = shopPic;
+    public String getShopPicURL() {
+        return shopPicURL;
+    }
+
+    public void setShopPicURL(String shopPicURL) {
+        this.shopPicURL = shopPicURL;
     }
 
     public String getShopName() {
@@ -111,7 +123,7 @@ public class ShopUser {
         return passWord;
     }
 
-    public void setPassWord(String password) {
+    public void setPassWord(String passWord) {
         this.passWord = passWord;
     }
 

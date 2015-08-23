@@ -3,10 +3,13 @@ package com.example.home_pc.myclassifiedads.classified_api;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
-import com.example.home_pc.myclassifiedads.contacts.CommentObject;
-import com.example.home_pc.myclassifiedads.contacts.ContactsAdObject;
+import com.example.home_pc.myclassifiedads.comments.CommentObject;
+import com.example.home_pc.myclassifiedads.common_contactsnwanted.ContactsnWantedAdObject;
 import com.example.home_pc.myclassifiedads.jobs.JobAdsObject;
 import com.example.home_pc.myclassifiedads.realestates.RealEstatesAdObject;
+import com.example.home_pc.myclassifiedads.user_login.IndividualUser;
+import com.example.home_pc.myclassifiedads.user_login.OrganizationUser;
+import com.example.home_pc.myclassifiedads.user_login.ShopUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,16 +28,130 @@ public class JSONParser {
 
 
     @SuppressLint("LongLogTag")
-    public ArrayList<ContactsAdObject> parseContactsList(JSONObject object)
+    public IndividualUser getIndividualDetail(JSONObject object)
     {
-        ArrayList<ContactsAdObject> arrayList=new ArrayList<>();
+        IndividualUser iUser=null;
+        try {
+            JSONArray jsonArray=object.getJSONArray("Value");
+            JSONObject jsonObj=null;
+            for(int i=0;i<jsonArray.length();i++) {
+                jsonObj = jsonArray.getJSONObject(i);
+                iUser = new IndividualUser(jsonObj.getString("firstName"),jsonObj.getString("middleName"),jsonObj.getString("lastName"),jsonObj.getString("pasword"),jsonObj.getString("addres"),jsonObj.getString("contactNo"),jsonObj.getString("mobileNo"),jsonObj.getString("emailId"),jsonObj.getString("webSite"),jsonObj.getString("profilePictureURL"));
+            }
+        }
+        catch(Exception e){
+            System.out.println("ERROROROROROROR!!" + e);
+        }
+        return iUser;
+    }
+
+    @SuppressLint("LongLogTag")
+    public ShopUser getShopDetail(JSONObject object)
+    {
+        ShopUser sUser=null;
+        try {
+            JSONArray jsonArray=object.getJSONArray("Value");
+            JSONObject jsonObj=null;
+            for(int i=0;i<jsonArray.length();i++) {
+                jsonObj = jsonArray.getJSONObject(i);
+                sUser = new ShopUser(jsonObj.getString("shopName"),jsonObj.getString("shopOwner"),jsonObj.getString("pasword"),jsonObj.getString("panNo"),jsonObj.getString("addres"),jsonObj.getString("contactNo"),jsonObj.getString("mobileNo"),jsonObj.getString("emailId"),jsonObj.getString("webSite"),jsonObj.getDouble("latitude"),jsonObj.getDouble("longitude"),jsonObj.getString("shopPictureURL"));
+            }
+        }
+        catch(Exception e){
+            System.out.println("ERROROROROROROR!!");
+        }
+        return sUser;
+    }
+
+    @SuppressLint("LongLogTag")
+    public OrganizationUser getOrganizationDetail(JSONObject object)
+    {
+        OrganizationUser oUser=null;
+        try {
+            JSONArray jsonArray=object.getJSONArray("Value");
+            JSONObject jsonObj=null;
+            for(int i=0;i<jsonArray.length();i++) {
+                jsonObj = jsonArray.getJSONObject(i);
+                oUser = new OrganizationUser(jsonObj.getString("organizationName"),jsonObj.getString("registrationNo"),jsonObj.getString("pasword"),jsonObj.getString("addres"),jsonObj.getString("contactNo"),jsonObj.getString("mobileNo"),jsonObj.getString("emailId"),jsonObj.getString("webSite"),jsonObj.getDouble("latitude"),jsonObj.getDouble("longitude"),jsonObj.getString("organizationPictureURL"));
+            }
+        }
+        catch(Exception e){
+            System.out.println("ERROROROROROROR!!");
+        }
+        return oUser;
+    }
+
+    @SuppressLint("LongLogTag")
+    public String checkUserName(JSONObject object){
+        String userChecker="";
+        try{
+            userChecker = object.getString("Value");
+        }
+        catch(Exception e){
+            System.out.println("CHECK ERROR!! "+e);
+        }
+        return userChecker;
+    }
+
+    @SuppressLint("LongLogTag")
+    public String[] authenticateUser(JSONObject object)
+    {
+        String[] userCategory={"","",""};
+        try{
+            JSONArray jsonArray=object.getJSONArray("Value");
+            JSONObject jsonObj=null;
+            for(int i=0;i<jsonArray.length();i++)
+            {
+                jsonObj=jsonArray.getJSONObject(i);
+                userCategory[0] = jsonObj.getString("userCategory");
+                userCategory[1] = jsonObj.getString("fullUserName");
+                userCategory[2] = jsonObj.getString("pictureURL");
+            }
+        }
+        catch (Exception e){
+            System.out.println("ERROR-USER: "+e);
+            userCategory[0] = "Error";
+            userCategory[1] = "";
+            userCategory[2] = "";
+        }
+        return userCategory;
+    }
+
+    public String getId(JSONObject object){
+        String adID="";
+        try{
+            adID = object.getString("Value");
+        }
+        catch(Exception e){
+            System.out.println("ID-ERROR: "+e);
+        }
+        return adID;
+    }
+
+    public String getResult(JSONObject object){
+        String result="";
+        try{
+            result = object.getString("Value");
+        }
+        catch (Exception e){
+            System.out.println("JobResult: "+e);
+        }
+        return result;
+    }
+
+
+
+    @SuppressLint("LongLogTag")
+    public ArrayList<ContactsnWantedAdObject> parseContactsList(JSONObject object)
+    {
+        ArrayList<ContactsnWantedAdObject> arrayList=new ArrayList<>();
         try {
             JSONArray jsonArray=object.getJSONArray("Value");
             JSONObject jsonObj;
             for(int i=0;i<jsonArray.length();i++)
             {
                 jsonObj=jsonArray.getJSONObject(i);
-                arrayList.add(new ContactsAdObject(jsonObj.getInt("adid"), jsonObj.getString("photo"),jsonObj.getString("username"),jsonObj.getString("title"),jsonObj.getString("addres"),jsonObj.getString("contact")));
+                arrayList.add(new ContactsnWantedAdObject(jsonObj.getInt("adid"), jsonObj.getString("photo"),jsonObj.getString("username"),jsonObj.getString("title"),jsonObj.getString("addres"),jsonObj.getString("contact")));
             }
 
         } catch (JSONException e) {
@@ -45,16 +162,16 @@ public class JSONParser {
     }
 
     @SuppressLint("LongLogTag")
-    public ArrayList<ContactsAdObject> parseContactDetails(JSONObject object)
+    public ArrayList<ContactsnWantedAdObject> parseContactDetails(JSONObject object)
     {
-        ArrayList<ContactsAdObject> arrayList=new ArrayList<>();
+        ArrayList<ContactsnWantedAdObject> arrayList=new ArrayList<>();
         try {
             JSONArray jsonArray=object.getJSONArray("Value");
             JSONObject jsonObj;
             for(int i=0;i<jsonArray.length();i++)
             {
                 jsonObj=jsonArray.getJSONObject(i);
-                arrayList.add(new ContactsAdObject(jsonObj.getInt("adid"),jsonObj.getString("dateOnly"),jsonObj.getString("username"),jsonObj.getString("title"),jsonObj.getString("ad_description"),jsonObj.getString("Category"),jsonObj.getString("contact"),jsonObj.getString("addres"),jsonObj.getString("email"),jsonObj.getDouble("latitude"),jsonObj.getDouble("longitude"),jsonObj.getString("photo")));
+                arrayList.add(new ContactsnWantedAdObject(jsonObj.getInt("adid"),jsonObj.getString("dateOnly"),jsonObj.getString("username"),jsonObj.getString("title"),jsonObj.getString("ad_description"),jsonObj.getString("Category"),jsonObj.getString("contact"),jsonObj.getString("addres"),jsonObj.getString("email"),jsonObj.getDouble("latitude"),jsonObj.getDouble("longitude"),jsonObj.getString("photo")));
             }
 
         } catch (JSONException e) {

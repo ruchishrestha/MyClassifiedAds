@@ -16,18 +16,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.home_pc.myclassifiedads.R;
 import com.example.home_pc.myclassifiedads.classified_api.ImageLoaderAPI;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
 import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
-import com.example.home_pc.myclassifiedads.main.MainActivity;
+import com.example.home_pc.myclassifiedads.mainactivity.MainActivity;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Home-PC on 7/31/2015.
@@ -40,7 +38,7 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
     Intent intent;
     String userID;
     public Bitmap jobs_image;
-    ViewHolder holder;
+    ViewHolder vh;
 
     public JobAdsAdapter(Context context,ArrayList<JobAdsObject> jobAdsObjects,String userID) {
         this.context=context;
@@ -69,9 +67,9 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
 
     @Override
     public JobAdsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.jobs_item, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_jobs, parent, false);
         // set the view's size, margins, paddings and layout parameters
-        ViewHolder vh = new ViewHolder(view);
+        vh = new ViewHolder(view);
         return vh;
     }
 
@@ -81,9 +79,6 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
         final JobAdsObject jao=jobAdsObjects.get(position);
         new AsyncLoadImage(position,holder,jao).execute(jao.logoURL);
 
-
-
-
     }
 
     public void navigatetohome(){
@@ -92,14 +87,14 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
         alertDialog.setMessage("Please create your account first or Login");
         alertDialog.setIcon(R.drawable.backward);
         alertDialog.setTitle("The Classified Ads App");
-        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,"OK", new DialogInterface.OnClickListener() {
+        alertDialog.setButton2("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(context, MainActivity.class);
                 context.startActivity(intent);
             }
         });
-        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"CANCEL", new DialogInterface.OnClickListener() {
+        alertDialog.setButton("CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
@@ -120,7 +115,7 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
                 flag= parser.parseReturnedValue(jsonObject);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                Log.d("AsyncSavetoWatchlist", e.getMessage().toString());
+                Log.d("AsyncSavetoWatchlist", e.getMessage());
             }
             return flag;
         }
@@ -136,7 +131,7 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
             else{
                 alertDialog.setMessage("Already added");
             }
-            alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,"OK", new DialogInterface.OnClickListener() {
+            alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     alertDialog.dismiss();
@@ -180,7 +175,7 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
             holder.jobsCategory.setText(jobAdsObject.jobCategory);
             holder.jobsVaccancies.setText(jobAdsObject.vaccancyNo);
             holder.jobsSalary.setText("NPR."+jobAdsObject.salary);
-            holder.jobsUserID.setText(jobAdsObject.username);
+            holder.jobsUserID.setText(jobAdsObject.userName);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -219,7 +214,7 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
             });
         }
 
-        }
+    }
 
     @Override
     public int getItemCount() {

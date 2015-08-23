@@ -7,9 +7,10 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,26 +19,37 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.home_pc.myclassifiedads.R;
+import com.example.home_pc.myclassifiedads.classified_api.ImageLoaderAPI;
+import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
+import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
+import com.example.home_pc.myclassifiedads.mainactivity.LocateOnMapActivity;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 
 public class RealEstateAddActivity extends ActionBarActivity {
 
+    private final int REQUEST_LATLONG=2;
+    private static int RESULT_LOAD_IMAGE = 1;
+    private static int RESULT_CAMERA_IMAGE = 0;
     private final Context context=this;
     private ImageView[] uploadedImages;
     private TextView uploadPics,dialogOptionOne,dialogOptionTwo,locateOnMap;
     private EditText title,description,houseNo,price,aDdress,contactNo,mobileNo;
+    String userName,rtitle,rdescription,rhouseNo,rpropertyType,rsaleType,rprice,raDdress,rcontactNo,rmobileNo;
     private Spinner propertyType,saleType;
-    private static int RESULT_LOAD_IMAGE = 1;
-    private static int RESULT_CAMERA_IMAGE = 0;
     private Bitmap[] tempPhotoView;
     private ArrayList<Bitmap> photosToUpload;
+    Double _latitude,_longitude;
     private int i;
     private Dialog dialog;
     private Button saveButton;
+    RealEstatesAdObject realEstatesAdObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +70,7 @@ public class RealEstateAddActivity extends ActionBarActivity {
         uploadedImages[8]=(ImageView) findViewById(R.id.img9);
         uploadedImages[9]=(ImageView) findViewById(R.id.img10);
 
+        userName = getIntent().getStringExtra("UserName");
         photosToUpload = new ArrayList<Bitmap>();
         tempPhotoView =new Bitmap[10];
 
@@ -86,12 +99,34 @@ public class RealEstateAddActivity extends ActionBarActivity {
             }
         });
 
+        locateOnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent locateOnMap= new Intent(getApplicationContext(), LocateOnMapActivity.class);
+                startActivityForResult(locateOnMap, REQUEST_LATLONG);
+            }
+        });
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                saveButtonClick();
             }
         });
+    }
+
+    public void saveButtonClick(){
+        rtitle = title.getText().toString();
+        rdescription = description.getText().toString();
+        rhouseNo = houseNo.getText().toString();
+        rpropertyType = "Private"; //propertyType.getSelectedItem().toString();
+        rsaleType = saleType.getSelectedItem().toString();
+        rprice = price.getText().toString();
+        raDdress = aDdress.getText().toString();
+        rcontactNo = contactNo.getText().toString();
+        rmobileNo = mobileNo.getText().toString();
+        realEstatesAdObject = new RealEstatesAdObject(userName,rtitle,rdescription,rhouseNo,rpropertyType,rsaleType,rprice,raDdress,rcontactNo,rmobileNo,_latitude,_longitude);
+        new AsyncAddRealEstateAds().execute(realEstatesAdObject);
     }
 
     public void uploadPicsclick(){
@@ -107,7 +142,7 @@ public class RealEstateAddActivity extends ActionBarActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(
                             Intent.ACTION_PICK,
-                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, RESULT_LOAD_IMAGE);
                 }
             });
@@ -123,7 +158,7 @@ public class RealEstateAddActivity extends ActionBarActivity {
     }
 
     public void imageclick(View v){
-        if(i<9 && v.getId()==R.id.img10){return;}
+        if(i<9 && v.getId()== R.id.img10){return;}
         if(i>-1) {
             dialog.setTitle("Do you want to remove this photo?");
             dialogOptionOne.setText("Yes");
@@ -187,6 +222,17 @@ public class RealEstateAddActivity extends ActionBarActivity {
             tempPhotoView[i]=Bitmap.createScaledBitmap(photosToUpload.get(i),dptopx(100),dptopx(100),true);
             uploadedImages[i].setImageBitmap(tempPhotoView[i]);
         }
+        else if (requestCode == REQUEST_LATLONG){
+            if(resultCode== LocateOnMapActivity.RESULT_LATLONG){
+                _latitude=data.getDoubleExtra("Latitude",0.0);
+                _longitude=data.getDoubleExtra("Longitude",0.0);
+                if(_latitude==0.0 && _longitude==0.0){
+                    _latitude=null;
+                    _longitude=null;
+                }
+                Toast.makeText(this, "" + _latitude + " " + _longitude, Toast.LENGTH_LONG).show();
+            }
+        }
         dialog.dismiss();
     }
 
@@ -195,6 +241,40 @@ public class RealEstateAddActivity extends ActionBarActivity {
         final float scale = getResources().getDisplayMetrics().density;
         // Convert the dps to pixels, based on density scale
         return ((int) (dp * scale + 0.5f));
+    }
+
+
+    protected class AsyncAddRealEstateAds extends AsyncTask<RealEstatesAdObject,Void,String>{
+
+        String adID;
+        ArrayList<String> pictureURLs = new ArrayList<String>();
+        String result;
+
+        @Override
+        protected String doInBackground(RealEstatesAdObject... params) {
+
+            RestAPI api = new RestAPI();
+
+            try{
+                JSONObject object = api.AddRealEstateAds(params[0].getUserName(), params[0].gettitle(), params[0].getDescription(),params[0].getHouseNo(),params[0].getPropertyType(), params[0].getSaleType(),params[0].getADdress(),params[0].getContactNo(), params[0].getMobileNo(), params[0].getemail(), params[0].getLatitude(), params[0].getLongitude());
+                JSONParser parser = new JSONParser();
+                adID = parser.getId(object);
+
+                pictureURLs = ImageLoaderAPI.AzureImageUploader(photosToUpload, "RealEstate" + adID);
+
+                object = api.AddtoRealEstateGallery(adID, pictureURLs);
+                result = parser.getResult(object);
+            }
+            catch(Exception e){
+
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            System.out.println("REAL: "+result);
+        }
     }
 
 

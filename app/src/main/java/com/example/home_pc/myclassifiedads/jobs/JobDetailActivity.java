@@ -27,13 +27,11 @@ import com.example.home_pc.myclassifiedads.R;
 import com.example.home_pc.myclassifiedads.classified_api.ImageLoaderAPI;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
 import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
-import com.example.home_pc.myclassifiedads.contacts.AllCommentsActivity;
-import com.example.home_pc.myclassifiedads.contacts.CommentObject;
-import com.example.home_pc.myclassifiedads.main.AsyncAdComment;
-import com.example.home_pc.myclassifiedads.main.MainActivity;
+import com.example.home_pc.myclassifiedads.comments.AllCommentsActivity;
+import com.example.home_pc.myclassifiedads.comments.CommentObject;
+import com.example.home_pc.myclassifiedads.mainactivity.MainActivity;
 
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -46,12 +44,12 @@ public class JobDetailActivity extends ActionBarActivity {
     ProgressDialog progressDialog;
     String userID;
     ImageView read_comment,comment_cancel,comment_save,jobsImage;
-    Bitmap jobs_image=null;
+    Bitmap jobs_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.job_detail);
+        setContentView(R.layout.view_job_details);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         jobID=getIntent().getExtras().getInt("jobID");
@@ -170,7 +168,7 @@ public class JobDetailActivity extends ActionBarActivity {
 
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                Log.d("AsyncLoadDeptDetails", e.getMessage());
+                Log.d("AsyncLoadDeptDetails", ""+e);
             }
 
             return jobAdsObjects;
@@ -184,7 +182,7 @@ public class JobDetailActivity extends ActionBarActivity {
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progressDialog.setIndeterminate(true);
             progressDialog.show();
-            if(userID!="Guest"){
+            if(!userID.equals("Guest")){
                 loadMyComments(jobID, userID);
             }
         }
@@ -196,12 +194,12 @@ public class JobDetailActivity extends ActionBarActivity {
             if(progressDialog.isShowing()){
                 progressDialog.dismiss();
             }
-           username.setText(result.get(0).username);
+            username.setText(result.get(0).userName);
             title.setText(result.get(0).title);
-           jobCategory.setText(result.get(0).jobCategory);
+            jobCategory.setText(result.get(0).jobCategory);
             salary.setText("NPR." + result.get(0).salary);
             ad_postedDate.setText(result.get(0).ad_postedDate);
-            ad_description.setText(result.get(0).ad_description);
+            ad_description.setText(result.get(0).description);
             responsibility.setText(result.get(0).responsibility);
             skills.setText(result.get(0).skills);
             jobTime.setText(result.get(0).jobTime);
@@ -235,7 +233,7 @@ public class JobDetailActivity extends ActionBarActivity {
 
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                Log.d("AsyncLoadMyComment", e.getMessage());
+                Log.d("AsyncLoadMyComment", ""+e);
             }
 
             return myCommentObject;
@@ -285,7 +283,7 @@ public class JobDetailActivity extends ActionBarActivity {
                 api.PushComments(params[0].tableCategory,params[0].userID,params[0].adid,params[0].commentText);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                Log.d("AsyncSaveComment", e.getMessage());
+                Log.d("AsyncSaveComment", ""+e);
             }
             return null;
         }
@@ -308,7 +306,7 @@ public class JobDetailActivity extends ActionBarActivity {
                     jobs_image = ImageLoaderAPI.AzureImageDownloader(params[0]);
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
-                    Log.d("AsyncLoadImage", e.getMessage());
+                    Log.d("AsyncLoadImage", ""+e);
                 }
 
                 return jobs_image;

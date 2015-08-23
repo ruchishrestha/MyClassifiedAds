@@ -1,15 +1,10 @@
 package com.example.home_pc.myclassifiedads.user_login;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -17,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.home_pc.myclassifiedads.R;
@@ -25,28 +19,16 @@ import com.example.home_pc.myclassifiedads.R;
 
 public class ShopSignUp extends ActionBarActivity {
 
+    private final String USER_TYPE="SHOP";
     final Context context=this;
     EditText shopName,owner,panNo,aDdress,userName,passWord,rePassWord;
-    ImageView shopPicture,nextButton;
-    TextView uploadPicture,dialogOption1,dialogOption2;
-    Dialog dialog;
-    Bitmap shopPic,tempShow;
-    private static int RESULT_LOAD_IMAGE = 1;
-    private static int RESULT_CAMERA_PIC = 0;
-    int photoCount;
-    boolean toggle;
+    ImageView nextButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.shop_sign_up);
+        setContentView(R.layout.sign_up_shop);
 
-
-        photoCount=0;
-        toggle=false;
-
-        shopPicture = (ImageView) findViewById(R.id.organizationPicture);
-        uploadPicture= (TextView) findViewById(R.id.shopPicUpload);
         shopName = (EditText) findViewById(R.id.shopName);
         owner=(EditText) findViewById(R.id.shopOwner);
         panNo = (EditText) findViewById(R.id.shopPanNo);
@@ -54,10 +36,6 @@ public class ShopSignUp extends ActionBarActivity {
         userName = (EditText) findViewById(R.id.shopUser);
         passWord = (EditText) findViewById(R.id.shopPassword);
         rePassWord = (EditText) findViewById(R.id.shopRePassword);
-        dialog=new Dialog(context);
-        dialog.setContentView(R.layout.custom_dialog);
-        dialogOption1=(TextView)dialog.findViewById(R.id.dialogOption1);
-        dialogOption2=(TextView)dialog.findViewById(R.id.dialogOption2);
         nextButton = (ImageView) findViewById(R.id.nextButton);
 
         nextButton.setOnClickListener(new View.OnClickListener() {
@@ -98,12 +76,6 @@ public class ShopSignUp extends ActionBarActivity {
                 }
             }
         });
-        uploadPicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploadPictureClick();
-            }
-        });
     }
 
     public void nextButtonClick(){
@@ -122,7 +94,6 @@ public class ShopSignUp extends ActionBarActivity {
                 bundle.putString("PanNo", panNo.getText().toString());
                 bundle.putString("Address", aDdress.getText().toString());
                 nextPage.putExtras(bundle);
-                nextPage.putExtra("ShopPic", shopPic);
                 nextPage.putExtra("Password", PasswordEncryptionService.createHash(passWord.getText().toString()));
             }
             catch (Exception e){}
@@ -131,133 +102,21 @@ public class ShopSignUp extends ActionBarActivity {
         }
     }
 
-    public void uploadPictureClick(){
-        if(photoCount==0) {
-
-            dialog.setTitle("Choose option to upload photo:");
-            dialogOption1.setText("From Device");
-            dialogOption2.setText("From Camera");
-            dialog.show();
-
-            dialogOption1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent gallery = new Intent(
-                            Intent.ACTION_PICK,
-                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(gallery, RESULT_LOAD_IMAGE);
-                }
-            });
-
-            dialogOption2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent camera = new Intent("android.media.action.IMAGE_CAPTURE");
-                    startActivityForResult(camera, RESULT_CAMERA_PIC);
-                }
-            });
-        }
-    }
-
-    public void profilePictureClick(View view){
-
-        if(!toggle) {
-            if (photoCount == 0) {
-
-                dialog.setTitle("Choose option to upload photo:");
-                dialogOption1.setText("From Device");
-                dialogOption2.setText("From Camera");
-                dialog.show();
-
-                dialogOption1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent gallery = new Intent(
-                                Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(gallery, RESULT_LOAD_IMAGE);
-                    }
-                });
-
-                dialogOption2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent camera = new Intent("android.media.action.IMAGE_CAPTURE");
-                        startActivityForResult(camera, RESULT_CAMERA_PIC);
-                    }
-                });
-            }
-            toggle=true;
-        }
-
-        else {
-
-            if (photoCount > 0) {
-
-                dialog.setTitle("Do you want to remove this photo?");
-                dialogOption1.setText("Yes");
-                dialogOption2.setText("No");
-                dialog.show();
-
-                dialogOption1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        shopPicture.setImageResource(R.drawable.camerapic);
-                        photoCount--;
-                        dialog.dismiss();
-                    }
-                });
-
-                dialogOption2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-            }
-            toggle=false;
-        }
-    }
-
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-            Cursor cursor = getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
-            cursor.moveToFirst();
-
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-            shopPic = BitmapFactory.decodeFile(picturePath);
-            tempShow = Bitmap.createScaledBitmap(shopPic, dptopx(100), dptopx(100), true);
-            shopPicture.setImageBitmap(tempShow);
-            photoCount++;
-        } else if (requestCode == RESULT_CAMERA_PIC && resultCode == RESULT_OK) {
-            shopPic = (Bitmap) data.getExtras().get("data");
-            tempShow = Bitmap.createScaledBitmap(shopPic, dptopx(100), dptopx(100), true);
-            shopPicture.setImageBitmap(tempShow);
-            photoCount++;
-        }
-
-        dialog.dismiss();
-    }
-
-    public int dptopx(float dp){
-        // Get the screen's density scale
-        final float scale = getResources().getDisplayMetrics().density;
-        // Convert the dps to pixels, based on density scale
-        return ((int) (dp * scale + 0.5f));
+    public void onBackPressed() {
+        super.onBackPressed();
+        SharedPreferences pref;
+        SharedPreferences.Editor editor;
+        pref=getApplicationContext().getSharedPreferences(USER_TYPE, 0);
+        editor= pref.edit();
+        editor.clear();
+        editor.commit();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_shop_signup, menu);
+        getMenuInflater().inflate(R.menu.menu_signup_shop, menu);
         return true;
     }
 
@@ -270,6 +129,10 @@ public class ShopSignUp extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if(id == android.R.id.home){
+           onBackPressed();
             return true;
         }
 
