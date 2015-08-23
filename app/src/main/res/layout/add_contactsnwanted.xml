@@ -25,7 +25,7 @@
             android:layout_marginBottom="20dp">
 
             <ImageView
-                android:id="@+id/contactImage"
+                android:id="@+id/adImage"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
@@ -82,7 +82,7 @@
                 android:layout_marginTop="10dp"/>
 
             <Spinner
-                android:id="@+id/contactCategory"
+                android:id="@+id/adCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_marginTop="10dp" />

@@ -26,13 +26,13 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_contacts);
+        setContentView(R.layout.add_contactsnwanted);
 
-        uploadedPic=(ImageView) findViewById(R.id.contactImage);
+        uploadedPic=(ImageView) findViewById(R.id.adImage);
         uploadPic=(TextView) findViewById(R.id.uploadPics);
         title=(EditText) findViewById(R.id.title);
         description=(EditText) findViewById(R.id.description);
-        category=(Spinner) findViewById(R.id.contactCategory);
+        category=(Spinner) findViewById(R.id.adCategory);
         aDdress=(EditText) findViewById(R.id.aDdress);
         contactNo=(EditText) findViewById(R.id.contactNo);
         mobileNo=(EditText) findViewById(R.id.mobileNo);
@@ -44,7 +44,7 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_contacts_add, menu);
+        getMenuInflater().inflate(R.menu.menu_contactsnwanted_add, menu);
         return true;
     }
 
