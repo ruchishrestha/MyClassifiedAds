@@ -47,7 +47,7 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         protected ImageView adImage;
-        protected TextView adTitle,aDdress,adContact,username,mobileNo;
+        protected TextView adTitle,aDdress,adContact,username;
         public ImageView popupMenu;
 
         public ViewHolder(View v) {
@@ -57,7 +57,6 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
             adContact=(TextView)v.findViewById(R.id.adContact);
             aDdress=(TextView)v.findViewById(R.id.aDdress);
             username=(TextView)v.findViewById(R.id.userId);
-            mobileNo=(TextView)v.findViewById(R.id.mobileNo);
             popupMenu=(ImageView)v.findViewById(R.id.popupMenu);
         }
     }
@@ -77,9 +76,8 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
        // holder.adImage.setImageBitmap(bitmap);
         holder.adTitle.setText(cao.title);
         holder.adContact.setText(cao.contactNo);
-        holder.aDdress.setText(cao.address);
-        holder.username.setText(cao.username);
-        holder.mobileNo.setText(cao.mobileNo);
+        holder.aDdress.setText(cao.aDdress);
+        holder.username.setText(cao.userName);
 
        view.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -109,7 +107,8 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
                                     navigatetohome();
                                 }
                                 else {
-                                    new AsyncSavetoWatchlist().execute(cao.adid);
+                                    ContactsnWantedAdObject co=new ContactsnWantedAdObject(cao.adid,tableCategory,userID);
+                                    new AsyncSavetoWatchlist().execute(co);
                                 }
                         }
                         return true;
@@ -126,14 +125,14 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
         alertDialog.setMessage("Please create your account first or Login");
         alertDialog.setIcon(R.drawable.backward);
         alertDialog.setTitle("The Classified Ads App");
-        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,"OK", new DialogInterface.OnClickListener() {
+        alertDialog.setButton2("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(context, MainActivity.class);
                 context.startActivity(intent);
             }
         });
-        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"CANCEL", new DialogInterface.OnClickListener() {
+        alertDialog.setButton("CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
@@ -144,14 +143,14 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
 
 
     protected class AsyncSavetoWatchlist extends
-            AsyncTask<Integer, Void, Boolean> {
+            AsyncTask<ContactsnWantedAdObject, Void, Boolean> {
 
         Boolean flag=false;
         @Override
-        protected Boolean doInBackground(Integer... params) {
+        protected Boolean doInBackground(ContactsnWantedAdObject... params) {
             RestAPI api = new RestAPI();
             try {
-                JSONObject jsonObject = api.PushtoWatchlist(params[0],tableCategory,userID);
+                JSONObject jsonObject = api.PushtoWatchlist(params[0].adid, params[0].tableCategory, params[0].userID);
                 JSONParser parser = new JSONParser();
               flag= parser.parseReturnedValue(jsonObject);
             } catch (Exception e) {
@@ -172,7 +171,7 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
             else{
                 alertDialog.setMessage("Already added");
             }
-            alertDialog.setButton(DialogInterface.BUTTON_NEUTRAL,"OK", new DialogInterface.OnClickListener() {
+            alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     alertDialog.dismiss();

@@ -1,5 +1,7 @@
 package com.example.home_pc.myclassifiedads.common_contactsnwanted;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.example.home_pc.myclassifiedads.R;
+import com.example.home_pc.myclassifiedads.mainactivity.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -112,9 +115,36 @@ public class WantedFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId()==R.id.addads){
-            Intent intent = new Intent(getActivity(), ContactsnWantedAddActivity.class);
-            startActivity(intent);
+            if(userID.equals("Guest")){
+                popupalert();
+            }else{
+                Intent intent = new Intent(getActivity(), ContactsnWantedAddActivity.class);
+                intent.putExtra("UserName",userID);
+                intent.putExtra("Category","wanted");
+                startActivity(intent);
+            }
         }
         return false;
+    }
+
+    public void popupalert(){
+        final AlertDialog alertDialog = new AlertDialog.Builder(
+                getActivity()).create();
+        alertDialog.setMessage("Please Login or Sign Up");
+        alertDialog.setIcon(R.drawable.backward);
+        alertDialog.setButton2("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        alertDialog.setButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 }

@@ -232,7 +232,7 @@ public class RestAPI {
         return result;
     }
 
-    public JSONObject AddContactsAds(String userName,String title,String description,String category,String aDdress,String contactNo,String mobileNo,String emailId,String latitude,String longitude,String picURL) throws Exception {
+    public JSONObject AddContactsAds(String userName,String title,String description,String category,String aDdress,String contactNo,String mobileNo,String emailId,double latitude,double longitude,String picURL) throws Exception {
         JSONObject result = null;
         JSONObject o = new JSONObject();
         JSONObject p = new JSONObject();
@@ -256,7 +256,22 @@ public class RestAPI {
         return result;
     }
 
-    public JSONObject AddWantedAds(String userName,String title,String description,String category,String aDdress,String contactNo,String mobileNo,String emailId,String latitude,String longitude,String picURL) throws Exception {
+    public JSONObject UpdateContactsAd(String adId,String pictureURL) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "UpdateContactsAd");
+        p.put("adId",mapObject(adId));
+        p.put("pictureURL",mapObject(pictureURL));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject AddWantedAds(String userName,String title,String description,String category,String aDdress,String contactNo,String mobileNo,String emailId,double latitude,double longitude,String picURL) throws Exception {
         JSONObject result = null;
         JSONObject o = new JSONObject();
         JSONObject p = new JSONObject();
@@ -273,6 +288,21 @@ public class RestAPI {
         p.put("latitude",mapObject(latitude));
         p.put("longitude",mapObject(longitude));
         p.put("picURL",mapObject(picURL));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject UpdateWantedAd(String adId,String pictureURL) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "UpdateWantedAd");
+        p.put("adId",mapObject(adId));
+        p.put("pictureURL",mapObject(pictureURL));
         o.put("parameters", p);
         String s = o.toString();
         String r = load(s);

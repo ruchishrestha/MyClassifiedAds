@@ -32,7 +32,7 @@ public class ContactsFragment extends Fragment {
     private SectionsPagerAdapter sectionsPagerAdapter;
     private Fragment selectFragment;
     private ViewPager viewPager;
-   public ArrayList<ContactsnWantedAdObject> contactsAdObject;
+    public ArrayList<ContactsnWantedAdObject> contactsAdObject;
     String userID;
     public Bundle args;
 
@@ -78,7 +78,7 @@ public class ContactsFragment extends Fragment {
             switch (fragmentPosition) {
                 case 0:
                     selectFragment= new ContactsnWantedListFragment();
-                   selectFragment.setArguments(args);
+                    selectFragment.setArguments(args);
                     break;
                 case 1:
                     selectFragment= new ContactsnWantedMapFragment();
@@ -123,6 +123,8 @@ public class ContactsFragment extends Fragment {
                 popupalert();
             }else{
                 Intent intent = new Intent(getActivity(), ContactsnWantedAddActivity.class);
+                intent.putExtra("UserName",userID);
+                intent.putExtra("Category","contacts");
                 startActivity(intent);
             }
         }

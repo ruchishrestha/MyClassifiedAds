@@ -156,13 +156,13 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
             if(progressDialog.isShowing()){
                 progressDialog.dismiss();
             }
-            username.setText(result.get(0).username);
+            username.setText(result.get(0).userName);
             ad_title.setText(result.get(0).title);
-            ad_description.setText(result.get(0).ad_description);
-            category.setText(result.get(0).Category);
-            address.setText(result.get(0).address);
+            ad_description.setText(result.get(0).description);
+            category.setText(result.get(0).category);
+            address.setText(result.get(0).aDdress);
             contactNo.setText(result.get(0).contactNo);
-            email.setText(result.get(0).email);
+            email.setText(result.get(0).emailId);
             ad_postedDate.setText(result.get(0).ad_insertdate);
 
         }
