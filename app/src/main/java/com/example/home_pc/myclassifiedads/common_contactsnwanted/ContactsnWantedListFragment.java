@@ -36,7 +36,7 @@ public class ContactsnWantedListFragment extends Fragment {
     ArrayList<ContactsnWantedAdObject> cObject;
     Context context;
     ContactnWantedAdsAdapter contactAdsAdapter;
-    String tableCategory,userID;
+    String tableCategory,userID,adtype;
 
     public ContactsnWantedListFragment() {
     }
@@ -49,10 +49,11 @@ public class ContactsnWantedListFragment extends Fragment {
                 false);
         tableCategory=getArguments().getString("tableCategory");
         userID=getArguments().getString("userID");
+        adtype = getArguments().getString("Category");
         contactsList=(RecyclerView) view.findViewById(R.id.cardList);
         mswipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipeRefreshLayout);
         context=getActivity();
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
         contactsList.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -122,7 +123,7 @@ public class ContactsnWantedListFragment extends Fragment {
     }
 
 
-    @Override
+   /* @Override
     public void onCreateOptionsMenu(Menu menu,MenuInflater inflater){
         inflater.inflate(R.menu.menu_add_ads, menu);
         super.onCreateOptionsMenu(menu, inflater);
@@ -132,8 +133,10 @@ public class ContactsnWantedListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId()==R.id.addads){
             Intent intent = new Intent(getActivity(), ContactsnWantedAddActivity.class);
+            intent.putExtra("userID",userID);
+            intent.putExtra("Category",adtype);
             startActivity(intent);
         }
         return false;
-    }
+    }*/
 }

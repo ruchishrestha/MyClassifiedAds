@@ -69,7 +69,7 @@ public class SalesAddActivity extends ActionBarActivity {
         photosToUpload= new ArrayList<Bitmap>();
         tempPhotoView =new Bitmap[10];
 
-        userName = getIntent().getStringExtra("UserName");
+        userName = getIntent().getStringExtra("userID");
         scategory = getIntent().getStringExtra("SalesCategory");
 
         dialog=new Dialog(context);

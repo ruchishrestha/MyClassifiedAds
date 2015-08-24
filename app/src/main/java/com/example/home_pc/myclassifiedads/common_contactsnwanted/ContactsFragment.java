@@ -48,6 +48,7 @@ public class ContactsFragment extends Fragment {
         contactsAdObject=new ArrayList<ContactsnWantedAdObject>();
 
         View v = inflater.inflate(R.layout.tab_fragments, container, false);
+        setHasOptionsMenu(true);
         fragmentTabs= (PagerSlidingTabStrip) v.findViewById(R.id.fragment_tabs);
         userID=getArguments().getString("userID");
         viewPager = (ViewPager) v.findViewById(R.id.fragmentPager);
@@ -74,6 +75,7 @@ public class ContactsFragment extends Fragment {
 
             Bundle args=new Bundle();
             args.putString("tableCategory","contacts");
+            args.putString("Category","contacts");
             args.putString("userID",userID);
             switch (fragmentPosition) {
                 case 0:
@@ -123,7 +125,7 @@ public class ContactsFragment extends Fragment {
                 popupalert();
             }else{
                 Intent intent = new Intent(getActivity(), ContactsnWantedAddActivity.class);
-                intent.putExtra("UserName",userID);
+                intent.putExtra("userID",userID);
                 intent.putExtra("Category","contacts");
                 startActivity(intent);
             }

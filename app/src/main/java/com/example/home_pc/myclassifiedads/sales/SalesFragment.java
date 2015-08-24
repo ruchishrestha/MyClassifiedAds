@@ -129,7 +129,7 @@ public class SalesFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId()==R.id.addads){
             Intent intent = new Intent(getActivity(),SalesAddActivity.class);
-            intent.putExtra("UserName",userID);
+            intent.putExtra("userID",userID);
             intent.putExtra("SalesCategory",salesCategory);
             startActivity(intent);
         }

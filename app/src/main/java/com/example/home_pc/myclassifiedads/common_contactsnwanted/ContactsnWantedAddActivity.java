@@ -54,6 +54,10 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_contactsnwanted);
 
+        photoCount=0;
+        toggle = false;
+
+
         userName = getIntent().getStringExtra("userID");
         adtype = getIntent().getStringExtra("Category");
         uploadedPic=(ImageView) findViewById(R.id.adImage);

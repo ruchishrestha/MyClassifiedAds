@@ -133,7 +133,7 @@ public class JobFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId()==R.id.addads){
             Intent intent = new Intent(getActivity(),JobAddActivity.class);
-            intent.putExtra("UserName",userID);
+            intent.putExtra("userID",userID);
             startActivity(intent);
         }
         return false;
