@@ -43,7 +43,7 @@ public class RealEstateListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.ads_recycler_view, container,
+              View view = inflater.inflate(R.layout.ads_recycler_view, container,
                 false);
         userID=getArguments().getString("userID");
         realestateList=(RecyclerView) view.findViewById(R.id.cardList);
