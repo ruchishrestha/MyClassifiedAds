@@ -49,7 +49,7 @@ public class ContactsFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.tab_fragments, container, false);
         fragmentTabs= (PagerSlidingTabStrip) v.findViewById(R.id.fragment_tabs);
-        userID=getArguments().getString("UserName");
+        userID=getArguments().getString("userID");
         viewPager = (ViewPager) v.findViewById(R.id.fragmentPager);
         sectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(sectionsPagerAdapter);

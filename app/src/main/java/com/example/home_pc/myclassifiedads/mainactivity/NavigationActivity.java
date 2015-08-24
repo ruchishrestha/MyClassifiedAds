@@ -57,7 +57,7 @@ public class NavigationActivity extends ActionBarActivity {
 
     private CustomDrawerAdapter upperDrawerListAdapter,salesListAdapter,lowerDrawerListAdapter;
     private List<DrawerItem> upperDrawerListItems,salesListItems,lowerDrawerListItems;
-    private  String userName, userCategory, fullUserName, pictureURL;
+    private  String userID, userCategory, fullUserName, pictureURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +67,9 @@ public class NavigationActivity extends ActionBarActivity {
         // Initializing all view items
         selectedItemTitle = navDrawerTitle = getTitle();
 
-        userCategory = getIntent().getStringExtra("UserCategory");
+        userCategory = getIntent().getStringExtra("userCategory");
         fullUserName = getIntent().getStringExtra("FullUserName");
-        userName = getIntent().getStringExtra("UserName");
+        userID = getIntent().getStringExtra("userID");
         pictureURL = getIntent().getStringExtra("PictureURL");
         int selection = getIntent().getIntExtra("Selection",2);
 
@@ -96,7 +96,7 @@ public class NavigationActivity extends ActionBarActivity {
         if(!pictureURL.equals("-")){System.out.println(pictureURL);}
         profilePicImageView.setImageResource(R.drawable.default_pic);
         userNameTextView.setText(fullUserName);
-        userIdTextView.setText(userName);
+        userIdTextView.setText(userID);
 
         // Add Drawer Items to dataList and set the drawer
         addDataToList(navDrawerListToggle);
@@ -283,8 +283,8 @@ public class NavigationActivity extends ActionBarActivity {
                 break;
         }
 
-        args.putString("UserName",userName);
-        args.putString("Usercategory",userCategory);
+        args.putString("userID",userID);
+        args.putString("userCategory",userCategory);
         fragment.setArguments(args);
         FragmentManager frgManager = getSupportFragmentManager();
         frgManager.beginTransaction().replace(R.id.content_frame, fragment).commit();

@@ -70,7 +70,7 @@ public class RealEstateAddActivity extends ActionBarActivity {
         uploadedImages[8]=(ImageView) findViewById(R.id.img9);
         uploadedImages[9]=(ImageView) findViewById(R.id.img10);
 
-        userName = getIntent().getStringExtra("UserName");
+        userName = getIntent().getStringExtra("userID");
         photosToUpload = new ArrayList<Bitmap>();
         tempPhotoView =new Bitmap[10];
 

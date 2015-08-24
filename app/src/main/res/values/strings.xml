@@ -59,6 +59,8 @@
     <string name="title_activity_locate_on_map">Locate on Map</string>
     <string name="title_fragment_realestateinlist">All Real Estates</string>
     <string name="title_fragment_realestateinmap">View in map</string>
+    <string name="title_fragment_topads">TOP ADS</string>
+    <string name="title_fragment_newads">NEW ADS</string>
 
     <string name="title_section1"><b>ALL ADS</b></string>
     <string name="title_section2"><b>TOP ADS</b></string>

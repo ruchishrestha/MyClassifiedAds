@@ -52,7 +52,7 @@ public class JobFragment extends Fragment {
         View view = inflater.inflate(R.layout.ads_recycler_view, container,
                 false);
         setHasOptionsMenu(true);
-        userID=getArguments().getString("UserName");
+        userID=getArguments().getString("userID");
         jobList=(RecyclerView) view.findViewById(R.id.cardList);
         mswipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipeRefreshLayout);
         context=getActivity();

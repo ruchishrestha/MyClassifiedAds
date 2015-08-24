@@ -90,8 +90,8 @@ public class LoginActivity extends ActionBarActivity {
                 loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 loginIntent.putExtra("Selection", 2);
-                loginIntent.putExtra("UserName", usrName);
-                loginIntent.putExtra("UserCategory", result[0]);
+                loginIntent.putExtra("userID", usrName);
+                loginIntent.putExtra("userCategory", result[0]);
                 loginIntent.putExtra("FullUserName", result[1]);
                 loginIntent.putExtra("PictureURL", result[2]);
                 startActivity(loginIntent);

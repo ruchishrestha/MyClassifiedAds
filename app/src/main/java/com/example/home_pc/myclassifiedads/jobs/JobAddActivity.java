@@ -58,7 +58,7 @@ public class JobAddActivity extends ActionBarActivity {
         photoCount=0;
         toggle = false;
 
-        userName = getIntent().getStringExtra("UserName");
+        userName = getIntent().getStringExtra("userID");
         organizationLogo = (ImageView) findViewById(R.id.jobsImage);
         uploadLogo = (TextView) findViewById(R.id.uploadPic);
         title=(EditText) findViewById(R.id.title);

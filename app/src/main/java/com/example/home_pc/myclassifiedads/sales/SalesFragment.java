@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,26 +15,27 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-
+import com.astuetz.PagerSlidingTabStrip;
 import com.example.home_pc.myclassifiedads.R;
 import com.example.home_pc.myclassifiedads.sales.SalesAddActivity;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 /**
  * Created by Home-PC on 7/23/2015.
  */
 public class SalesFragment extends Fragment {
-    public static final String TAG = SalesFragment.class.getSimpleName();
-  //  SectionsPagerAdapter mSectionsPagerAdapter;
-    ViewPager mViewPager;
-    android.support.v4.app.Fragment fragment;
+    private PagerSlidingTabStrip fragmentTabs;
+    private SectionsPagerAdapter sectionsPagerAdapter;
+    private Fragment selectFragment;
+    private ViewPager viewPager;
+    public ArrayList<SalesAdsObject> salesAdsObjects;
+    String userID;
+    public Bundle args;
 
-    String userName,salesCategory;
+    String salesCategory;
 
-    public static SalesFragment newInstance() {
-        return new SalesFragment();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,52 +50,58 @@ public class SalesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.tabbed_fragment, container,
+        View view = inflater.inflate(R.layout.tab_fragments, container,
                 false);
         setHasOptionsMenu(true);
 
-        userName = getArguments().getString("UserName");
-        salesCategory = getArguments().getString("SalesCategory");
-       /* mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
+        userID = getArguments().getString("userID");
+        salesCategory = getArguments().getString("salesCategory");
+        fragmentTabs = (PagerSlidingTabStrip) view.findViewById(R.id.fragment_tabs);
+        viewPager = (ViewPager) view.findViewById(R.id.fragmentPager);
+        sectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
+        viewPager.setAdapter(sectionsPagerAdapter);
+        viewPager.setCurrentItem(0, false);
+        fragmentTabs.setViewPager(viewPager);
 
-        mViewPager = (ViewPager) view.findViewById(R.id.pager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-*/
         return view;
     }
 
-   /* public class SectionsPagerAdapter extends FragmentPagerAdapter{
+    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
-        public android.support.v4.app.Fragment getItem(int position) {
+        public Fragment getItem(int position) {
+            return fragmentSelection(position);
+        }
 
-            Bundle args = new Bundle();
-            switch (position) {
+        public Fragment fragmentSelection(int fragmentPosition){
+
+            Bundle args=new Bundle();
+            args.putString("salesCategory",salesCategory);
+            args.putString("userID",userID);
+            switch (fragmentPosition) {
                 case 0:
-                    fragment = new SalesAllAds();
-                    args.putInt(SalesAllAds.ARG_SECTION_NUMBER, position + 1);
+                    selectFragment= new TopAdsFragment();
+                    selectFragment.setArguments(args);
                     break;
                 case 1:
-                    fragment = new SalesTopAds();
-                    args.putInt(SalesTopAds.ARG_SECTION_NUMBER, position + 1);
-                    break;
-                case 2:
-                    fragment = new SalesNewAds();
-                    args.putInt(SalesNewAds.ARG_SECTION_NUMBER, position + 1);
+                    selectFragment= new NewAdsFragment();
+                    selectFragment.setArguments(args);
                     break;
                 default:
                     break;
             }
-            fragment.setArguments(args);
-            return fragment;
+
+            return selectFragment;
+
         }
 
         @Override
         public int getCount() {
-            return 3;
+            return 2;
         }
 
         @Override
@@ -101,17 +109,16 @@ public class SalesFragment extends Fragment {
             Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
+                    return getString(R.string.title_fragment_topads);
                 case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
+                    return getString(R.string.title_fragment_newads);
             }
             return null;
         }
-
     }
-*/
+
+
+
     @Override
     public void onCreateOptionsMenu(Menu menu,MenuInflater inflater){
         inflater.inflate(R.menu.menu_add_ads, menu);
@@ -122,7 +129,7 @@ public class SalesFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId()==R.id.addads){
             Intent intent = new Intent(getActivity(),SalesAddActivity.class);
-            intent.putExtra("UserName",userName);
+            intent.putExtra("UserName",userID);
             intent.putExtra("SalesCategory",salesCategory);
             startActivity(intent);
         }

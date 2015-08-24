@@ -68,7 +68,7 @@ public class MainActivity extends ActionBarActivity {
         Intent guestIntent = new Intent(this,NavigationActivity.class);
         guestIntent.putExtra("Selection",2);
         guestIntent.putExtra("FullUserName","Welcome To Classified Ads");
-        guestIntent.putExtra("UserName","Guest");
+        guestIntent.putExtra("userID","Guest");
         guestIntent.putExtra("PictureURL","-");
         startActivity(guestIntent);
 
