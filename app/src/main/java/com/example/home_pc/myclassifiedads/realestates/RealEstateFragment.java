@@ -45,6 +45,7 @@ public class RealEstateFragment extends Fragment {
         realEstatesAdObjects=new ArrayList<RealEstatesAdObject>();
 
         View v = inflater.inflate(R.layout.tab_fragments, container, false);
+        setHasOptionsMenu(true);
         fragmentTabs= (PagerSlidingTabStrip) v.findViewById(R.id.fragment_tabs);
         userID=getArguments().getString("userID");
         viewPager = (ViewPager) v.findViewById(R.id.fragmentPager);

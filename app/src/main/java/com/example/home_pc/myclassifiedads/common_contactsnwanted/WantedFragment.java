@@ -46,6 +46,7 @@ public class WantedFragment extends Fragment {
         contactsAdObject=new ArrayList<ContactsnWantedAdObject>();
 
         View v = inflater.inflate(R.layout.tab_fragments, container, false);
+        setHasOptionsMenu(true);
         fragmentTabs= (PagerSlidingTabStrip) v.findViewById(R.id.fragment_tabs);
         viewPager = (ViewPager) v.findViewById(R.id.fragmentPager);
         userID=getArguments().getString("userID");

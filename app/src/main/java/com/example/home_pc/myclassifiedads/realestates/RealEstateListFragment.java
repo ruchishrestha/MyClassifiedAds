@@ -2,6 +2,7 @@ package com.example.home_pc.myclassifiedads.realestates;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -45,6 +49,7 @@ public class RealEstateListFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.ads_recycler_view, container,
                 false);
+        //setHasOptionsMenu(true);
         userID=getArguments().getString("userID");
         realestateList=(RecyclerView) view.findViewById(R.id.cardList);
         mswipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipeRefreshLayout);
@@ -116,6 +121,22 @@ public class RealEstateListFragment extends Fragment {
             }
         }
     }
+
+   /* @Override
+    public void onCreateOptionsMenu(Menu menu,MenuInflater inflater){
+        inflater.inflate(R.menu.menu_add_ads, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        if(item.getItemId()==R.id.addads){
+            Intent intent = new Intent(getActivity(),RealEstateAddActivity.class);
+            intent.putExtra("userID",userID);
+            startActivity(intent);
+        }
+        return false;
+    }*/
 }
 
 
