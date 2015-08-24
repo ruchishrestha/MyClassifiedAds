@@ -34,6 +34,7 @@ public class AllCommentsActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.all_comments);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ll=(LinearLayout)findViewById(R.id.ll);
         no_comments=(TextView)findViewById(R.id.no_comments);
@@ -119,6 +120,10 @@ public class AllCommentsActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if(id==android.R.id.home){
+            onBackPressed();
             return true;
         }
 

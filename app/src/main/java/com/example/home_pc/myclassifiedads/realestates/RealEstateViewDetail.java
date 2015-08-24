@@ -173,7 +173,7 @@ public class RealEstateViewDetail extends ActionBarActivity {
             if(progressDialog.isShowing()){
                 progressDialog.dismiss();
             }
-            username.setText(result.get(0).userName);
+            username.setText(Html.fromHtml("<u>"+result.get(0).userName+"</u>"));
             ad_title.setText(result.get(0).title);
             saleType.setText(result.get(0).saleType);
             price.setText("NPR." + (result.get(0).price).toString());

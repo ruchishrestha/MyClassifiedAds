@@ -96,9 +96,9 @@ public class RealEstateFragment extends Fragment {
             Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return getString(R.string.title_fragment_wantedinlist);
+                    return getString(R.string.title_fragment_realestateinlist);
                 case 1:
-                    return getString(R.string.title_fragment_wantedinmap);
+                    return getString(R.string.title_fragment_realestateinmap);
             }
             return null;
         }

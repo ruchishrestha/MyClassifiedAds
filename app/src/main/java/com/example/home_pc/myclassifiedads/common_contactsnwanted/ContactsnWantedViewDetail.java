@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -38,7 +39,7 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
     ArrayList<ContactsnWantedAdObject> contactsAdObject=null;
     ImageView contact_photo,comment_cancel,comment_save,read_comment;
     TextView category,username,ad_description,ad_title,contactNo,address,email,comment,commentText,postedDate,commenterUsername,myComments,
-    ad_postedDate;
+    ad_postedDate,mobileNo;
     Bitmap bitmap;
     Integer adid;
     CardView commentContacts;
@@ -49,6 +50,7 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_contactnwanted_details);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         adid=getIntent().getExtras().getInt("adid");
         userID=getIntent().getExtras().getString("userID");
@@ -57,6 +59,7 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
         category=(TextView)findViewById(R.id.category);
         username=(TextView)findViewById(R.id.username);
         contactNo=(TextView)findViewById(R.id.contactNo);
+        mobileNo=(TextView)findViewById(R.id.mobileNo);
         ad_description=(TextView)findViewById(R.id.ad_description);
         ad_title=(TextView)findViewById(R.id.ad_title);
         address=(TextView)findViewById(R.id.address);
@@ -97,14 +100,14 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
         final AlertDialog alertDialog = new AlertDialog.Builder(
                 this).create();
         alertDialog.setMessage("Please Login or Sign Up");
-        alertDialog.setButton2("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,"OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
         });
-        alertDialog.setButton("CANCEL", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
@@ -156,7 +159,7 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
             if(progressDialog.isShowing()){
                 progressDialog.dismiss();
             }
-            username.setText(result.get(0).userName);
+            username.setText(Html.fromHtml("<u>"+result.get(0).userName+"</u>"));
             ad_title.setText(result.get(0).title);
             ad_description.setText(result.get(0).description);
             category.setText(result.get(0).category);
@@ -164,6 +167,7 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
             contactNo.setText(result.get(0).contactNo);
             email.setText(result.get(0).emailId);
             ad_postedDate.setText(result.get(0).ad_insertdate);
+            mobileNo.setText(result.get(0).mobileNo);
 
         }
     }
@@ -300,6 +304,10 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if(id==android.R.id.home){
+            onBackPressed();
             return true;
         }
 

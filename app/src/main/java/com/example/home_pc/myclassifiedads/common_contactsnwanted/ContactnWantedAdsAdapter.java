@@ -125,14 +125,14 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
         alertDialog.setMessage("Please create your account first or Login");
         alertDialog.setIcon(R.drawable.backward);
         alertDialog.setTitle("The Classified Ads App");
-        alertDialog.setButton2("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,"OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(context, MainActivity.class);
                 context.startActivity(intent);
             }
         });
-        alertDialog.setButton("CANCEL", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
@@ -171,7 +171,7 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
             else{
                 alertDialog.setMessage("Already added");
             }
-            alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+            alertDialog.setButton(DialogInterface.BUTTON_NEUTRAL,"OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     alertDialog.dismiss();

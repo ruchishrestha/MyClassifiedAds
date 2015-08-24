@@ -57,13 +57,15 @@
     <string name="title_fragment_wantedinlist">All Wanted list</string>
     <string name="title_fragment_wantedinmap">View in Map</string>
     <string name="title_activity_locate_on_map">Locate on Map</string>
+    <string name="title_fragment_realestateinlist">All Real Estates</string>
+    <string name="title_fragment_realestateinmap">View in map</string>
 
     <string name="title_section1"><b>ALL ADS</b></string>
     <string name="title_section2"><b>TOP ADS</b></string>
     <string name="title_section3"><b>NEW ADS</b></string>
 
-    <string name="locinmap"><i><u>View on Map</u></i></string>
-    <string name="comment"><i><u>Your comments here</u></i></string>
+    <string name="locinmap"><u>View on Map</u></string>
+    <string name="comment"><u>Your comments here</u></string>
     <string name="title_activity_all_comments">All Comments</string>
     <string name="watchlist">Add to watchlist</string>
 

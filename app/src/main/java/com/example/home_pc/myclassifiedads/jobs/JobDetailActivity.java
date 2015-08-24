@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -194,7 +195,7 @@ public class JobDetailActivity extends ActionBarActivity {
             if(progressDialog.isShowing()){
                 progressDialog.dismiss();
             }
-            username.setText(result.get(0).userName);
+            username.setText(Html.fromHtml("<u>"+result.get(0).userName+"</u>"));
             title.setText(result.get(0).title);
             jobCategory.setText(result.get(0).jobCategory);
             salary.setText("NPR." + result.get(0).salary);
@@ -333,6 +334,10 @@ public class JobDetailActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if(id==android.R.id.home){
+            onBackPressed();
             return true;
         }
 

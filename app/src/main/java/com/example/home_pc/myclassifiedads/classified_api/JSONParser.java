@@ -152,7 +152,7 @@ public class JSONParser {
             for(int i=0;i<jsonArray.length();i++)
             {
                 jsonObj=jsonArray.getJSONObject(i);
-                arrayList.add(new ContactsnWantedAdObject(jsonObj.getInt("adid"), jsonObj.getString("photoURL"),jsonObj.getString("username"),jsonObj.getString("title"),jsonObj.getString("addres"),jsonObj.getString("contact"),jsonObj.getString("mobileNo")));
+                arrayList.add(new ContactsnWantedAdObject(jsonObj.getInt("adid"), jsonObj.getString("photoURL"),jsonObj.getString("username"),jsonObj.getString("title"),jsonObj.getString("addres"),jsonObj.getString("contact"),jsonObj.getString("mobile")));
             }
 
         } catch (JSONException e) {
@@ -172,7 +172,7 @@ public class JSONParser {
             for(int i=0;i<jsonArray.length();i++)
             {
                 jsonObj=jsonArray.getJSONObject(i);
-                arrayList.add(new ContactsnWantedAdObject(jsonObj.getInt("adid"),jsonObj.getString("dateOnly"),jsonObj.getString("username"),jsonObj.getString("title"),jsonObj.getString("ad_description"),jsonObj.getString("Category"),jsonObj.getString("contact"),jsonObj.getString("mobileNo"),jsonObj.getString("addres"),jsonObj.getString("email"),jsonObj.getDouble("latitude"),jsonObj.getDouble("longitude"),jsonObj.getString("photoURL")));
+                arrayList.add(new ContactsnWantedAdObject(jsonObj.getInt("adid"),jsonObj.getString("dateOnly"),jsonObj.getString("username"),jsonObj.getString("title"),jsonObj.getString("ad_description"),jsonObj.getString("Category"),jsonObj.getString("contact"),jsonObj.getString("mobile"),jsonObj.getString("addres"),jsonObj.getString("email"),jsonObj.getDouble("latitude"),jsonObj.getDouble("longitude"),jsonObj.getString("photoURL")));
             }
 
         } catch (JSONException e) {

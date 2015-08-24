@@ -48,7 +48,7 @@ public class WantedFragment extends Fragment {
         View v = inflater.inflate(R.layout.tab_fragments, container, false);
         fragmentTabs= (PagerSlidingTabStrip) v.findViewById(R.id.fragment_tabs);
         viewPager = (ViewPager) v.findViewById(R.id.fragmentPager);
-        userID=getArguments().getString("userID");
+        userID=getArguments().getString("UserName");
         sectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(sectionsPagerAdapter);
         viewPager.setCurrentItem(0,false);
