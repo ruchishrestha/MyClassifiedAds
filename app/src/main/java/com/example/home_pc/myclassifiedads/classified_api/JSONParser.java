@@ -141,6 +141,25 @@ public class JSONParser {
         return result;
     }
 
+    @SuppressLint("LongLogTag")
+    public ArrayList<String> getList(JSONObject object){
+        ArrayList<String> categoryList = new ArrayList<String>();
+
+        try {
+            JSONArray jsonArray=object.getJSONArray("Value");
+            JSONObject jsonObj;
+            for(int i=0;i<jsonArray.length();i++)
+            {
+                jsonObj=jsonArray.getJSONObject(i);
+                categoryList.add(jsonObj.getString("Category"));
+            }
+
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            Log.d("JSONParser => parseContactsList", e.getMessage());
+        }
+        return categoryList;
+    }
 
 
     @SuppressLint("LongLogTag")

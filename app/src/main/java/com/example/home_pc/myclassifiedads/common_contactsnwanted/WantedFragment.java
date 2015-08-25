@@ -120,7 +120,7 @@ public class WantedFragment extends Fragment {
                 popupalert();
             }else{
                 Intent intent = new Intent(getActivity(), ContactsnWantedAddActivity.class);
-                intent.putExtra("UserName",userID);
+                intent.putExtra("userID",userID);
                 intent.putExtra("Category","wanted");
                 startActivity(intent);
             }

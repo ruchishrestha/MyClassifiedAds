@@ -29,6 +29,8 @@ import com.example.home_pc.myclassifiedads.mainactivity.LocateOnMapActivity;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 
 public class JobAddActivity extends ActionBarActivity {
 
@@ -48,6 +50,7 @@ public class JobAddActivity extends ActionBarActivity {
     Boolean toggle;
     Dialog dialog;
     JobAdsObject jobAdsObject;
+    ArrayList<String> categoryList;
 
 
     @Override
@@ -57,6 +60,7 @@ public class JobAddActivity extends ActionBarActivity {
 
         photoCount=0;
         toggle = false;
+        categoryList = new ArrayList<String>();
 
         userName = getIntent().getStringExtra("userID");
         organizationLogo = (ImageView) findViewById(R.id.jobsImage);
@@ -234,6 +238,21 @@ public class JobAddActivity extends ActionBarActivity {
         final float scale = getResources().getDisplayMetrics().density;
         // Convert the dps to pixels, based on density scale
         return ((int) (dp * scale + 0.5f));
+    }
+
+    protected class AsyncLoadList extends AsyncTask<Void,Void,ArrayList<String>>{
+
+        ArrayList<String> categoryLst = new ArrayList<String>();
+
+        @Override
+        protected ArrayList<String> doInBackground(Void... params) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> strings) {
+
+        }
     }
 
     protected class AsyncAddJobAds extends AsyncTask <JobAdsObject,Void,String>
