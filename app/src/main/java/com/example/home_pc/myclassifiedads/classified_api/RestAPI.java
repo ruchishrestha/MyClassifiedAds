@@ -435,12 +435,13 @@ public class RestAPI {
         return result;
     }
 
-    public JSONObject GetSalesDetail() throws Exception {
+    public JSONObject GetSalesDetail(int salesID) throws Exception {
         JSONObject result = null;
         JSONObject o = new JSONObject();
         JSONObject p = new JSONObject();
         o.put("interface","RestAPI");
         o.put("method", "GetSalesDetail");
+        p.put("salesID",mapObject(salesID));
         o.put("parameters", p);
         String s = o.toString();
         String r = load(s);
@@ -630,6 +631,81 @@ public class RestAPI {
         o.put("interface","RestAPI");
         o.put("method", "GetAllImages");
         p.put("adid",mapObject(adid));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject GetSalesList(String salesCategory) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetSalesList");
+        p.put("salesCategory",mapObject(salesCategory));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject GetSalesImages(int adid) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetSalesImages");
+        p.put("adid",mapObject(adid));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject GetSalesPictureURL(int adid) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetSalesPictureURL");
+        p.put("adid",mapObject(adid));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject PushRateValue(int salesID,String userID,String salesCategory,double myrating) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "PushRateValue");
+        p.put("salesID",mapObject(salesID));
+        p.put("userID",mapObject(userID));
+        p.put("salesCategory",mapObject(salesCategory));
+        p.put("myrating",mapObject(myrating));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject GetMyRating(int salesID,String userID,String salesCategory) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetMyRating");
+        p.put("salesID",mapObject(salesID));
+        p.put("userID",mapObject(userID));
+        p.put("salesCategory",mapObject(salesCategory));
         o.put("parameters", p);
         String s = o.toString();
         String r = load(s);

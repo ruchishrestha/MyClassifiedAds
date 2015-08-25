@@ -205,6 +205,7 @@ public class JobDetailActivity extends ActionBarActivity {
             skills.setText(result.get(0).skills);
             jobTime.setText(result.get(0).jobTime);
             contact.setText(result.get(0).contactNo);
+            website.setText(result.get(0).webSite);
             email.setText(result.get(0).emailId);
             addres.setText(result.get(0).aDdress);
             vaccancyNo.setText(result.get(0).vaccancyNo);

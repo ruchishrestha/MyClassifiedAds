@@ -122,7 +122,7 @@ public class RealEstateListFragment extends Fragment {
         }
     }
 
-   /* @Override
+ /*   @Override
     public void onCreateOptionsMenu(Menu menu,MenuInflater inflater){
         inflater.inflate(R.menu.menu_add_ads, menu);
         super.onCreateOptionsMenu(menu, inflater);

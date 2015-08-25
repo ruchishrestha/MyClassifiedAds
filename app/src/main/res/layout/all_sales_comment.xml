@@ -1,0 +1,69 @@
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/commentSales"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="2dp"
+    android:layout_margin="5dp"
+    android:background="#ffffff"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <RatingBar
+                android:id="@+id/MyRatingMain"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:stepSize="0.1"
+                android:layout_marginTop="5dp"
+                />
+
+            <TextView
+                android:id="@+id/postedDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="Posted Date: 12/08/10"
+                android:layout_alignTop="@+id/MyRatingMain"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="5dp"/>
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/comenterUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="#000000"
+            android:text="By ruchi"
+            android:layout_marginTop="5dp"/>
+
+        <TextView
+            android:id="@+id/myComments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:background="#ffe3e1e5"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            />
+
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

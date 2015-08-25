@@ -74,6 +74,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_real_estate_view_detail">Real Estate</string>
     <string name="title_activity_job_detail">JobDetailActivity</string>
+    <string name="title_activity_sales_detail_view">SalesDetailView</string>
+    <string name="title_activity_sales_all_comments">sales_all_comments</string>
 
 
 

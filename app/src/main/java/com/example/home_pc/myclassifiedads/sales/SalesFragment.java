@@ -55,7 +55,7 @@ public class SalesFragment extends Fragment {
         setHasOptionsMenu(true);
 
         userID = getArguments().getString("userID");
-        salesCategory = getArguments().getString("salesCategory");
+        salesCategory = getArguments().getString("SalesCategory");
         fragmentTabs = (PagerSlidingTabStrip) view.findViewById(R.id.fragment_tabs);
         viewPager = (ViewPager) view.findViewById(R.id.fragmentPager);
         sectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
@@ -84,11 +84,12 @@ public class SalesFragment extends Fragment {
             args.putString("userID",userID);
             switch (fragmentPosition) {
                 case 0:
-                    selectFragment= new TopAdsFragment();
+                    selectFragment= new NewAdsFragment();
                     selectFragment.setArguments(args);
                     break;
+
                 case 1:
-                    selectFragment= new NewAdsFragment();
+                    selectFragment= new TopAdsFragment();
                     selectFragment.setArguments(args);
                     break;
                 default:
@@ -109,9 +110,9 @@ public class SalesFragment extends Fragment {
             Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return getString(R.string.title_fragment_topads);
-                case 1:
                     return getString(R.string.title_fragment_newads);
+                case 1:
+                    return getString(R.string.title_fragment_topads);
             }
             return null;
         }

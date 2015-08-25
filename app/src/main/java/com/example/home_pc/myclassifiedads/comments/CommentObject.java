@@ -4,7 +4,7 @@ package com.example.home_pc.myclassifiedads.comments;
  * Created by Ruchi on 2015-08-12.
  */
 public class CommentObject {
-   public String tableCategory,username,commentText,commentDate,userID;
+   public String tableCategory,username,commentText,commentDate,userID,rating;
    public int adid;
 
     public CommentObject(String commentDate,String username,String commentText){
