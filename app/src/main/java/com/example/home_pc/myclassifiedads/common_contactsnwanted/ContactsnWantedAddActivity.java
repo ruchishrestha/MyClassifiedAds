@@ -244,7 +244,7 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
             RestAPI api = new RestAPI();
 
             try{
-                JSONObject object = api.AddContactsAds(userName,adTitle,adDescription,adCategory,adAddress,adContactNo,adMobileNo,adEmailId,_latitude,_longitude,adImageURL);
+                JSONObject object = api.AddContactsAds(params[0].getUserName(), params[0].gettitle(), params[0].getDescription(), params[0].getCategory(), params[0].getaDdress(), params[0].getContactNo(), params[0].getMobileNo(), params[0].getemail(), params[0].getLatitude(), params[0].getLongitute(), params[0].getAdImage());
                 JSONParser parser = new JSONParser();
                 adID = parser.getId(object);
 
@@ -282,7 +282,7 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
             RestAPI api = new RestAPI();
 
             try{
-                JSONObject object = api.AddWantedAds(userName,adTitle,adDescription,adCategory,adAddress,adContactNo,adMobileNo,adEmailId,_latitude,_longitude,adImageURL);
+                JSONObject object = api.AddWantedAds(params[0].getUserName(),params[0].gettitle(),params[0].getDescription(),params[0].getCategory(),params[0].getaDdress(),params[0].getContactNo(),params[0].getMobileNo(),params[0].getemail(),params[0].getLatitude(),params[0].getLongitute(),params[0].getAdImage());
                 JSONParser parser = new JSONParser();
                 adID = parser.getId(object);
 
@@ -292,7 +292,7 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
                 result = parser.getResult(object);
             }
             catch (Exception e){
-
+                result = ""+e;
             }
 
             return result;
