@@ -285,8 +285,9 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
                 JSONObject object = api.AddWantedAds(params[0].getUserName(),params[0].gettitle(),params[0].getDescription(),params[0].getCategory(),params[0].getaDdress(),params[0].getContactNo(),params[0].getMobileNo(),params[0].getemail(),params[0].getLatitude(),params[0].getLongitute(),params[0].getAdImage());
                 JSONParser parser = new JSONParser();
                 adID = parser.getId(object);
-
+                System.out.println(adID);
                 pictureURL = ImageLoaderAPI.AzureImageUploader(picture, "Wanted" + adID);
+                System.out.println(pictureURL);
 
                 object = api.UpdateWantedAd(adID, pictureURL);
                 result = parser.getResult(object);
