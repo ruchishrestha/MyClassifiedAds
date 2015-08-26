@@ -677,13 +677,14 @@ public class RestAPI {
         return result;
     }
 
-    public JSONObject GetSalesList(String salesCategory) throws Exception {
+    public JSONObject GetSalesList(String salesCategory,String orderads) throws Exception {
         JSONObject result = null;
         JSONObject o = new JSONObject();
         JSONObject p = new JSONObject();
         o.put("interface","RestAPI");
         o.put("method", "GetSalesList");
         p.put("salesCategory",mapObject(salesCategory));
+        p.put("orderads",mapObject(orderads));
         o.put("parameters", p);
         String s = o.toString();
         String r = load(s);

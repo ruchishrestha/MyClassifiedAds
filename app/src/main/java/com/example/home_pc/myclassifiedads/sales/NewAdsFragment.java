@@ -32,9 +32,7 @@ public class NewAdsFragment extends Fragment {
     ProgressDialog progressDialog;
     ArrayList<SalesAdsObject> salesAdsObjects;
     Context context;
-    SalesAdsAdapter salesAdsAdapter;
     String userID,salesCategory;
-    ImageView popupMenu;
 
     public NewAdsFragment() {
 
@@ -87,7 +85,7 @@ public class NewAdsFragment extends Fragment {
             RestAPI api = new RestAPI();
             try {
                 salesAdsObjects=new ArrayList<>();
-                JSONObject jsonObj = api.GetSalesList(salesCategory);
+                JSONObject jsonObj = api.GetSalesList(salesCategory,"newads");
                 JSONParser parser = new JSONParser();
                 salesAdsObjects = parser.parseSalesList(jsonObj);
             } catch (Exception e) {
