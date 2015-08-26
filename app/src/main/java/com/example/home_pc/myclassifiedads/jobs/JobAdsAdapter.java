@@ -82,7 +82,7 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
         holder.jobsVaccancies.setText(jao.vaccancyNo);
         holder.jobsSalary.setText("NPR."+jao.salary);
         holder.jobsUserID.setText(jao.userName);
-        new AsyncLoadImage(position,holder,jao).execute(jao.logoURL);
+        new AsyncLoadImage(position,holder,jao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,jao.logoURL);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,7 +196,7 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
         protected Bitmap doInBackground(String... params) {
             // TODO Auto-generated method stub
             try {
-                jobs_image = ImageLoaderAPI.AzureImageDownloader(params[0]);
+                jobs_image = ImageLoaderAPI.AzureImageDownloader2(params[0]);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 Log.d("AsyncLoadImage", e.getMessage());
@@ -216,6 +216,7 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
     public int getItemCount() {
         return jobAdsObjects.size();
     }
+
     public int dptopx(float dp){
         // Get the screen's density scale
         final float scale = context.getResources().getDisplayMetrics().density;

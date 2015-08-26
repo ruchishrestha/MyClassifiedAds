@@ -35,6 +35,7 @@ public class JobFragment extends Fragment {
     SwipeRefreshLayout mswipeRefreshLayout;
     ProgressDialog progressDialog;
     ArrayList<JobAdsObject> jobAdsObjects;
+    ArrayList<String> jobCategory;
     Context context;
     JobAdsAdapter jobAdsAdapter;
     String userID;
@@ -52,6 +53,7 @@ public class JobFragment extends Fragment {
         View view = inflater.inflate(R.layout.ads_recycler_view, container,
                 false);
         setHasOptionsMenu(true);
+        jobCategory = new ArrayList<String>();
         userID=getArguments().getString("userID");
         jobList=(RecyclerView) view.findViewById(R.id.cardList);
         mswipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipeRefreshLayout);
@@ -78,7 +80,7 @@ public class JobFragment extends Fragment {
     }
 
     public void loadJobAds(){
-        new AsyncLoadJobAds().execute();
+        new AsyncLoadJobAds().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     protected class AsyncLoadJobAds extends
@@ -138,4 +140,5 @@ public class JobFragment extends Fragment {
         }
         return false;
     }
+
 }

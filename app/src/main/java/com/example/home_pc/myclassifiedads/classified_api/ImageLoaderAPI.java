@@ -74,7 +74,7 @@ public class ImageLoaderAPI {
         return null;
     }
 
-    public static String AzureImageUploader(Bitmap uploadProfilePic,String userName){
+    public static String AzureImageUploader(Bitmap uploadProfilePic,String stringKey){
 
 
         try {
@@ -88,7 +88,7 @@ public class ImageLoaderAPI {
 
 
             // Upload an image file.
-            CloudBlockBlob blob = container.getBlockBlobReference(userName);
+            CloudBlockBlob blob = container.getBlockBlobReference(stringKey);
             ByteArrayOutputStream uploadImageOS = new ByteArrayOutputStream();
             uploadProfilePic.compress(Bitmap.CompressFormat.PNG, 0, uploadImageOS);
             byte[] uploadImageData = uploadImageOS.toByteArray();
@@ -188,6 +188,54 @@ public class ImageLoaderAPI {
                 System.out.println(e.getMessage());
 
             }
+
+        return null;
+    }
+
+    public static Bitmap AzureImageDownloader2 (String imagePath){
+
+        try {
+            String stringKey = imagePath.substring(61);
+
+            CloudStorageAccount account = CloudStorageAccount.parse(storageConnectionString);
+            CloudBlobClient serviceClient = account.createCloudBlobClient();
+
+            // Container name must be lower case.
+            CloudBlobContainer container = serviceClient.getContainerReference("gallery");
+            container.createIfNotExists();
+
+
+            CloudBlockBlob blob = container.getBlockBlobReference(stringKey);
+
+            byte[] downloadedImage = new byte[1024*1024];
+
+            blob.downloadToByteArray(downloadedImage, 0);
+
+            Bitmap img = BitmapFactory.decodeByteArray(downloadedImage,0,downloadedImage.length);
+
+            System.out.println(downloadedImage.length);
+
+            return img;
+
+        }
+      /*  catch (FileNotFoundException fileNotFoundException) {
+
+            System.out.print("FileNotFoundException encountered: ");
+            System.out.println(fileNotFoundException.getMessage());
+
+        }*/
+        catch (StorageException storageException) {
+
+            System.out.print("StorageException encountered: ");
+            System.out.println(storageException.getMessage());
+
+        }
+        catch (Exception e) {
+
+            System.out.print("Exception encountered: ");
+            System.out.println(e.getMessage());
+
+        }
 
         return null;
     }
