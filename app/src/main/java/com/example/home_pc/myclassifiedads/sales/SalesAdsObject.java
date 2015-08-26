@@ -4,11 +4,11 @@ package com.example.home_pc.myclassifiedads.sales;
  * Created by Home-PC on 7/31/2015.
  */
 public class SalesAdsObject {
+    int salesID;
+    String userName,title,description,category,brand,modelNo,price,status,contactNo,condition,usedTime,ad_postedDate,rating;
+    Double rating1;
 
-    String userName,title,description,category,brand,modelNo,price,status,contactNo,condition,usedTime,rating;
-
-    public SalesAdsObject(String userName, String title, String description, String category, String brand, String modelNo, String price, String status, String contactNo, String condition, String usedTime, String rating) {
-        this.rating = rating;
+    public SalesAdsObject(String userName, String title, String description, String category, String brand, String modelNo, String price, String status, String contactNo, String condition, String usedTime,String rating) {
         this.userName = userName;
         this.title = title;
         this.description = description;
@@ -20,6 +20,35 @@ public class SalesAdsObject {
         this.contactNo = contactNo;
         this.condition = condition;
         this.usedTime = usedTime;
+        this.rating=rating;
+    }
+
+    public SalesAdsObject(int salesID,String userName,String title,String brand,String modelNo,String price,String status,String condition,Double rating){
+        this.salesID=salesID;
+        this.userName=userName;
+        this.rating1=rating;
+        this.title=title;
+        this.price=price;
+        this.status=status;
+        this.brand=brand;
+        this.modelNo=modelNo;
+        this.condition=condition;
+    }
+
+    public SalesAdsObject(int salesID,String userName,String title,String brand,String modelNo,String price,String status,String condition,Double rating,String ad_postedDate,String usedTime,String contactNo,String description){
+        this.salesID=salesID;
+        this.ad_postedDate=ad_postedDate;
+        this.usedTime=usedTime;
+        this.contactNo=contactNo;
+        this.description=description;
+        this.userName=userName;
+        this.rating1=rating;
+        this.title=title;
+        this.price=price;
+        this.status=status;
+        this.brand=brand;
+        this.modelNo=modelNo;
+        this.condition=condition;
     }
 
     public String getUserName() {

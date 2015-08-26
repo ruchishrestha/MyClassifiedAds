@@ -7,6 +7,7 @@ import com.example.home_pc.myclassifiedads.comments.CommentObject;
 import com.example.home_pc.myclassifiedads.common_contactsnwanted.ContactsnWantedAdObject;
 import com.example.home_pc.myclassifiedads.jobs.JobAdsObject;
 import com.example.home_pc.myclassifiedads.realestates.RealEstatesAdObject;
+import com.example.home_pc.myclassifiedads.sales.SalesAdsObject;
 import com.example.home_pc.myclassifiedads.user_login.IndividualUser;
 import com.example.home_pc.myclassifiedads.user_login.OrganizationUser;
 import com.example.home_pc.myclassifiedads.user_login.ShopUser;
@@ -358,5 +359,55 @@ public class JSONParser {
         return realestatePic;
     }
 
+    @SuppressLint("LongLogTag")
+    public ArrayList<SalesAdsObject> parseSalesList(JSONObject object) {
+        ArrayList<SalesAdsObject> arrayList = new ArrayList<>();
+        try {
+            JSONArray jsonArray = object.getJSONArray("Value");
+            JSONObject jsonObj;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                jsonObj = jsonArray.getJSONObject(i);
+                arrayList.add(new SalesAdsObject(jsonObj.getInt("salesID"),jsonObj.getString("username"),jsonObj.getString("title"),jsonObj.getString("brand"),
+                        jsonObj.getString("model"),jsonObj.getString("price"),jsonObj.getString("salesStatus"),jsonObj.getString("condition"),jsonObj.getDouble("averageRating")));
 
+            }
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            Log.d("JSONParser => parseSalesList", e.getMessage());
+        }
+        return arrayList;
+    }
+
+    @SuppressLint("LongLogTag")
+    public Double parseMyRating(JSONObject object){
+        Double averageRate=0.0;
+        try {
+            averageRate = object.getDouble("Value");
+        }
+        catch (JSONException e) {
+            // TODO Auto-generated catch block
+            Log.d("JSONParser => parseMyRating", e.getMessage());
+        }
+        return averageRate;
+    }
+
+    @SuppressLint("LongLogTag")
+    public ArrayList<SalesAdsObject> parseSalesDetails(JSONObject object) {
+        ArrayList<SalesAdsObject> arrayList = new ArrayList<>();
+        try {
+            JSONArray jsonArray = object.getJSONArray("Value");
+            JSONObject jsonObj;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                jsonObj = jsonArray.getJSONObject(i);
+                arrayList.add(new SalesAdsObject(jsonObj.getInt("salesID"),jsonObj.getString("username"),jsonObj.getString("title"),jsonObj.getString("brand"),
+                        jsonObj.getString("model"),jsonObj.getString("price"),jsonObj.getString("salesStatus"),jsonObj.getString("condition"),jsonObj.getDouble("averageRating"),jsonObj.getString("dateOnly"),jsonObj.getString("timeused"),
+                        jsonObj.getString("contact"),jsonObj.getString("ad_description")));
+
+            }
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            Log.d("JSONParser => parseSalesDetails", e.getMessage());
+        }
+        return arrayList;
+    }
 }
