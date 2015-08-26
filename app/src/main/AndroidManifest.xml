@@ -194,6 +194,10 @@
             android:name=".sales_all_comments"
             android:label="@string/title_activity_sales_all_comments" >
         </activity>
+        <activity
+            android:name=".comments.SalesAllComments"
+            android:label="@string/title_activity_sales_all_comments" >
+        </activity>
     </application>
 
 </manifest>

@@ -28,11 +28,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.home_pc.myclassifiedads.R;
+import com.example.home_pc.myclassifiedads.comments.SalesAllComments;
 import com.example.home_pc.myclassifiedads.classified_api.ImageLoaderAPI;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
 import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
 import com.example.home_pc.myclassifiedads.comments.CommentObject;
-import com.example.home_pc.myclassifiedads.comments.SalesAllComments;
 import com.example.home_pc.myclassifiedads.mainactivity.MainActivity;
 
 import org.json.JSONObject;
@@ -46,12 +46,13 @@ public class SalesDetailView extends ActionBarActivity {
     Integer salesID;
     CardView commentSales;
     ProgressDialog progressDialog;
-    String userID,salesCategory,ratingvalue;
+    String userID,salesCategory,userName;
     ArrayList<ImageView> img;
     HorizontalScrollView horizontalScrollView;
     ArrayList<SalesAdsObject> salesAdsObjects=null;
     RatingBar averageRating,MyRating,MyRatingMain;
     Double myrating=0.0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,8 @@ public class SalesDetailView extends ActionBarActivity {
         salesID=getIntent().getExtras().getInt("salesID");
         userID=getIntent().getExtras().getString("userID");
         salesCategory=getIntent().getExtras().getString("salesCategory");
+        userName=getIntent().getExtras().getString("userName");
+        Toast.makeText(getApplicationContext(),salesCategory,Toast.LENGTH_LONG).show();
         img=new ArrayList<>();
         img.add((ImageView) findViewById(R.id.img1));
         img.add((ImageView) findViewById(R.id.img2));
@@ -208,7 +211,10 @@ public class SalesDetailView extends ActionBarActivity {
         comment_cancel=(ImageView)layout.findViewById(R.id.comment_cancel);
         commentText=(EditText)layout.findViewById(R.id.commentText);
         MyRating=(RatingBar)layout.findViewById(R.id.MyRating);
-       MyRating.setRating(myrating.floatValue());
+        if (userName.equals(userID)) {
+            MyRating.setEnabled(false);
+        }
+      MyRating.setRating(myrating.floatValue());
         comment_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -216,13 +222,6 @@ public class SalesDetailView extends ActionBarActivity {
             }
         });
 
-        MyRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                ratingvalue = String.valueOf(rating);
-                myrating=Double.parseDouble(ratingvalue);
-            }
-        });
 
         comment_save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,8 +229,11 @@ public class SalesDetailView extends ActionBarActivity {
                 if ((commentText.getText().toString()).equals("")) {
                     Toast.makeText(layout.getContext(), "Please comment first", Toast.LENGTH_LONG).show();
                 } else {
-                    save_comment(commentText.getText().toString(),myrating);
-                    pwindo.dismiss();
+                    myrating= Double.parseDouble(Float.toString(MyRating.getRating()));
+                    Toast.makeText(getApplicationContext(),""+myrating,Toast.LENGTH_LONG).show();
+                    save_comment(commentText.getText().toString());
+
+                            pwindo.dismiss();
                 }
 
             }
@@ -239,14 +241,14 @@ public class SalesDetailView extends ActionBarActivity {
     }
 
     public void allCommentsPopup(int adid,String tableCategory) {
-        Intent intent=new Intent(getApplicationContext(),SalesAllComments.class);
+        Intent intent=new Intent(getApplicationContext(), SalesAllComments.class);
         intent.putExtra("adid",adid);
-        intent.putExtra("category", salesCategory);
+        intent.putExtra("category", tableCategory);
         startActivity(intent);
 
     }
 
-    public void save_comment(String commentText,Double myrating){
+    public void save_comment(String commentText){
         new AsyncSaveComment().execute(commentText);
     }
 
@@ -260,8 +262,10 @@ public class SalesDetailView extends ActionBarActivity {
 
             RestAPI api = new RestAPI();
             try {
-                api.PushComments(salesCategory,userID,salesID,params[0]);
-                api.PushRateValue(salesID,userID,salesCategory,myrating);
+                api.PushComments(salesCategory, userID, salesID, params[0]);
+                if(myrating!=0.0){
+                    api.PushRateValue(salesID, userID, salesCategory, myrating);
+                }
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 Log.d("AsyncSaveComment", ""+e);
@@ -278,22 +282,27 @@ public class SalesDetailView extends ActionBarActivity {
     }
 
     public void loadMyComments(){
+
         new AsyncLoadMyComments().execute();
     }
 
     protected class AsyncLoadMyComments extends
             AsyncTask<Void, Void, ArrayList<CommentObject>> {
 
+        JSONObject jsonObj;
+        JSONParser parser;
         @Override
         protected ArrayList<CommentObject> doInBackground(Void... params) {
             // TODO Auto-generated method stub
             ArrayList<CommentObject> myCommentObject = new ArrayList<CommentObject>();
             RestAPI api = new RestAPI();
             try {
-                JSONObject jsonObj = api.GetMyComment(salesID,userID,salesCategory);
-                JSONParser parser = new JSONParser();
+                myrating=0.0;
+              jsonObj = api.GetMyComment(salesID,userID,salesCategory);
+                parser = new JSONParser();
                 myCommentObject = parser.parseComment(jsonObj);
-                jsonObj=api.GetMyRating(salesID, userID, salesCategory);
+               jsonObj=api.GetMyRating(salesID, userID, salesCategory);
+                parser=new JSONParser();
                 myrating=parser.parseMyRating(jsonObj);
 
             } catch (Exception e) {
@@ -318,6 +327,8 @@ public class SalesDetailView extends ActionBarActivity {
                 commenterUsername.setText("Posted by: "+result.get(0).username);
                 myComments.setText(result.get(0).commentText);
                 MyRatingMain.setRating(myrating.floatValue());
+
+              //  Toast.makeText(getApplicationContext(),""+myrating,Toast.LENGTH_LONG).show();
             }
         }
     }

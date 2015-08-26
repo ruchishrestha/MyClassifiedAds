@@ -271,6 +271,19 @@ public class RestAPI {
         return result;
     }
 
+    public JSONObject GetContactsCategory() throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetContactsCategory");
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
     public JSONObject AddWantedAds(String userName,String title,String description,String category,String aDdress,String contactNo,String mobileNo,String emailId,double latitude,double longitude,String picURL) throws Exception {
         JSONObject result = null;
         JSONObject o = new JSONObject();
@@ -303,6 +316,19 @@ public class RestAPI {
         o.put("method", "UpdateWantedAd");
         p.put("adId",mapObject(adId));
         p.put("pictureURL",mapObject(pictureURL));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject GetWantedCategory() throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetWantedCategory");
         o.put("parameters", p);
         String s = o.toString();
         String r = load(s);
@@ -428,6 +454,19 @@ public class RestAPI {
         o.put("method", "UpdateJobAd");
         p.put("jobId",mapObject(jobId));
         p.put("pictureURL",mapObject(pictureURL));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject GetJobCategory() throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetJobCategory");
         o.put("parameters", p);
         String s = o.toString();
         String r = load(s);
@@ -706,6 +745,21 @@ public class RestAPI {
         p.put("salesID",mapObject(salesID));
         p.put("userID",mapObject(userID));
         p.put("salesCategory",mapObject(salesCategory));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject GetCommentRating(int adid,String username) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetCommentRating");
+        p.put("adid",mapObject(adid));
+        p.put("username",mapObject(username));
         o.put("parameters", p);
         String s = o.toString();
         String r = load(s);

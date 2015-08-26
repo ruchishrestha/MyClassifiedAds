@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.example.home_pc.myclassifiedads.R;
+import com.example.home_pc.myclassifiedads.mainactivity.MainActivity;
 import com.example.home_pc.myclassifiedads.sales.SalesAddActivity;
 
 import java.util.ArrayList;
@@ -132,6 +133,10 @@ public class SalesFragment extends Fragment {
             Intent intent = new Intent(getActivity(),SalesAddActivity.class);
             intent.putExtra("userID",userID);
             intent.putExtra("SalesCategory",salesCategory);
+            startActivity(intent);
+        }
+        if(item.getItemId()==R.id.action_settings){
+            Intent intent=new Intent(getActivity(), MainActivity.class);
             startActivity(intent);
         }
         return false;

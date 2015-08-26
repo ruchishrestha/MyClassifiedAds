@@ -100,6 +100,7 @@ public class SalesAdsAdapter extends RecyclerView.Adapter<SalesAdsAdapter.ViewHo
                 bundle.putInt("salesID", sao.salesID);
                 bundle.putString("userID", userID);
                 bundle.putString("salesCategory",salesCategory);
+                bundle.putString("userName",sao.userName);
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }

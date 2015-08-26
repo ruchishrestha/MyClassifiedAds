@@ -5,7 +5,7 @@ package com.example.home_pc.myclassifiedads.comments;
  */
 public class CommentObject {
    public String tableCategory,username,commentText,commentDate,userID,rating;
-   public int adid;
+   public int adid,commentID;
 
     public CommentObject(String commentDate,String username,String commentText){
         this.commentDate=commentDate;
@@ -26,9 +26,9 @@ public class CommentObject {
         this.commentText=commentText;
     }
 
-    public CommentObject(int adid,String tableCategory){
+    public CommentObject(String username,int adid){
         this.adid=adid;
-        this.tableCategory=tableCategory;
+        this.username=username;
     }
 
 }
