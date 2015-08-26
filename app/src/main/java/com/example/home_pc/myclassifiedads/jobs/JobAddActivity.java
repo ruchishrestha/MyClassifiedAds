@@ -1,8 +1,10 @@
 package com.example.home_pc.myclassifiedads.jobs;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -13,6 +15,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,6 +38,7 @@ import java.util.ArrayList;
 
 public class JobAddActivity extends ActionBarActivity {
 
+    Context context = this;
     private final int RESULT_LOAD_IMAGE = 0;
     private final int RESULT_CAMERA_PIC = 1;
     private final int REQUEST_LATLONG = 2;
@@ -42,7 +47,7 @@ public class JobAddActivity extends ActionBarActivity {
     EditText title,description,responsibility,skills,jobCategoryOthers,vacancies,salary,aDdress,contactNo,emailId,webSite;
     String userName,jtitle,jdescription,jresponsibility,jskills,jjobCategory,jjobTime,jvacancies,jsalary,jaDdress,jcontactNo,jemailId,jwebSite,jpictureURL;
     private Spinner jobCategory,jobTiming;
-    SpinnerAdapter jobCategoryAdapter;
+    ArrayAdapter<String> jobCategoryAdapter;
     Double _latitude,_longitude;
     Button saveButton;
     Bitmap picture,temp;
@@ -50,7 +55,7 @@ public class JobAddActivity extends ActionBarActivity {
     Boolean toggle;
     Dialog dialog;
     JobAdsObject jobAdsObject;
-    ArrayList<String> categoryList;
+    ArrayList<String> categoryList,clist;
 
 
     @Override
@@ -60,7 +65,19 @@ public class JobAddActivity extends ActionBarActivity {
 
         photoCount=0;
         toggle = false;
+
+        /*clist = new ArrayList<String>();*/
         categoryList = new ArrayList<String>();
+
+        /*categoryList.add("Gardener");
+        categoryList.add("Guard");
+        categoryList.add("Salesman");*/
+       // categoryList = getIntent().getStringArrayListExtra("JobCategory");
+       /* categoryList.add(clist.get(0));
+        categoryList.add(clist.get(1));
+        categoryList.add(clist.get(2));
+        categoryList.add(clist.get(3));*/
+
 
         userName = getIntent().getStringExtra("userID");
         organizationLogo = (ImageView) findViewById(R.id.jobsImage);
@@ -77,6 +94,7 @@ public class JobAddActivity extends ActionBarActivity {
         emailId=(EditText) findViewById(R.id.organizationEmail);
         webSite=(EditText) findViewById(R.id.organizationWebsite);
         jobCategory=(Spinner) findViewById(R.id.jobCategory);
+        new AsyncLoadList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         jobTiming=(Spinner) findViewById(R.id.jobTime);
         locateOnMap = (TextView) findViewById(R.id.locateOnMap);
         saveButton =(Button) findViewById(R.id.saveButton);
@@ -242,16 +260,29 @@ public class JobAddActivity extends ActionBarActivity {
 
     protected class AsyncLoadList extends AsyncTask<Void,Void,ArrayList<String>>{
 
-        ArrayList<String> categoryLst = new ArrayList<String>();
-
         @Override
         protected ArrayList<String> doInBackground(Void... params) {
-            return null;
+            System.out.println("LOADLIST");
+            ArrayList<String> categoryLst = new ArrayList<String>();
+            RestAPI api = new RestAPI();
+            try{
+                JSONObject object = api.GetJobCategory();
+                JSONParser parser = new JSONParser();
+                categoryLst = parser.getList(object);
+            }
+            catch(Exception e){}
+
+            return categoryLst;
         }
 
         @Override
-        protected void onPostExecute(ArrayList<String> strings) {
-
+        protected void onPostExecute(ArrayList<String> result) {
+            for (int i =0;i<result.size();i++){
+                categoryList.add(result.get(i));
+            }
+            jobCategoryAdapter = new ArrayAdapter<String>(context,android.R.layout.simple_spinner_item,categoryList);
+            jobCategoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            jobCategory.setAdapter(jobCategoryAdapter);
         }
     }
 
