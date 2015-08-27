@@ -63,6 +63,23 @@ public class ContactsnWantedAdObject /*implements Parcelable*/{
 
     }
 
+    public ContactsnWantedAdObject(int adid,String adImageURL,String title,String category,String contactNo,String mobileNo,Double latitude,Double longitute){
+        this.adid=adid;
+        this.adImageURL=adImageURL;
+        this.title=title;
+        this.category=category;
+        this.contactNo=contactNo;
+        this.mobileNo=mobileNo;
+        this.latitude=latitude;
+        this.longitute=longitute;
+    }
+    public int getAdid() {
+        return adid;
+    }
+
+    public void setAdid(int adid) {
+        this.adid = adid;
+    }
     public void setAdImage(String adImageURL){this.adImageURL=adImageURL;}
     public String getAdImage(){return this.adImageURL;}
 

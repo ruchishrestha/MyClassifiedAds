@@ -42,7 +42,7 @@ public class JSONParser {
             }
         }
         catch(Exception e){
-            System.out.println("Individual: " + e);
+            System.out.println("ERROROROROROROR!!" + e);
         }
         return iUser;
     }
@@ -60,7 +60,7 @@ public class JSONParser {
             }
         }
         catch(Exception e){
-            System.out.println("Shop: "+e);
+            System.out.println("ERROROROROROROR!!");
         }
         return sUser;
     }
@@ -78,7 +78,7 @@ public class JSONParser {
             }
         }
         catch(Exception e){
-            System.out.println("ORG: "+e);
+            System.out.println("ERROROROROROROR!!");
         }
         return oUser;
     }
@@ -136,7 +136,7 @@ public class JSONParser {
             result = object.getString("Value");
         }
         catch (Exception e){
-            System.out.println("Result: "+e);
+            System.out.println("JobResult: " + e);
         }
         return result;
     }
@@ -156,7 +156,7 @@ public class JSONParser {
 
         } catch (JSONException e) {
             // TODO Auto-generated catch block
-            System.out.println("List: "+e);
+            Log.d("JSONParser => parseContactsList", e.getMessage());
         }
         return categoryList;
     }
@@ -407,6 +407,26 @@ public class JSONParser {
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             Log.d("JSONParser => parseSalesDetails", e.getMessage());
+        }
+        return arrayList;
+    }
+
+    @SuppressLint("LongLogTag")
+    public ArrayList<ContactsnWantedAdObject> parseContactsForMap(JSONObject object)
+    {
+        ArrayList<ContactsnWantedAdObject> arrayList=new ArrayList<>();
+        try {
+            JSONArray jsonArray=object.getJSONArray("Value");
+            JSONObject jsonObj;
+            for(int i=0;i<jsonArray.length();i++)
+            {
+                jsonObj=jsonArray.getJSONObject(i);
+                arrayList.add(new ContactsnWantedAdObject(jsonObj.getInt("adid"), jsonObj.getString("photoURL"),jsonObj.getString("title"),jsonObj.getString("Category"),jsonObj.getString("contact"),jsonObj.getString("mobile"),jsonObj.getDouble("latitude"), jsonObj.getDouble("longitude")));
+            }
+
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            Log.d("JSONParser => parseContactsForMap", e.getMessage());
         }
         return arrayList;
     }
