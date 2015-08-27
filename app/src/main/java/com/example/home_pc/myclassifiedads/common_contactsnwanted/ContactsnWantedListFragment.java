@@ -37,7 +37,7 @@ public class ContactsnWantedListFragment extends Fragment {
     ArrayList<ContactsnWantedAdObject> cObject;
     Context context;
     ContactnWantedAdsAdapter contactAdsAdapter;
-    String tableCategory,userID,adtype;
+    String tableCategory,userID;
 
     public ContactsnWantedListFragment() {
     }
@@ -48,12 +48,11 @@ public class ContactsnWantedListFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.ads_recycler_view, container,
                 false);
+        context = getActivity();
         tableCategory=getArguments().getString("tableCategory");
         userID=getArguments().getString("userID");
         contactsList=(RecyclerView) view.findViewById(R.id.cardList);
         mswipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipeRefreshLayout);
-        context=getActivity();
-        //setHasOptionsMenu(true);
         contactsList.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -95,14 +94,14 @@ public class ContactsnWantedListFragment extends Fragment {
                 cObject = parser.parseContactsList(jsonObj);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                Log.d("AsyncLoadContactList", e.getMessage());
+                Log.d("AsyncLoadContactList", ""+e);
             }
             return cObject;
         }
 
         @Override
         protected void onPreExecute(){
-            progressDialog=new ProgressDialog(getActivity());
+            progressDialog=new ProgressDialog(context);
             progressDialog.setMessage("Loading...");
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setIndeterminate(true);
@@ -119,7 +118,7 @@ public class ContactsnWantedListFragment extends Fragment {
                 contactAdsAdapter =new ContactnWantedAdsAdapter(context,result,tableCategory,userID);
                 contactsList.setAdapter(contactAdsAdapter);
             } else{
-                Toast.makeText(getActivity(), "NO ADS FOUND :(", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "NO ADS FOUND :(", Toast.LENGTH_LONG).show();
             }
         }
     }

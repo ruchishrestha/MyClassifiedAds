@@ -32,7 +32,6 @@ public class WantedFragment extends Fragment {
     private ViewPager viewPager;
     public ArrayList<ContactsnWantedAdObject> contactsAdObject;
     String userID;
-    public Bundle args;
 
     public WantedFragment() {
 
@@ -42,7 +41,6 @@ public class WantedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        args=new Bundle();
         contactsAdObject=new ArrayList<ContactsnWantedAdObject>();
 
         View v = inflater.inflate(R.layout.tab_fragments, container, false);
@@ -80,6 +78,7 @@ public class WantedFragment extends Fragment {
                     break;
                 case 1:
                     selectFragment= new ContactsnWantedMapFragment();
+                    selectFragment.setArguments(args);
                     break;
                 default:
                     break;

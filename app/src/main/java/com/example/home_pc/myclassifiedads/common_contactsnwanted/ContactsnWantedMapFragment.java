@@ -51,11 +51,11 @@ public class ContactsnWantedMapFragment extends Fragment {
         // inflat and return the layout
         View v = inflater.inflate(R.layout.activity_locate_on_map, container,
                 false);
-        setHasOptionsMenu(true);
-        mMapView = (MapView) v.findViewById(R.id.locateOnMapView);
-        mMapView.onCreate(savedInstanceState);
+        //setHasOptionsMenu(true);
         tableCategory=getArguments().getString("tableCategory");
         userID=getArguments().getString("userID");
+        mMapView = (MapView) v.findViewById(R.id.locateOnMapView);
+        mMapView.onCreate(savedInstanceState);
         mMarkersHashMap = new HashMap<Marker, ContactsnWantedAdObject>();
         first = true;
         mMapView.onResume();// needed to get the map to display immediately
@@ -75,14 +75,13 @@ return v;
 
     protected class AsyncLoadContactAds extends
             AsyncTask<Void, Void, ArrayList<ContactsnWantedAdObject>> {
-        ArrayList<ContactsnWantedAdObject> cObject = null;
+
 
         @Override
         protected ArrayList<ContactsnWantedAdObject> doInBackground(Void... params) {
-
+            ArrayList<ContactsnWantedAdObject> cObject = new ArrayList<ContactsnWantedAdObject>();
             RestAPI api = new RestAPI();
             try {
-                cObject = new ArrayList<ContactsnWantedAdObject>();
                 JSONObject jsonObj = api.GetContactsList(tableCategory);
                 JSONParser parser = new JSONParser();
                 cObject = parser.parseContactsList(jsonObj);

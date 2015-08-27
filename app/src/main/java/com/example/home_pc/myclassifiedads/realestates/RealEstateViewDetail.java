@@ -68,12 +68,13 @@ public class RealEstateViewDetail extends ActionBarActivity {
         img.add((ImageView)findViewById(R.id.img4));
         img.add((ImageView)findViewById(R.id.img5));
         img.add((ImageView)findViewById(R.id.img6));
+
         ad_title=(TextView)findViewById(R.id.adTitle);
         ad_description=(TextView)findViewById(R.id.ad_description);
         saleType=(TextView)findViewById(R.id.saleType);
         price=(TextView)findViewById(R.id.price);
         username=(TextView)findViewById(R.id.username);
-       ad_postedDate=(TextView)findViewById(R.id.ad_postedDate);
+        ad_postedDate=(TextView)findViewById(R.id.ad_postedDate);
         houseNo=(TextView)findViewById(R.id.houseNo);
         propertyType=(TextView)findViewById(R.id.propertyType);
         contactNo=(TextView)findViewById(R.id.contactNo);

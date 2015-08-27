@@ -2,6 +2,7 @@ package com.example.home_pc.myclassifiedads.mainactivity;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -32,6 +33,8 @@ import com.example.home_pc.myclassifiedads.draweritemsfragments.MyOrganizationAc
 import com.example.home_pc.myclassifiedads.draweritemsfragments.MyShopAccount;
 import com.example.home_pc.myclassifiedads.draweritemsfragments.SettingsFragment;
 import com.example.home_pc.myclassifiedads.jobs.JobFragment;
+import com.example.home_pc.myclassifiedads.mainactivity.CustomDrawerAdapter;
+import com.example.home_pc.myclassifiedads.mainactivity.DrawerItem;
 import com.example.home_pc.myclassifiedads.realestates.RealEstateFragment;
 import com.example.home_pc.myclassifiedads.recommendation.RecommendedAdsFragment;
 import com.example.home_pc.myclassifiedads.sales.SalesFragment;
@@ -141,6 +144,7 @@ public class NavigationActivity extends ActionBarActivity {
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
         return true;
 
     }

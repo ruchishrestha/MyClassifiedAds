@@ -64,7 +64,7 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
         toggle = false;
 
         userName = getIntent().getStringExtra("userID");
-        adtype = getIntent().getStringExtra("Category");
+        adtype = getIntent().getStringExtra("tableCategory");
         uploadedPic=(ImageView) findViewById(R.id.adImage);
         uploadPic=(TextView) findViewById(R.id.uploadPics);
         title=(EditText) findViewById(R.id.title);
