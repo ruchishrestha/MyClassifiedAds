@@ -116,6 +116,7 @@ public class SalesAddActivity extends ActionBarActivity {
         susedTime = usedTime.getText().toString();
         srating = "0";
         salesAdsObject = new SalesAdsObject(userName,stitle,sdescription,scategory,sbrand,smodelNo,sprice,sstatus,scontactNo,scondition,susedTime,srating);
+        saveButton.setEnabled(false);
         new AsyncAddSalesAds().execute(salesAdsObject);
     }
 
@@ -253,6 +254,8 @@ public class SalesAddActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(String result) {
             System.out.println("Sales: "+result);
+            saveButton.setEnabled(true);
+            onBackPressed();
         }
     }
 

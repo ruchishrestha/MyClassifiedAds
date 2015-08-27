@@ -137,6 +137,7 @@ public class JobAddActivity extends ActionBarActivity {
         jwebSite = webSite.getText().toString();
         jpictureURL = "-";
         jobAdsObject = new JobAdsObject(userName,jpictureURL,jtitle,jdescription,jresponsibility,jskills,jjobCategory,jjobTime,jvacancies,jsalary,jaDdress,jcontactNo,jemailId,jwebSite,_latitude,_longitude);
+        saveButton.setEnabled(false);
         new AsyncAddJobAds().execute(jobAdsObject);
     }
 
@@ -313,7 +314,9 @@ public class JobAddActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(String result) {
 
-            System.out.println(result);
+            System.out.println("Job: "+result);
+            saveButton.setEnabled(true);
+            onBackPressed();
         }
     }
 

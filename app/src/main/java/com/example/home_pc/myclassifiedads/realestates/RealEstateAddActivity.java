@@ -123,13 +123,14 @@ public class RealEstateAddActivity extends ActionBarActivity {
         rtitle = title.getText().toString();
         rdescription = description.getText().toString();
         rhouseNo = houseNo.getText().toString();
-        rpropertyType = "Private"; //propertyType.getSelectedItem().toString();
+        rpropertyType = propertyType.getSelectedItem().toString();
         rsaleType = saleType.getSelectedItem().toString();
         rprice = price.getText().toString();
         raDdress = aDdress.getText().toString();
         rcontactNo = contactNo.getText().toString();
         rmobileNo = mobileNo.getText().toString();
         realEstatesAdObject = new RealEstatesAdObject(userName,rtitle,rdescription,rhouseNo,rpropertyType,rsaleType,rprice,raDdress,rcontactNo,rmobileNo,_latitude,_longitude);
+        saveButton.setEnabled(false);
         new AsyncAddRealEstateAds().execute(realEstatesAdObject);
     }
 
@@ -311,7 +312,9 @@ public class RealEstateAddActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            System.out.println("REAL: "+result);
+            System.out.println("Real: "+result);
+            saveButton.setEnabled(true);
+            onBackPressed();
         }
     }
 

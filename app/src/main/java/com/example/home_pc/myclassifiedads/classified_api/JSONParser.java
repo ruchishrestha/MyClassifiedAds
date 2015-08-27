@@ -42,7 +42,7 @@ public class JSONParser {
             }
         }
         catch(Exception e){
-            System.out.println("ERROROROROROROR!!" + e);
+            System.out.println("Individual: " + e);
         }
         return iUser;
     }
@@ -60,7 +60,7 @@ public class JSONParser {
             }
         }
         catch(Exception e){
-            System.out.println("ERROROROROROROR!!");
+            System.out.println("Shop: "+e);
         }
         return sUser;
     }
@@ -78,7 +78,7 @@ public class JSONParser {
             }
         }
         catch(Exception e){
-            System.out.println("ERROROROROROROR!!");
+            System.out.println("ORG: "+e);
         }
         return oUser;
     }
@@ -136,7 +136,7 @@ public class JSONParser {
             result = object.getString("Value");
         }
         catch (Exception e){
-            System.out.println("JobResult: "+e);
+            System.out.println("Result: "+e);
         }
         return result;
     }
@@ -156,7 +156,7 @@ public class JSONParser {
 
         } catch (JSONException e) {
             // TODO Auto-generated catch block
-            Log.d("JSONParser => parseContactsList", e.getMessage());
+            System.out.println("List: "+e);
         }
         return categoryList;
     }
