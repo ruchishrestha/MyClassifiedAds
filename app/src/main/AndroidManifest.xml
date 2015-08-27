@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.home_pc.myclassifiedads" >
 
@@ -31,7 +32,7 @@
         <!-- You must insert your own Google Maps for Android API v2 key in here. -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyDGJjGg6Pouf2AqRtUSzKHq4IVbzYG4ZFM" />
+            android:value="AIzaSyD4d98tBmpcsQpk_fcDlNR_5SpCmtvNgFo" />
 
         <activity
             android:name=".mainactivity.MainActivity"
@@ -138,6 +139,14 @@
                 android:value=".mainactivity.NavigationActivity" />
         </activity>
         <activity
+            android:name=".mainactivity.ViewOnMap"
+            android:label="@string/title_view_on_map"
+            android:parentActivityName=".mainactivity.NavigationActivity" >
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".mainactivity.NavigationActivity" />
+        </activity>
+        <activity
             android:name=".sales.SalesAddActivity"
             android:label="@string/title_activity_sales_add"
             android:parentActivityName=".mainactivity.NavigationActivity" >
@@ -191,13 +200,11 @@
             android:label="@string/title_activity_sales_detail_view" >
         </activity>
         <activity
-            android:name=".sales_all_comments"
-            android:label="@string/title_activity_sales_all_comments" >
-        </activity>
-        <activity
             android:name=".comments.SalesAllComments"
             android:label="@string/title_activity_sales_all_comments" >
         </activity>
     </application>
 
 </manifest>
+
+

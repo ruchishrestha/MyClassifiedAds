@@ -185,7 +185,7 @@ public class SalesDetailView extends ActionBarActivity {
 
             username.setText(Html.fromHtml("<u>" + result.get(0).userName + "</u>"));
             title.setText(result.get(0).title);
-            price.setText(result.get(0).price);
+            price.setText("NPR."+result.get(0).price);
             brand.setText(result.get(0).brand);
             model.setText(result.get(0).modelNo);
             contact.setText(result.get(0).contactNo);

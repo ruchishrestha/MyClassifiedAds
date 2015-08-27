@@ -33,6 +33,7 @@ import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
 import com.example.home_pc.myclassifiedads.comments.AllCommentsActivity;
 import com.example.home_pc.myclassifiedads.comments.CommentObject;
 import com.example.home_pc.myclassifiedads.mainactivity.MainActivity;
+import com.example.home_pc.myclassifiedads.mainactivity.ViewOnMap;
 
 import org.json.JSONObject;
 
@@ -43,7 +44,7 @@ public class RealEstateViewDetail extends ActionBarActivity {
     ImageView realestate_picture,comment_cancel,comment_save,read_comment;
     TextView username,ad_description,ad_title,saleType,price,contactNo,aDdress,
             comment,commentText,postedDate,houseNo,propertyType,mobileNo,commenterUsername,myComments,
-            ad_postedDate;
+            ad_postedDate,viewOnMap;
     Integer realestateID;
     CardView commentRealestate;
     ProgressDialog progressDialog;
@@ -79,6 +80,7 @@ public class RealEstateViewDetail extends ActionBarActivity {
         mobileNo=(TextView)findViewById(R.id.mobileNo);
         aDdress=(TextView)findViewById(R.id.address);
         comment=(TextView)findViewById(R.id.comment);
+        viewOnMap=(TextView)findViewById(R.id.viewOnMap);
         horizontalScrollView=(HorizontalScrollView)findViewById(R.id.horizontalScroll);
         postedDate=(TextView)findViewById(R.id.postedDate);
         commenterUsername=(TextView)findViewById(R.id.comenterUsername);
@@ -106,6 +108,16 @@ public class RealEstateViewDetail extends ActionBarActivity {
             public void onClick(View v) {
                 allCommentsPopup(realestateID, "RealEstate");
 
+            }
+        });
+        viewOnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(), ViewOnMap.class);
+                intent.putExtra("longitute", realEstatesAdObjects.get(0).longitude);
+                intent.putExtra("addres", realEstatesAdObjects.get(0).aDdress);
+                intent.putExtra("latitute",realEstatesAdObjects.get(0).latitude);
+                startActivity(intent);
             }
         });
     }

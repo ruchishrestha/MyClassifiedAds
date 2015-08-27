@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.home_pc.myclassifiedads.R;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
@@ -77,7 +78,7 @@ public class RealEstateListFragment extends Fragment {
     }
 
     public void loadRealestateAds(){
-        new AsyncLoadRealestateAds().execute();
+        new AsyncLoadRealestateAds().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     protected class AsyncLoadRealestateAds extends
@@ -118,6 +119,8 @@ public class RealEstateListFragment extends Fragment {
             if(result!=null){
                 RealEstateAdsAdapter realEstateAdsAdapter=new RealEstateAdsAdapter(context,result,userID);
                 realestateList.setAdapter(realEstateAdsAdapter);
+            } else{
+                Toast.makeText(getActivity(), "NO ADS FOUND :(", Toast.LENGTH_LONG).show();
             }
         }
     }

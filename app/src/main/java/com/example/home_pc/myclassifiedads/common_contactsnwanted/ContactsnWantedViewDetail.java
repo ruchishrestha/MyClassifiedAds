@@ -30,17 +30,19 @@ import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
 import com.example.home_pc.myclassifiedads.comments.AllCommentsActivity;
 import com.example.home_pc.myclassifiedads.comments.CommentObject;
 import com.example.home_pc.myclassifiedads.mainactivity.MainActivity;
+import com.example.home_pc.myclassifiedads.mainactivity.ViewOnMap;
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 public class ContactsnWantedViewDetail extends ActionBarActivity {
-    ArrayList<ContactsnWantedAdObject> contactsAdObject=null;
+    public ArrayList<ContactsnWantedAdObject> contactsAdObject=null;
     ImageView contact_photo,comment_cancel,comment_save,read_comment;
     TextView category,username,ad_description,ad_title,contactNo,address,email,comment,commentText,postedDate,commenterUsername,myComments,
-    ad_postedDate,mobileNo;
-    Bitmap bitmap;
+    ad_postedDate,mobileNo,viewOnMap;
+    Bundle args;
     Integer adid;
     CardView commentContacts;
     ProgressDialog progressDialog;
@@ -71,17 +73,18 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
         myComments=(TextView)findViewById(R.id.myComments);
         commentContacts=(CardView)findViewById(R.id.commentContacts);
         read_comment=(ImageView)findViewById(R.id.read_comment);
+        viewOnMap=(TextView)findViewById(R.id.viewOnMap);
 
         commentContacts.setVisibility(View.GONE);
 
-        new AsyncLoadContactDetail().execute(new ContactsnWantedAdObject(adid,tableCategory));
+        new AsyncLoadContactDetail().execute(new ContactsnWantedAdObject(adid, tableCategory));
 
         comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(userID.equals("Guest")){
+                if (userID.equals("Guest")) {
                     popupalert();
-                }else{
+                } else {
                     initiatePopupWindow();
                 }
             }
@@ -92,6 +95,16 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
             public void onClick(View v) {
                 allCommentsPopup(adid,tableCategory);
 
+            }
+        });
+        viewOnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(), ViewOnMap.class);
+                intent.putExtra("longitute", contactsAdObject.get(0).longitute);
+                intent.putExtra("addres", contactsAdObject.get(0).aDdress);
+                intent.putExtra("latitute",contactsAdObject.get(0).latitude);
+                startActivity(intent);
             }
         });
     }

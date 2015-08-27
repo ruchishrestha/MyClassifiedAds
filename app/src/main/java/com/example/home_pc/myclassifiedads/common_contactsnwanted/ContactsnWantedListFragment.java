@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.home_pc.myclassifiedads.R;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
@@ -75,21 +76,21 @@ public class ContactsnWantedListFragment extends Fragment {
     }
 
     public void loadContactAds(){
-        new AsyncLoadContactAds().execute(tableCategory);
+        new AsyncLoadContactAds().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
 
     protected class AsyncLoadContactAds extends
-            AsyncTask<String, Void, ArrayList<ContactsnWantedAdObject>> {
+            AsyncTask<Void, Void, ArrayList<ContactsnWantedAdObject>> {
 
 
         @Override
-        protected ArrayList<ContactsnWantedAdObject> doInBackground(String... params) {
+        protected ArrayList<ContactsnWantedAdObject> doInBackground(Void... params) {
 
             RestAPI api = new RestAPI();
             try {
                 cObject=new ArrayList<ContactsnWantedAdObject>();
-                JSONObject jsonObj = api.GetContactsList(params[0]);
+                JSONObject jsonObj = api.GetContactsList(tableCategory);
                 JSONParser parser = new JSONParser();
                 cObject = parser.parseContactsList(jsonObj);
             } catch (Exception e) {
@@ -117,6 +118,8 @@ public class ContactsnWantedListFragment extends Fragment {
             if(result!=null){
                 contactAdsAdapter =new ContactnWantedAdsAdapter(context,result,tableCategory,userID);
                 contactsList.setAdapter(contactAdsAdapter);
+            } else{
+                Toast.makeText(getActivity(), "NO ADS FOUND :(", Toast.LENGTH_LONG).show();
             }
         }
     }

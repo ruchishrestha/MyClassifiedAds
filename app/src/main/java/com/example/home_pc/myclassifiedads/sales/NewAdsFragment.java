@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.home_pc.myclassifiedads.R;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
@@ -113,6 +114,9 @@ public class NewAdsFragment extends Fragment {
             if(result!=null){
                 SalesAdsAdapter salesAdsAdapter=new SalesAdsAdapter(context,result,userID,salesCategory);
                 salesList.setAdapter(salesAdsAdapter);
+            }
+            else{
+                Toast.makeText(context,"NO ADS FOUND :(",Toast.LENGTH_LONG).show();
             }
         }
     }

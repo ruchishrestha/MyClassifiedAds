@@ -52,6 +52,7 @@
     <string name="title_activity_real_estate_add">Add RealEstate Ads</string>
     <string name="title_activity_job_add">Add Job Vacancy Ads</string>
     <string name="title_activity_contact_view_detail">Contact View Detail</string>
+    <string name="title_view_on_map">Location on map</string>
     <string name="title_fragment_contactsinlist">All Contacts</string>
     <string name="title_fragment_contactsinmap">View in Map</string>
     <string name="title_fragment_wantedinlist">All Wanted list</string>
@@ -76,6 +77,7 @@
     <string name="title_activity_job_detail">JobDetailActivity</string>
     <string name="title_activity_sales_detail_view">SalesDetailView</string>
     <string name="title_activity_sales_all_comments">sales_all_comments</string>
+    <string name="title_activity_maps">Map</string>
 
 
 

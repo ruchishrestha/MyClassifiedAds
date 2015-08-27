@@ -31,6 +31,7 @@ import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
 import com.example.home_pc.myclassifiedads.comments.AllCommentsActivity;
 import com.example.home_pc.myclassifiedads.comments.CommentObject;
 import com.example.home_pc.myclassifiedads.mainactivity.MainActivity;
+import com.example.home_pc.myclassifiedads.mainactivity.ViewOnMap;
 
 import org.json.JSONObject;
 
@@ -39,7 +40,7 @@ import java.util.ArrayList;
 public class JobDetailActivity extends ActionBarActivity {
     ArrayList<JobAdsObject> jobAdsObjects=null;
     TextView title,jobCategory,salary,username,ad_postedDate,ad_description,responsibility,skills,jobTime,vaccancyNo,contact,
-                website, comment,commentText,postedDate,commenterUsername,myComments,addres,email;
+                website, comment,commentText,postedDate,commenterUsername,myComments,addres,email,viewOnMap;
     Integer jobID;
     CardView commentJob;
     ProgressDialog progressDialog;
@@ -70,6 +71,7 @@ public class JobDetailActivity extends ActionBarActivity {
         addres=(TextView)findViewById(R.id.address);
         comment=(TextView)findViewById(R.id.comment);
         email=(TextView)findViewById(R.id.email);
+        viewOnMap=(TextView)findViewById(R.id.viewOnMap);
         postedDate=(TextView)findViewById(R.id.postedDate);
         commenterUsername=(TextView)findViewById(R.id.comenterUsername);
         myComments=(TextView)findViewById(R.id.myComments);
@@ -85,7 +87,7 @@ public class JobDetailActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 if (userID.equals("Guest")) {
-                   popupalert();
+                    popupalert();
                 } else {
                     initiatePopupWindow();
                 }
@@ -97,6 +99,16 @@ public class JobDetailActivity extends ActionBarActivity {
             public void onClick(View v) {
                 allCommentsPopup(jobID, "job");
 
+            }
+        });
+        viewOnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(), ViewOnMap.class);
+                intent.putExtra("longitute", jobAdsObjects.get(0).longitude);
+                intent.putExtra("addres", jobAdsObjects.get(0).aDdress);
+                intent.putExtra("latitute",jobAdsObjects.get(0).latitude);
+                startActivity(intent);
             }
         });
     }

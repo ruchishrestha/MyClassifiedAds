@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
 import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
@@ -121,6 +122,8 @@ public class JobFragment extends Fragment {
             if(result!=null){
                 jobAdsAdapter=new JobAdsAdapter(context,result,userID);
                 jobList.setAdapter(jobAdsAdapter);
+            } else{
+                Toast.makeText(getActivity(), "NO ADS FOUND :(", Toast.LENGTH_LONG).show();
             }
         }
     }
