@@ -55,7 +55,7 @@ public class JobAddActivity extends ActionBarActivity {
     Boolean toggle;
     Dialog dialog;
     JobAdsObject jobAdsObject;
-    ArrayList<String> categoryList,clist;
+    ArrayList<String> categoryList;
 
 
     @Override
@@ -65,19 +65,6 @@ public class JobAddActivity extends ActionBarActivity {
 
         photoCount=0;
         toggle = false;
-
-        /*clist = new ArrayList<String>();*/
-        categoryList = new ArrayList<String>();
-
-        /*categoryList.add("Gardener");
-        categoryList.add("Guard");
-        categoryList.add("Salesman");*/
-       // categoryList = getIntent().getStringArrayListExtra("JobCategory");
-       /* categoryList.add(clist.get(0));
-        categoryList.add(clist.get(1));
-        categoryList.add(clist.get(2));
-        categoryList.add(clist.get(3));*/
-
 
         userName = getIntent().getStringExtra("userID");
         organizationLogo = (ImageView) findViewById(R.id.jobsImage);
@@ -140,7 +127,7 @@ public class JobAddActivity extends ActionBarActivity {
         jdescription = description.getText().toString();
         jresponsibility = responsibility.getText().toString();
         jskills = skills.getText().toString();
-        jjobCategory = "Computer Engineer";//jobCategory.getSelectedItem().toString();
+        jjobCategory = jobCategory.getSelectedItem().toString();
         jjobTime = jobTiming.getSelectedItem().toString();
         jvacancies = vacancies.getText().toString();
         jsalary = salary.getText().toString();
@@ -197,6 +184,7 @@ public class JobAddActivity extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         organizationLogo.setImageResource(R.drawable.camerapic);
+                        picture=null;
                         photoCount--;
                         dialog.dismiss();
                     }
@@ -277,8 +265,14 @@ public class JobAddActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(ArrayList<String> result) {
-            for (int i =0;i<result.size();i++){
-                categoryList.add(result.get(i));
+            categoryList = new ArrayList<String>();
+            if(result.size() != 0 && result != null) {
+                for (int i = 0; i < result.size(); i++) {
+                    categoryList.add(result.get(i));
+                }
+            }
+            else{
+                categoryList.add("Not Available");
             }
             jobCategoryAdapter = new ArrayAdapter<String>(context,android.R.layout.simple_spinner_item,categoryList);
             jobCategoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
