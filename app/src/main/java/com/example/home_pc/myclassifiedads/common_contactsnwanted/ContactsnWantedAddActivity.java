@@ -127,6 +127,7 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
         adCategory = category.getSelectedItem().toString();
         adImageURL = "-";
         contactsnWantedAdObject = new ContactsnWantedAdObject(userName,adTitle,adDescription,adAddress,adContactNo,adMobileNo,adEmailId,adCategory,_latitude,_longitude,adImageURL);
+        saveButton.setEnabled(false);
         switch(adtype){
             case "contacts":new AsyncAddContactsAds().execute(contactsnWantedAdObject);break;
             case "wanted":new AsyncAddWantedAds().execute(contactsnWantedAdObject);break;
@@ -343,7 +344,9 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(String result) {
 
-            System.out.println(result);
+            System.out.println("Contacts: "+result);
+            saveButton.setEnabled(true);
+            onBackPressed();
         }
     }
 
@@ -382,7 +385,9 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(String result) {
 
-            System.out.println(result);
+            System.out.println("Wanted: "+result);
+            saveButton.setEnabled(true);
+            onBackPressed();
         }
     }
 
