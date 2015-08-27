@@ -95,7 +95,7 @@ public class ContactsnWantedListFragment extends Fragment {
                 cObject = parser.parseContactsList(jsonObj);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                Log.d("AsyncLoadContactList", e.getMessage());
+                Log.d("AsyncLoadContactList", ""+e);
             }
             return cObject;
         }

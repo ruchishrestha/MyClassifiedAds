@@ -80,6 +80,7 @@ public class WantedFragment extends Fragment {
                     break;
                 case 1:
                     selectFragment= new ContactsnWantedMapFragment();
+                    selectFragment.setArguments(args);
                     break;
                 default:
                     break;

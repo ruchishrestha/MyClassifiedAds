@@ -136,7 +136,7 @@ public class JSONParser {
             result = object.getString("Value");
         }
         catch (Exception e){
-            System.out.println("JobResult: "+e);
+            System.out.println("JobResult: " + e);
         }
         return result;
     }
@@ -407,6 +407,26 @@ public class JSONParser {
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             Log.d("JSONParser => parseSalesDetails", e.getMessage());
+        }
+        return arrayList;
+    }
+
+    @SuppressLint("LongLogTag")
+    public ArrayList<ContactsnWantedAdObject> parseContactsForMap(JSONObject object)
+    {
+        ArrayList<ContactsnWantedAdObject> arrayList=new ArrayList<>();
+        try {
+            JSONArray jsonArray=object.getJSONArray("Value");
+            JSONObject jsonObj;
+            for(int i=0;i<jsonArray.length();i++)
+            {
+                jsonObj=jsonArray.getJSONObject(i);
+                arrayList.add(new ContactsnWantedAdObject(jsonObj.getInt("adid"), jsonObj.getString("photoURL"),jsonObj.getString("title"),jsonObj.getString("Category"),jsonObj.getString("contact"),jsonObj.getString("mobile"),jsonObj.getDouble("latitude"), jsonObj.getDouble("longitude")));
+            }
+
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            Log.d("JSONParser => parseContactsForMap", e.getMessage());
         }
         return arrayList;
     }

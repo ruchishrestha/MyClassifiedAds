@@ -82,7 +82,10 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
         holder.jobsVaccancies.setText(jao.vaccancyNo);
         holder.jobsSalary.setText("NPR."+jao.salary);
         holder.jobsUserID.setText(jao.userName);
-        new AsyncLoadImage(position,holder,jao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,jao.logoURL);
+        if(!jao.logoURL.equals("-")){
+            new AsyncLoadImage(position,holder,jao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,jao.logoURL);
+        }
+
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
