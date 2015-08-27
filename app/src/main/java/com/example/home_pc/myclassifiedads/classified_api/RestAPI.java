@@ -361,14 +361,14 @@ public class RestAPI {
         return result;
     }
 
-    public JSONObject AddtoSalesGallery(String salesId,String SalesCategory,ArrayList<String> pictureURL) throws Exception {
+    public JSONObject AddtoSalesGallery(String salesId,String salesCategory,ArrayList<String> pictureURL) throws Exception {
         JSONObject result = null;
         JSONObject o = new JSONObject();
         JSONObject p = new JSONObject();
         o.put("interface","RestAPI");
         o.put("method", "AddtoSalesGallery");
         p.put("salesId",mapObject(salesId));
-        p.put("SalesCategory",mapObject(SalesCategory));
+        p.put("salesCategory",mapObject(salesCategory));
         p.put("pictureURL",mapObject(pictureURL));
         o.put("parameters", p);
         String s = o.toString();
@@ -410,6 +410,19 @@ public class RestAPI {
         o.put("method", "AddtoRealEstateGallery");
         p.put("realId",mapObject(realId));
         p.put("pictureURL",mapObject(pictureURL));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject GetPropertyType() throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetPropertyType");
         o.put("parameters", p);
         String s = o.toString();
         String r = load(s);

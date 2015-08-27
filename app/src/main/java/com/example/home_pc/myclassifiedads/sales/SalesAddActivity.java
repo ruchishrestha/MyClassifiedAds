@@ -175,12 +175,11 @@ public class SalesAddActivity extends ActionBarActivity {
     }
 
     public void resetimg(int j){
+        photosToUpload.remove(j);
         for(int k=j;k<i;k++){
-            photosToUpload.add(k, photosToUpload.get(k + 1));
             tempPhotoView[k]= tempPhotoView[k+1];
             uploadedImages[k].setImageBitmap(tempPhotoView[k]);
         }
-        photosToUpload.add(i,null);
         tempPhotoView[i]=null;
         uploadedImages[i].setImageBitmap(null);
         dialog.dismiss();
@@ -237,6 +236,7 @@ public class SalesAddActivity extends ActionBarActivity {
                 JSONObject object = api.AddSalesAds(params[0].getUserName(), params[0].gettitle(), params[0].getDescription(), params[0].getBrand(), params[0].getModelNo(), params[0].getPrice(), params[0].getStatus(), params[0].getCondition(),params[0].getUsedTime(),params[0].getContactNo(),params[0].getRating(),params[0].getCategory());
                 JSONParser parser = new JSONParser();
                 adID = parser.getId(object);
+                System.out.println(adID);
                 alter = scategory.replace(" ","_");
                 pictureURLs = ImageLoaderAPI.AzureImageUploader(photosToUpload, "Sales" + alter + adID);
 

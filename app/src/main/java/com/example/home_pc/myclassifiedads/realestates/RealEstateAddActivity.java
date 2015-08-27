@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -43,6 +44,7 @@ public class RealEstateAddActivity extends ActionBarActivity {
     private EditText title,description,houseNo,price,aDdress,contactNo,mobileNo;
     String userName,rtitle,rdescription,rhouseNo,rpropertyType,rsaleType,rprice,raDdress,rcontactNo,rmobileNo;
     private Spinner propertyType,saleType;
+    ArrayAdapter<String> propertyTypeAdapter;
     private Bitmap[] tempPhotoView;
     private ArrayList<Bitmap> photosToUpload;
     Double _latitude,_longitude;
@@ -50,6 +52,7 @@ public class RealEstateAddActivity extends ActionBarActivity {
     private Dialog dialog;
     private Button saveButton;
     RealEstatesAdObject realEstatesAdObject;
+    ArrayList<String> propertyList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +87,7 @@ public class RealEstateAddActivity extends ActionBarActivity {
         description=(EditText) findViewById(R.id.description);
         houseNo = (EditText) findViewById(R.id.houseBuildingNo);
         propertyType = (Spinner) findViewById(R.id.propertyTypeList);
+        new AsyncLoadPropertyList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         saleType=(Spinner) findViewById(R.id.saleTypeList);
         contactNo=(EditText) findViewById(R.id.realEstateContact);
         mobileNo=(EditText) findViewById(R.id.mobileNo);
@@ -185,12 +189,11 @@ public class RealEstateAddActivity extends ActionBarActivity {
     }
 
     public void resetimg(int j){
+        photosToUpload.remove(j);
         for(int k=j;k<i;k++){
-            photosToUpload.add(k, photosToUpload.get(k + 1));
             tempPhotoView[k]= tempPhotoView[k+1];
             uploadedImages[k].setImageBitmap(tempPhotoView[k]);
         }
-        photosToUpload.add(i, null);
         tempPhotoView[i]=null;
         uploadedImages[i].setImageBitmap(null);
         dialog.dismiss();
@@ -242,6 +245,41 @@ public class RealEstateAddActivity extends ActionBarActivity {
         // Convert the dps to pixels, based on density scale
         return ((int) (dp * scale + 0.5f));
     }
+
+    protected class AsyncLoadPropertyList extends AsyncTask<Void,Void,ArrayList<String>>{
+
+        @Override
+        protected ArrayList<String> doInBackground(Void... params) {
+            System.out.println("LOADLIST");
+            ArrayList<String> categoryLst = new ArrayList<String>();
+            RestAPI api = new RestAPI();
+            try{
+                JSONObject object = api.GetContactsCategory();
+                JSONParser parser = new JSONParser();
+                categoryLst = parser.getList(object);
+            }
+            catch(Exception e){}
+
+            return categoryLst;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> result) {
+            propertyList = new ArrayList<String>();
+            if(result.size() != 0 && result !=null) {
+                for (int i = 0; i < result.size(); i++) {
+                   propertyList.add(result.get(i));
+                }
+            }
+            else{
+              propertyList.add("Not Available");
+            }
+            propertyTypeAdapter = new ArrayAdapter<String>(context,android.R.layout.simple_spinner_item,propertyList);
+            propertyTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            propertyType.setAdapter(propertyTypeAdapter);
+        }
+    }
+
 
 
     protected class AsyncAddRealEstateAds extends AsyncTask<RealEstatesAdObject,Void,String>{
