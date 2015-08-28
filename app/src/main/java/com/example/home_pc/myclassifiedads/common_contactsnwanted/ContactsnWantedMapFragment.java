@@ -64,7 +64,7 @@ public class ContactsnWantedMapFragment extends Fragment {
         // inflat and return the layout
         View v = inflater.inflate(R.layout.activity_locate_on_map, container,
                 false);
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
        mMapView = (MapView) v.findViewById(R.id.locateOnMapView);
         mMapView.onCreate(savedInstanceState);
         userID=getArguments().getString("userID");

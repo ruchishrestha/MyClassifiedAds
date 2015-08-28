@@ -1,6 +1,8 @@
 package com.example.home_pc.myclassifiedads.common_contactsnwanted;
 
 import android.app.AlertDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,7 +37,6 @@ public class ContactsFragment extends Fragment {
     private ViewPager viewPager;
     public ArrayList<ContactsnWantedAdObject> contactsAdObject;
     String userID;
-    public Bundle args;
 
 
     public ContactsFragment() {
@@ -44,7 +46,7 @@ public class ContactsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        args=new Bundle();
+
         contactsAdObject=new ArrayList<ContactsnWantedAdObject>();
 
         View v = inflater.inflate(R.layout.tab_fragments, container, false);
@@ -75,7 +77,6 @@ public class ContactsFragment extends Fragment {
 
             Bundle args=new Bundle();
             args.putString("tableCategory","contacts");
-            args.putString("Category","contacts");
             args.putString("userID",userID);
             switch (fragmentPosition) {
                 case 0:

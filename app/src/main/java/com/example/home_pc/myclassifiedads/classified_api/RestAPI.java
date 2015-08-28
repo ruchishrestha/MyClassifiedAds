@@ -86,7 +86,7 @@ public class RestAPI {
 						&& method.getName().startsWith("get")) {
 					String key = method.getName().substring(3);
 					try {
-						Object obj = method.invoke(o, null);
+						Object obj = method.invoke(o);
 						Object value = mapObject(obj);
 						map.put(key, value);
 						finalValue = new JSONObject(map);

@@ -161,7 +161,6 @@
                     android:id="@+id/propertyTypeList"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:layout_marginTop="5dp"
                     android:layout_below="@+id/propertyType"/>
 
                 <TextView
@@ -170,7 +169,7 @@
                     android:text="Sale Type:"
                     android:textSize="16sp"
                     android:textColor="#000000"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:layout_below="@+id/propertyTypeList"
                     android:id="@+id/saleType" />
 
@@ -178,7 +177,7 @@
                     android:id="@+id/saleTypeList"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:layout_toRightOf="@+id/saleType"
                     android:layout_below="@+id/propertyTypeList"
                     android:entries="@array/saleType" />
