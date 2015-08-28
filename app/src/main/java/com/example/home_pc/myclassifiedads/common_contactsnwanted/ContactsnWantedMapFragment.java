@@ -70,7 +70,6 @@ public class ContactsnWantedMapFragment extends Fragment {
         userID=getArguments().getString("userID");
         tableCategory=getArguments().getString("tableCategory");
         Toast.makeText(getActivity(),tableCategory,Toast.LENGTH_LONG).show();
-        userID=getArguments().getString("userID");
         mMarkersHashMap = new HashMap<Marker, ContactsnWantedAdObject>();
         first = true;
         mMapView.onResume();// needed to get the map to display immediately
@@ -84,14 +83,15 @@ public class ContactsnWantedMapFragment extends Fragment {
 
         googleMap = mMapView.getMap();
         googleMap.setMyLocationEnabled(true);
-        new AsyncLoadContactAds().execute();
+        new AsyncLoadContactAds().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 return v;
     }
 
     protected class AsyncLoadContactAds extends
             AsyncTask<Void, Void, ArrayList<ContactsnWantedAdObject>> {
         ArrayList<ContactsnWantedAdObject> cObject = null;
-
+        ArrayList<Bitmap> contactad=null;
+        ProgressDialog progressDialog;
         @Override
         protected ArrayList<ContactsnWantedAdObject> doInBackground(Void... params) {
 
@@ -101,6 +101,15 @@ return v;
                JSONObject jsonObj = api.GetContactsForMap(tableCategory);
                 JSONParser parser = new JSONParser();
                cObject = parser.parseContactsForMap(jsonObj);
+               /* contactad=new ArrayList<>();
+                for(int i=0;i<cObject.size();i++){
+                    if(!cObject.get(i).adImageURL.equals("-")){
+                        contactad.add(ImageLoaderAPI.AzureImageDownloader2(cObject.get(i).adImageURL));
+                    }else{
+                        contactad.add(null);
+                    }
+
+                }*/
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 Log.d("AsyncLoadContactForMap", e.getMessage());
@@ -108,12 +117,15 @@ return v;
             return cObject;
         }
 
+
+
         @Override
         protected void onPostExecute(ArrayList<ContactsnWantedAdObject> result) {
 
             for (int i = 0; i < result.size(); i++) {
                 mMyMarkersArray.add(new ContactsnWantedAdObject(result.get(i).getAdid(),result.get(i).getAdImage(), result.get(i).gettitle(),result.get(i).getCategory(),result.get(i).getContactNo(),result.get(i).getMobileNo(),result.get(i).getLatitude(),result.get(i).getLongitute()));
             }
+            Toast.makeText(getActivity(),result.get(0).mobileNo,Toast.LENGTH_LONG).show();
             plotMarkers(mMyMarkersArray);
         }
 
@@ -130,7 +142,6 @@ return v;
                 MarkerOptions markerOption = new MarkerOptions().position(new LatLng(myMarker.getLatitude(), myMarker.getLongitute()));
                 Marker currentMarker = googleMap.addMarker(markerOption);
                 mMarkersHashMap.put(currentMarker, myMarker);
-
                 googleMap.setInfoWindowAdapter(new MarkerInfoWindowAdapter());
             }
         }
@@ -138,6 +149,7 @@ return v;
 
     public class MarkerInfoWindowAdapter implements GoogleMap.InfoWindowAdapter
     {
+
         public MarkerInfoWindowAdapter()
         {
         }
@@ -159,16 +171,16 @@ return v;
             mobileNo=(TextView)v.findViewById(R.id.mobileNo);
             category=(TextView)v.findViewById(R.id.category);
             adImage=(ImageView)v.findViewById(R.id.contact_photo);
-            if(!myMarker.getAdImage().equals("-")){
-                Toast.makeText(getActivity(),myMarker.getAdImage(),Toast.LENGTH_LONG).show();
-                new AsyncLoadImage(myMarker).execute(myMarker.getAdImage());
+            if(myMarker.getAdImage()!=null){
+              //  contactad_Image=Bitmap.createScaledBitmap(myMarker.image, dptopx(100), dptopx(100), true);
+              //  Toast.makeText(getActivity(),myMarker.getAdImage(),Toast.LENGTH_LONG).show();
+                new AsyncLoadImage(marker).execute(myMarker.getAdImage());
                 adImage.setImageBitmap(contactad_Image);
             }
             title.setText(myMarker.gettitle());
             category.setText(myMarker.getCategory());
             contactNo.setText(myMarker.getContactNo());
             mobileNo.setText(myMarker.getMobileNo());
-
 
             googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
@@ -191,10 +203,10 @@ return v;
     protected class AsyncLoadImage extends
             AsyncTask<String, Void, Bitmap> {
         ProgressDialog progressDialog;
-        ContactsnWantedAdObject myMarker;
+        Marker markerShowingInfoWindow;
 
-        public AsyncLoadImage(ContactsnWantedAdObject myMarker){
-            this.myMarker=myMarker;
+        public AsyncLoadImage(Marker marker){
+            this.markerShowingInfoWindow=marker;
         }
         @Override
         protected Bitmap doInBackground(String... params) {
@@ -222,8 +234,10 @@ return v;
             if(progressDialog.isShowing()){
                 progressDialog.dismiss();
             }
-
-
+            if (markerShowingInfoWindow != null && markerShowingInfoWindow.isInfoWindowShown()) {
+                markerShowingInfoWindow.hideInfoWindow();
+                markerShowingInfoWindow.showInfoWindow();
+            }
         }
 
     }

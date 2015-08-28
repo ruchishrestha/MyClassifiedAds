@@ -76,7 +76,7 @@ public class ContactsnWantedListFragment extends Fragment {
     }
 
     public void loadContactAds(){
-        new AsyncLoadContactAds().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        new AsyncLoadContactAds().execute();
     }
 
 
