@@ -47,6 +47,7 @@ public class JobDetailActivity extends ActionBarActivity {
     String userID;
     ImageView read_comment,comment_cancel,comment_save,jobsImage;
     Bitmap jobs_image;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,7 +222,10 @@ public class JobDetailActivity extends ActionBarActivity {
             email.setText(result.get(0).emailId);
             addres.setText(result.get(0).aDdress);
             vaccancyNo.setText(result.get(0).vaccancyNo);
-            new AsyncLoadImage().execute(result.get(0).logoURL);
+            if(!result.get(0).logoURL.equals("-")){
+                new AsyncLoadImage().execute(result.get(0).logoURL);
+            }
+
         }
     }
 

@@ -58,12 +58,6 @@ public class MainActivity extends ActionBarActivity {
                 guestButtonClick();
             }
         });
-        guestButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                guestButtonClick2();
-            }
-        });
 
     }
 
@@ -84,26 +78,15 @@ public class MainActivity extends ActionBarActivity {
 
     public void guestButtonClick(){
 
-        /*Intent guestIntent = new Intent(this,NavigationActivity.class);
+        Intent guestIntent = new Intent(this,NavigationActivity.class);
         guestIntent.putExtra("Selection",2);
         guestIntent.putExtra("FullUserName","Welcome To Classified Ads");
         guestIntent.putExtra("userID","Guest");
         guestIntent.putExtra("PictureURL","-");
-        startActivity(guestIntent);*/
-        new AsyncLoadImage().execute("https://classifiedimagestorage.blob.core.windows.net/gallery/RealEstate7_0");
+        startActivity(guestIntent);
 
     }
-    public void guestButtonClick2(){
 
-        /*Intent guestIntent = new Intent(this,NavigationActivity.class);
-        guestIntent.putExtra("Selection",2);
-        guestIntent.putExtra("FullUserName","Welcome To Classified Ads");
-        guestIntent.putExtra("userID","Guest");
-        guestIntent.putExtra("PictureURL","-");
-        startActivity(guestIntent);*/
-        new AsyncLoadImage2().execute("https://classifiedimagestorage.blob.core.windows.net/gallery/RealEstate7_0");
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

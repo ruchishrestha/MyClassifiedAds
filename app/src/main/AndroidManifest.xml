@@ -1,5 +1,4 @@
-
-
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.home_pc.myclassifiedads" >
 
@@ -130,7 +129,6 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-
         <activity
             android:name=".common_contactsnwanted.ContactsnWantedAddActivity"
             android:label="@string/title_activity_contacts_add"
@@ -143,9 +141,9 @@
             android:name=".mainactivity.ViewOnMap"
             android:label="@string/title_view_on_map"
             android:parentActivityName=".mainactivity.NavigationActivity" >
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".mainactivity.NavigationActivity" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".mainactivity.NavigationActivity" />
         </activity>
         <activity
             android:name=".sales.SalesAddActivity"
@@ -204,8 +202,18 @@
             android:name=".comments.SalesAllComments"
             android:label="@string/title_activity_sales_all_comments" >
         </activity>
+        <activity
+            android:name=".userdetailview.ViewIndividualDetail"
+            android:label="@string/title_activity_view_individual_detail" >
+        </activity>
+        <activity
+            android:name=".userdetailview.ViewCompanyDetail"
+            android:label="@string/title_activity_view_company_detail" >
+        </activity>
+        <activity
+            android:name=".userdetailview.ViewShopDetail"
+            android:label="@string/title_activity_view_shop_detail" >
+        </activity>
     </application>
 
 </manifest>
-
-

@@ -86,7 +86,7 @@ public class RestAPI {
 						&& method.getName().startsWith("get")) {
 					String key = method.getName().substring(3);
 					try {
-						Object obj = method.invoke(o);
+						Object obj = method.invoke(o, null);
 						Object value = mapObject(obj);
 						map.put(key, value);
 						finalValue = new JSONObject(map);
@@ -787,6 +787,50 @@ public class RestAPI {
         JSONObject p = new JSONObject();
         o.put("interface","RestAPI");
         o.put("method", "GetContactsForMap");
+        p.put("category",mapObject(category));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject GetUserCategory(String username) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetUserCategory");
+        p.put("username",mapObject(username));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject GetMyContactsList(String userID,String category) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetMyContactsList");
+        p.put("userID",mapObject(userID));
+        p.put("category",mapObject(category));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject DeleteContactsWantedAd(int adid,String category) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "DeleteContactsWantedAd");
+        p.put("adid",mapObject(adid));
         p.put("category",mapObject(category));
         o.put("parameters", p);
         String s = o.toString();

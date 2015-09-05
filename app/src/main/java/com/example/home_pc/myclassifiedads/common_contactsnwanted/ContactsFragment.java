@@ -35,8 +35,7 @@ public class ContactsFragment extends Fragment {
     private SectionsPagerAdapter sectionsPagerAdapter;
     private Fragment selectFragment;
     private ViewPager viewPager;
-    public ArrayList<ContactsnWantedAdObject> contactsAdObject;
-    String userID;
+    String userID,userCategory;
 
 
     public ContactsFragment() {
@@ -46,8 +45,6 @@ public class ContactsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        contactsAdObject=new ArrayList<ContactsnWantedAdObject>();
 
         View v = inflater.inflate(R.layout.tab_fragments, container, false);
         setHasOptionsMenu(true);
@@ -78,6 +75,7 @@ public class ContactsFragment extends Fragment {
             Bundle args=new Bundle();
             args.putString("tableCategory","contacts");
             args.putString("userID",userID);
+            args.putString("userCategory",userCategory);
             switch (fragmentPosition) {
                 case 0:
                     selectFragment= new ContactsnWantedListFragment();
@@ -128,7 +126,7 @@ public class ContactsFragment extends Fragment {
             }else{
                 Intent intent = new Intent(getActivity(), ContactsnWantedAddActivity.class);
                 intent.putExtra("userID",userID);
-                intent.putExtra("Category","contacts");
+                intent.putExtra("tableCategory","contacts");
                 startActivity(intent);
             }
         }
@@ -140,14 +138,14 @@ public class ContactsFragment extends Fragment {
                 getActivity()).create();
         alertDialog.setMessage("Please Login or Sign Up");
         alertDialog.setIcon(R.drawable.backward);
-        alertDialog.setButton2("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,"OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
             }
         });
-        alertDialog.setButton("CANCEL", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();

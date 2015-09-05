@@ -62,6 +62,11 @@
     <string name="title_fragment_realestateinmap">View in map</string>
     <string name="title_fragment_topads">TOP ADS</string>
     <string name="title_fragment_newads">NEW ADS</string>
+    <string name="title_fragment_mycontacts">CONTACTS</string>
+    <string name="title_fragment_mywanted">WANTED</string>
+    <string name="title_fragment_mysales">SALES</string>
+    <string name="title_fragment_myrealestate">REAL ESTATE</string>
+    <string name="title_fragment_myjobs">JOBS</string>
 
     <string name="title_section1"><b>ALL ADS</b></string>
     <string name="title_section2"><b>TOP ADS</b></string>
@@ -71,6 +76,8 @@
     <string name="comment"><u>Your comments here</u></string>
     <string name="title_activity_all_comments">All Comments</string>
     <string name="watchlist">Add to watchlist</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_real_estate_view_detail">Real Estate</string>
@@ -78,6 +85,9 @@
     <string name="title_activity_sales_detail_view">SalesDetailView</string>
     <string name="title_activity_sales_all_comments">sales_all_comments</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_view_individual_detail">ViewIndividualDetail</string>
+    <string name="title_activity_view_company_detail">ViewCompanyDetail</string>
+    <string name="title_activity_view_shop_detail">ViewShopDetail</string>
 
 
 

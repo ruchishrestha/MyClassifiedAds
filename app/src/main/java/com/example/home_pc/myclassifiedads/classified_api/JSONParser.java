@@ -430,4 +430,17 @@ public class JSONParser {
         }
         return arrayList;
     }
+
+    @SuppressLint("LongLogTag")
+    public String parseUserCategory(JSONObject object){
+        String userCategory=null;
+        try {
+            userCategory = object.getString("Value");
+        }
+        catch (JSONException e) {
+            // TODO Auto-generated catch block
+            Log.d("JSONParser => parseUserCategory", e.getMessage());
+        }
+        return userCategory;
+    }
 }

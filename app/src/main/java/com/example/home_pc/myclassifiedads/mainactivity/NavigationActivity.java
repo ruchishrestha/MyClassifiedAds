@@ -288,7 +288,6 @@ public class NavigationActivity extends ActionBarActivity {
         }
 
         args.putString("userID",userID);
-        args.putString("userCategory",userCategory);
         fragment.setArguments(args);
         FragmentManager frgManager = getSupportFragmentManager();
         frgManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
