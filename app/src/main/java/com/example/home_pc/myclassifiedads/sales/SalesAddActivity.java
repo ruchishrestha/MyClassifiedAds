@@ -40,7 +40,6 @@ public class SalesAddActivity extends ActionBarActivity {
     private Spinner status,condition;
     private static int RESULT_LOAD_IMAGE = 1;
     private static int RESULT_CAMERA_IMAGE = 0;
-    //private Bitmap[] tempPhotoView;
     private ArrayList<Bitmap> photosToUpload,tempPhotoView;
     private int i;
     private Dialog dialog;

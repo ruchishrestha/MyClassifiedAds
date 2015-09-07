@@ -915,6 +915,44 @@ public class RestAPI {
         return result;
     }
 
+    public JSONObject UpdateSalesAds(int adid,String title,String description,String brand,String model,String price,String salesStatus,String condition,String timeUsed,String contactNo) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "UpdateSalesAds");
+        p.put("adid",mapObject(adid));
+        p.put("title",mapObject(title));
+        p.put("description",mapObject(description));
+        p.put("brand",mapObject(brand));
+        p.put("model",mapObject(model));
+        p.put("price",mapObject(price));
+        p.put("salesStatus",mapObject(salesStatus));
+        p.put("condition",mapObject(condition));
+        p.put("timeUsed",mapObject(timeUsed));
+        p.put("contactNo",mapObject(contactNo));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject DeleteSalesURL(int salesID) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "DeleteSalesURL");
+        p.put("salesID",mapObject(salesID));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+
 }
 
 

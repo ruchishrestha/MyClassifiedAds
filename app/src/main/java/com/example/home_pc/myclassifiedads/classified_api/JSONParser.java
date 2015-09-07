@@ -423,7 +423,7 @@ public class JSONParser {
                 jsonObj = jsonArray.getJSONObject(i);
                 arrayList.add(new SalesAdsObject(jsonObj.getInt("salesID"),jsonObj.getString("username"),jsonObj.getString("title"),jsonObj.getString("brand"),
                         jsonObj.getString("model"),jsonObj.getString("price"),jsonObj.getString("salesStatus"),jsonObj.getString("condition"),jsonObj.getDouble("averageRating"),jsonObj.getString("dateOnly"),jsonObj.getString("timeused"),
-                        jsonObj.getString("contact"),jsonObj.getString("ad_description")));
+                        jsonObj.getString("contact"),jsonObj.getString("ad_description"),jsonObj.getString("salesCategory")));
 
             }
         } catch (JSONException e) {
