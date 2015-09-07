@@ -81,7 +81,7 @@ public class JobDetailActivity extends ActionBarActivity {
 
         commentJob.setVisibility(View.GONE);
 
-        new AsyncLoadJobsDetail().execute(jobID);
+        new AsyncLoadJobsDetail().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,jobID);
 
         comment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -221,7 +221,10 @@ public class JobDetailActivity extends ActionBarActivity {
             email.setText(result.get(0).emailId);
             addres.setText(result.get(0).aDdress);
             vaccancyNo.setText(result.get(0).vaccancyNo);
-            new AsyncLoadImage().execute(result.get(0).logoURL);
+            String sub1 = result.get(0).logoURL.substring(0, 61);
+            String sub2 = "temp_"+result.get(0).logoURL.substring(61);
+            new AsyncLoadImage().execute(sub1+sub2);
+            System.out.println(result.get(0).logoURL);
         }
     }
 
@@ -311,17 +314,19 @@ public class JobDetailActivity extends ActionBarActivity {
         protected class AsyncLoadImage extends
             AsyncTask<String, Void, Bitmap> {
 
+            Bitmap img;
+
             @Override
             protected Bitmap doInBackground(String... params) {
                 // TODO Auto-generated method stub
                 try {
-                    jobs_image = ImageLoaderAPI.AzureImageDownloader(params[0]);
+                    img = ImageLoaderAPI.AzureImageDownloader(params[0]);
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
                     Log.d("AsyncLoadImage", ""+e);
                 }
 
-                return jobs_image;
+                return img;
             }
 
             @Override

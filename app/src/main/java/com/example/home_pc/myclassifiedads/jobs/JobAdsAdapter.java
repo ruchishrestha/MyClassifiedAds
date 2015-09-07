@@ -80,10 +80,12 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
         holder.jobsTitle.setText(jao.title);
         holder.jobsCategory.setText(jao.jobCategory);
         holder.jobsVaccancies.setText(jao.vaccancyNo);
-        holder.jobsSalary.setText("NPR."+jao.salary);
+        holder.jobsSalary.setText("NPR." + jao.salary);
         holder.jobsUserID.setText(jao.userName);
+        String sub1 = jao.getLogoURL().substring(0,61);
+        String sub2 = "temp_"+jao.getLogoURL().substring(61);
         if(!jao.logoURL.equals("-")){
-            new AsyncLoadImage(position,holder,jao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,jao.logoURL);
+            new AsyncLoadImage(position,holder,jao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,sub1+sub2);
         }
 
         view.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +114,7 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
                                 if (userID.equals("Guest")) {
                                     navigatetohome();
                                 } else {
-                                    new AsyncSavetoWatchlist().execute(jao.jobID);
+                                    new AsyncSavetoWatchlist().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,jao.jobID);
                                 }
                         }
                         return true;
@@ -199,7 +201,8 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
         protected Bitmap doInBackground(String... params) {
             // TODO Auto-generated method stub
             try {
-                jobs_image = ImageLoaderAPI.AzureImageDownloader2(params[0]);
+
+                jobs_image = ImageLoaderAPI.AzureImageDownloader(params[0]);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 Log.d("AsyncLoadImage", e.getMessage());
@@ -208,9 +211,9 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
         }
 
         @Override
-        protected void onPostExecute(Bitmap result){
-            jobs_image=Bitmap.createScaledBitmap(result, dptopx(100), dptopx(100), true);
-            holder.jobsImage.setImageBitmap(jobs_image);
+        protected void onPostExecute(Bitmap bitresult){
+            //jobs_image=Bitmap.createScaledBitmap(result, dptopx(100), dptopx(100), true);
+            holder.jobsImage.setImageBitmap(bitresult);
         }
 
     }

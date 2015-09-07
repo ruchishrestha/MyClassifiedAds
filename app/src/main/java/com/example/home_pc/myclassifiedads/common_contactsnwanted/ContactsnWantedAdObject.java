@@ -1,5 +1,7 @@
 package com.example.home_pc.myclassifiedads.common_contactsnwanted;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Home-PC on 7/25/2015.
  */
@@ -9,6 +11,7 @@ public class ContactsnWantedAdObject /*implements Parcelable*/{
     String title,description,aDdress,contactNo,mobileNo,emailId,userName,category,ad_insertdate,tableCategory,userID;
     Double latitude,longitute;
     int adid;
+    Bitmap image;
 
 
     public ContactsnWantedAdObject(String userName, String title, String description, String aDdress, String contactNo, String mobileNo, String emailId, String category, Double latitude, Double longitute, String adImageURL) {
@@ -89,6 +92,14 @@ public class ContactsnWantedAdObject /*implements Parcelable*/{
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public String getTableCategory() {
+        return tableCategory;
     }
 
     public String getCategory() {

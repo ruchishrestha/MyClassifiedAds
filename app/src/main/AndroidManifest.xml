@@ -117,7 +117,8 @@
         </activity>
         <activity
             android:name=".mainactivity.SearchResultActivity"
-            android:label="@string/title_activity_search_result" >
+            android:label="@string/title_activity_search_result"
+            android:launchMode="singleTop">
 
             <!-- to identify this activity as "searchable" -->
             <intent-filter>
@@ -203,6 +204,22 @@
         <activity
             android:name=".comments.SalesAllComments"
             android:label="@string/title_activity_sales_all_comments" >
+        </activity>
+        <activity
+            android:name=".userdetailview.ViewIndividualDetail"
+            android:label="@string/title_activity_view_individual_detail" >
+        </activity>
+        <activity
+            android:name=".userdetailview.ViewCompanyDetail"
+            android:label="@string/title_activity_view_company_detail" >
+        </activity>
+        <activity
+            android:name=".userdetailview.ViewShopDetail"
+            android:label="@string/title_activity_view_shop_detail" >
+        </activity>
+        <activity
+            android:name=".myads.MyContactsWantedEditActivity"
+            android:label="@string/title_activity_my_contacts_wanted_edit" >
         </activity>
     </application>
 

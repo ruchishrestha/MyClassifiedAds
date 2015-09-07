@@ -40,8 +40,8 @@ public class SalesAddActivity extends ActionBarActivity {
     private Spinner status,condition;
     private static int RESULT_LOAD_IMAGE = 1;
     private static int RESULT_CAMERA_IMAGE = 0;
-    private Bitmap[] tempPhotoView;
-    private ArrayList<Bitmap> photosToUpload;
+    //private Bitmap[] tempPhotoView;
+    private ArrayList<Bitmap> photosToUpload,tempPhotoView;
     private int i;
     private Dialog dialog;
     private Button saveButton;
@@ -67,7 +67,7 @@ public class SalesAddActivity extends ActionBarActivity {
         uploadedImages[9]=(ImageView) findViewById(R.id.img10);
 
         photosToUpload= new ArrayList<Bitmap>();
-        tempPhotoView =new Bitmap[10];
+        tempPhotoView =new ArrayList<Bitmap>();
 
         userName = getIntent().getStringExtra("userID");
         scategory = getIntent().getStringExtra("SalesCategory");
@@ -177,11 +177,10 @@ public class SalesAddActivity extends ActionBarActivity {
 
     public void resetimg(int j){
         photosToUpload.remove(j);
+        tempPhotoView.remove(j);
         for(int k=j;k<i;k++){
-            tempPhotoView[k]= tempPhotoView[k+1];
-            uploadedImages[k].setImageBitmap(tempPhotoView[k]);
+            uploadedImages[k].setImageBitmap(tempPhotoView.get(k));
         }
-        tempPhotoView[i]=null;
         uploadedImages[i].setImageBitmap(null);
         dialog.dismiss();
     }
@@ -203,14 +202,14 @@ public class SalesAddActivity extends ActionBarActivity {
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
             photosToUpload.add(BitmapFactory.decodeFile(picturePath));
-            tempPhotoView[i]=Bitmap.createScaledBitmap(photosToUpload.get(i), dptopx(100), dptopx(100), true);
-            uploadedImages[i].setImageBitmap(tempPhotoView[i]);
+            tempPhotoView.add(Bitmap.createScaledBitmap(photosToUpload.get(i), dptopx(100), dptopx(100), true));
+            uploadedImages[i].setImageBitmap(tempPhotoView.get(i));
         }
         else if(requestCode == RESULT_CAMERA_IMAGE && resultCode == RESULT_OK && data != null){
             i++;
             photosToUpload.add((Bitmap) data.getExtras().get("data"));
-            tempPhotoView[i]=Bitmap.createScaledBitmap(photosToUpload.get(i),dptopx(100),dptopx(100),true);
-            uploadedImages[i].setImageBitmap(tempPhotoView[i]);
+            tempPhotoView.add(Bitmap.createScaledBitmap(photosToUpload.get(i),dptopx(100),dptopx(100),true));
+            uploadedImages[i].setImageBitmap(tempPhotoView.get(i));
         }
         dialog.dismiss();
     }
@@ -239,7 +238,7 @@ public class SalesAddActivity extends ActionBarActivity {
                 adID = parser.getId(object);
                 System.out.println(adID);
                 alter = scategory.replace(" ","_");
-                pictureURLs = ImageLoaderAPI.AzureImageUploader(photosToUpload, "Sales" + alter + adID);
+                pictureURLs = ImageLoaderAPI.AzureImageUploader(photosToUpload,tempPhotoView,"Sales" + alter + adID);
 
                 object = api.AddtoSalesGallery(adID, scategory, pictureURLs);
                 result = parser.getResult(object);

@@ -1,6 +1,7 @@
-package com.example.home_pc.myclassifiedads.common_contactsnwanted;
+package com.example.home_pc.myclassifiedads.myads;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -8,10 +9,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.view.Menu;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -19,7 +20,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,15 +27,16 @@ import com.example.home_pc.myclassifiedads.R;
 import com.example.home_pc.myclassifiedads.classified_api.ImageLoaderAPI;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
 import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
+import com.example.home_pc.myclassifiedads.common_contactsnwanted.ContactsnWantedAdObject;
 import com.example.home_pc.myclassifiedads.mainactivity.LocateOnMapActivity;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-
-public class ContactsnWantedAddActivity extends ActionBarActivity {
-
+public class MyContactsWantedEditActivity extends ActionBarActivity {
+    int adid;
+    String userID,tableCategory;
     Context context = this;
     private final int RESULT_LOAD_IMAGE = 0;
     private final int RESULT_CAMERA_PIC = 1;
@@ -46,7 +47,7 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
     String userName,adTitle,adDescription,adAddress,adContactNo,adMobileNo,adEmailId,adCategory,adtype,adImageURL;
     private Spinner category;
     ArrayAdapter<String> categoryAdapter;
-    Double _latitude,_longitude;
+    Double _latitude=0.0,_longitude=0.0;
     private Button saveButton;
     Bitmap picture,temp;
     int photoCount;
@@ -60,11 +61,10 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_contactsnwanted);
 
-        photoCount=0;
-        toggle = false;
+        adid=getIntent().getExtras().getInt("adid");
+        adtype=getIntent().getExtras().getString("tableCategory");
+        userID=getIntent().getExtras().getString("userID");
 
-        userName = getIntent().getStringExtra("userID");
-        adtype = getIntent().getStringExtra("tableCategory");
         uploadedPic=(ImageView) findViewById(R.id.adImage);
         uploadPic=(TextView) findViewById(R.id.uploadPics);
         title=(EditText) findViewById(R.id.title);
@@ -74,6 +74,7 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
             case "contacts":new AsyncLoadContactsList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);break;
             case "wanted":new AsyncLoadWantedList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);break;
         }
+        new AsyncLoadDetails().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         aDdress=(EditText) findViewById(R.id.aDdress);
         contactNo=(EditText) findViewById(R.id.contactNo);
         mobileNo=(EditText) findViewById(R.id.mobileNo);
@@ -104,6 +105,8 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent locateOnMap= new Intent(getApplicationContext(), LocateOnMapActivity.class);
+                locateOnMap.putExtra("Latitude",_latitude);
+                locateOnMap.putExtra("Longitude",_longitude);
                 startActivityForResult(locateOnMap, REQUEST_LATLONG);
             }
         });
@@ -114,7 +117,6 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
                 saveButtonClick();
             }
         });
-
     }
 
     public void saveButtonClick(){
@@ -126,11 +128,11 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
         adEmailId = emailId.getText().toString();
         adCategory = category.getSelectedItem().toString();
         adImageURL = "-";
-        contactsnWantedAdObject = new ContactsnWantedAdObject(userName,adTitle,adDescription,adAddress,adContactNo,adMobileNo,adEmailId,adCategory,_latitude,_longitude,adImageURL);
+        contactsnWantedAdObject = new ContactsnWantedAdObject(userID,adTitle,adDescription,adAddress,adContactNo,adMobileNo,adEmailId,adCategory,_latitude,_longitude,adImageURL);
         saveButton.setEnabled(false);
         switch(adtype){
-            case "contacts":new AsyncAddContactsAds().execute(contactsnWantedAdObject);break;
-            case "wanted":new AsyncAddWantedAds().execute(contactsnWantedAdObject);break;
+            case "contacts":new AsyncUpdateContactsAds().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,contactsnWantedAdObject);break;
+            case "wanted":new AsyncUpdateWantedAds().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,contactsnWantedAdObject);break;
         }
 
     }
@@ -179,8 +181,7 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         uploadedPic.setImageResource(R.drawable.camerapic);
-                        picture.recycle();
-                        temp.recycle();
+                        picture = null;
                         photoCount--;
                         dialog.dismiss();
                     }
@@ -235,12 +236,6 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
         dialog.dismiss();
     }
 
-    public int dptopx(float dp){
-        // Get the screen's density scale
-        final float scale = getResources().getDisplayMetrics().density;
-        // Convert the dps to pixels, based on density scale
-        return ((int) (dp * scale + 0.5f));
-    }
 
     protected class AsyncLoadContactsList extends AsyncTask<Void,Void,ArrayList<String>>{
 
@@ -310,7 +305,90 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
         }
     }
 
-    protected class AsyncAddContactsAds extends AsyncTask<ContactsnWantedAdObject,Void,String>
+
+    protected class AsyncLoadDetails extends
+            AsyncTask<Void, Void,ContactsnWantedAdObject> {
+        ProgressDialog progressDialog;
+        @Override
+        protected ContactsnWantedAdObject doInBackground(Void...params) {
+            // TODO Auto-generated method stub
+            RestAPI api = new RestAPI();
+            try {
+                JSONObject jsonObj = api.GetContactDetails(adid, adtype);
+                JSONParser parser = new JSONParser();
+                contactsnWantedAdObject = parser.parseContactDetails(jsonObj);
+
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+              //  Log.d("AsyncLoadContactDetails", e.getMessage());
+                System.out.println("Error=>"+e);
+            }
+
+            return contactsnWantedAdObject;
+        }
+
+        @Override
+        protected void onPreExecute(){
+            progressDialog=new ProgressDialog(MyContactsWantedEditActivity.this);
+            progressDialog.setMessage("Loading...");
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setIndeterminate(true);
+            progressDialog.show();
+
+        }
+
+
+
+        @Override
+        protected void onPostExecute(ContactsnWantedAdObject result) {
+            // TODO Auto-generated method stub
+            if(progressDialog.isShowing()){
+                progressDialog.dismiss();
+            }
+            title.setText(result.gettitle());
+            description.setText(result.getDescription());
+            aDdress.setText(result.getaDdress());
+            contactNo.setText(result.getContactNo());
+            emailId.setText(result.getemail());
+            mobileNo.setText(result.getMobileNo());
+            _latitude=result.getLatitude();
+           _longitude=result.getLongitute();
+            if(!result.getAdImage().equals("-")){
+                new AsyncLoadImage().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,result.getAdImage());
+                photoCount=1;
+                toggle=true;
+            }else
+            {
+                photoCount=0;
+                toggle=false;
+            }
+        }
+    }
+
+    protected class AsyncLoadImage extends
+            AsyncTask<String, Void, Bitmap> {
+            Bitmap contactswanted_image;
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            try {
+                contactswanted_image = ImageLoaderAPI.AzureImageDownloader(params[0]);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                Log.d("AsyncLoadImage", ""+e);
+            }
+
+            return contactswanted_image;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result){
+            contactswanted_image=Bitmap.createScaledBitmap(result,dptopx(140),dptopx(140),true);
+            uploadedPic.setImageBitmap(contactswanted_image);
+        }
+    }
+
+    protected class AsyncUpdateContactsAds extends AsyncTask<ContactsnWantedAdObject,Void,String>
     {
 
         String adID;
@@ -324,14 +402,11 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
             RestAPI api = new RestAPI();
 
             try{
-                JSONObject object = api.AddContactsAds(params[0].getUserName(), params[0].gettitle(), params[0].getDescription(), params[0].getCategory(), params[0].getaDdress(), params[0].getContactNo(), params[0].getMobileNo(), params[0].getemail(), params[0].getLatitude(), params[0].getLongitute(), params[0].getAdImage());
+                api.UpdateContactsAds(adid,params[0].gettitle(), params[0].getDescription(), params[0].getCategory(), params[0].getaDdress(), params[0].getContactNo(), params[0].getMobileNo(), params[0].getemail(), params[0].getLatitude(), params[0].getLongitute(), params[0].getAdImage());
                 JSONParser parser = new JSONParser();
-                adID = parser.getId(object);
-
                 if(picture!=null) {
-                    pictureURL = ImageLoaderAPI.AzureImageUploader(picture,temp, "Contacts" + adID);
-                    //ImageLoaderAPI.AzureImageUploader(temp,"temp_Contacts"+adID);
-                    object = api.UpdateContactsAd(adID, pictureURL);
+                    pictureURL = ImageLoaderAPI.AzureImageUploader(picture,temp,"Contacts" + adid);
+                    JSONObject object = api.UpdateContactsAd("" + adid, pictureURL);
                     result = parser.getResult(object);
                 }
                 else{result = "Success";}
@@ -346,14 +421,14 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(String result) {
 
-            System.out.println("Contacts: "+result);
+            System.out.println("Contacts: " + result);
             saveButton.setEnabled(true);
             onBackPressed();
         }
     }
 
 
-    protected class AsyncAddWantedAds extends AsyncTask <ContactsnWantedAdObject,Void,String>
+    protected class AsyncUpdateWantedAds extends AsyncTask <ContactsnWantedAdObject,Void,String>
     {
 
         String adID;
@@ -367,15 +442,12 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
             RestAPI api = new RestAPI();
 
             try{
-                JSONObject object = api.AddWantedAds(params[0].getUserName(), params[0].gettitle(), params[0].getDescription(), params[0].getCategory(), params[0].getaDdress(), params[0].getContactNo(), params[0].getMobileNo(), params[0].getemail(), params[0].getLatitude(), params[0].getLongitute(), params[0].getAdImage());
+                api.UpdateWantedAds(adid,params[0].gettitle(), params[0].getDescription(), params[0].getCategory(), params[0].getaDdress(), params[0].getContactNo(), params[0].getMobileNo(), params[0].getemail(), params[0].getLatitude(), params[0].getLongitute(), params[0].getAdImage());
                 JSONParser parser = new JSONParser();
-                adID = parser.getId(object);
-                System.out.println(adID);
-                pictureURL = ImageLoaderAPI.AzureImageUploader(picture,temp,"Wanted" + adID);
-                //ImageLoaderAPI.AzureImageUploader(temp,"temp_Wanted"+adID);
+                pictureURL = ImageLoaderAPI.AzureImageUploader(picture,temp,"Wanted" + adid);
                 System.out.println(pictureURL);
 
-                object = api.UpdateWantedAd(adID, pictureURL);
+                JSONObject object = api.UpdateWantedAd(""+adid, pictureURL);
                 result = parser.getResult(object);
             }
             catch (Exception e){
@@ -394,12 +466,6 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_contactsnwanted_add, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -412,11 +478,14 @@ public class ContactsnWantedAddActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-        if(id == android.R.id.home){
-            onBackPressed();
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public int dptopx(float dp){
+        // Get the screen's density scale
+        final float scale = context.getResources().getDisplayMetrics().density;
+        // Convert the dps to pixels, based on density scale
+        return ((int) (dp * scale + 0.5f));
     }
 }

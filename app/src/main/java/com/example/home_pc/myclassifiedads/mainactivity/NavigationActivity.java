@@ -3,6 +3,7 @@ package com.example.home_pc.myclassifiedads.mainactivity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -141,10 +142,18 @@ public class NavigationActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_navigation, menu);
         // Associate searchable configuration with the SearchView
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        /*SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("ExtraSearch",0);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("AdCategory",selectedItemTitle.toString());
+                editor.apply();
+            }
+        });*/
         return true;
 
     }
@@ -325,6 +334,11 @@ public class NavigationActivity extends ActionBarActivity {
         // ActionBarDrawerToggle will take care of this.
         if (navDrawerToggle.onOptionsItemSelected(item)) {
             return true;
+        }
+        if(item.getItemId()==R.id.menu_search)
+        {
+            System.out.println("ThroughHereFirst!!");
+            return onSearchRequested();
         }
         return false;
     }

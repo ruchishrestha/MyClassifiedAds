@@ -8,7 +8,7 @@ public class SalesAdsObject {
     String userName,title,description,category,brand,modelNo,price,status,contactNo,condition,usedTime,ad_postedDate,rating;
     Double rating1;
 
-    public SalesAdsObject(String userName, String title, String description, String category, String brand, String modelNo, String price, String status, String contactNo, String condition, String usedTime,String rating) {
+    public SalesAdsObject(String userName, String title, String description, String category, String brand, String modelNo, String price, String status, String contactNo, String condition, String usedTime, String rating) {
         this.userName = userName;
         this.title = title;
         this.description = description;
@@ -23,7 +23,7 @@ public class SalesAdsObject {
         this.rating=rating;
     }
 
-    public SalesAdsObject(int salesID,String userName,String title,String brand,String modelNo,String price,String status,String condition,Double rating){
+    public SalesAdsObject(int salesID, String userName, String title, String brand, String modelNo, String price, String status, String condition, Double rating){
         this.salesID=salesID;
         this.userName=userName;
         this.rating1=rating;
@@ -35,7 +35,7 @@ public class SalesAdsObject {
         this.condition=condition;
     }
 
-    public SalesAdsObject(int salesID,String userName,String title,String brand,String modelNo,String price,String status,String condition,Double rating,String ad_postedDate,String usedTime,String contactNo,String description){
+    public SalesAdsObject(int salesID, String userName, String title, String brand, String modelNo, String price, String status, String condition, Double rating, String ad_postedDate, String usedTime, String contactNo, String description){
         this.salesID=salesID;
         this.ad_postedDate=ad_postedDate;
         this.usedTime=usedTime;
@@ -49,6 +49,19 @@ public class SalesAdsObject {
         this.brand=brand;
         this.modelNo=modelNo;
         this.condition=condition;
+    }
+
+    public SalesAdsObject(int salesID, String userName, String title, String brand, String modelNo, String price, String status, String condition, Double rating, String salesCategory){
+        this.salesID=salesID;
+        this.userName=userName;
+        this.rating1=rating;
+        this.title=title;
+        this.price=price;
+        this.status=status;
+        this.brand=brand;
+        this.modelNo=modelNo;
+        this.condition=condition;
+        this.category=salesCategory;
     }
 
     public String getUserName() {

@@ -45,8 +45,8 @@ public class RealEstateAddActivity extends ActionBarActivity {
     String userName,rtitle,rdescription,rhouseNo,rpropertyType,rsaleType,rprice,raDdress,rcontactNo,rmobileNo;
     private Spinner propertyType,saleType;
     ArrayAdapter<String> propertyTypeAdapter;
-    private Bitmap[] tempPhotoView;
-    private ArrayList<Bitmap> photosToUpload;
+    //private Bitmap[] tempPhotoView;
+    private ArrayList<Bitmap> photosToUpload,tempPhotoView;
     Double _latitude,_longitude;
     private int i;
     private Dialog dialog;
@@ -75,7 +75,7 @@ public class RealEstateAddActivity extends ActionBarActivity {
 
         userName = getIntent().getStringExtra("userID");
         photosToUpload = new ArrayList<Bitmap>();
-        tempPhotoView =new Bitmap[10];
+        tempPhotoView =new ArrayList<Bitmap>();
 
         dialog=new Dialog(context);
         dialog.setContentView(R.layout.custom_dialog);
@@ -191,11 +191,10 @@ public class RealEstateAddActivity extends ActionBarActivity {
 
     public void resetimg(int j){
         photosToUpload.remove(j);
-        for(int k=j;k<i;k++){
-            tempPhotoView[k]= tempPhotoView[k+1];
-            uploadedImages[k].setImageBitmap(tempPhotoView[k]);
+        tempPhotoView.remove(j);
+        for(int k=j;k<i;k++) {
+            uploadedImages[k].setImageBitmap(tempPhotoView.get(k));
         }
-        tempPhotoView[i]=null;
         uploadedImages[i].setImageBitmap(null);
         dialog.dismiss();
     }
@@ -217,14 +216,14 @@ public class RealEstateAddActivity extends ActionBarActivity {
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
             photosToUpload.add(BitmapFactory.decodeFile(picturePath));
-            tempPhotoView[i]=Bitmap.createScaledBitmap(photosToUpload.get(i), dptopx(100), dptopx(100), true);
-            uploadedImages[i].setImageBitmap(tempPhotoView[i]);
+            tempPhotoView.add(Bitmap.createScaledBitmap(photosToUpload.get(i), dptopx(100), dptopx(100), true));
+            uploadedImages[i].setImageBitmap(tempPhotoView.get(i));
         }
         else if(requestCode == RESULT_CAMERA_IMAGE && resultCode == RESULT_OK && data != null){
             i++;
             photosToUpload.add((Bitmap) data.getExtras().get("data"));
-            tempPhotoView[i]=Bitmap.createScaledBitmap(photosToUpload.get(i),dptopx(100),dptopx(100),true);
-            uploadedImages[i].setImageBitmap(tempPhotoView[i]);
+            tempPhotoView.add(Bitmap.createScaledBitmap(photosToUpload.get(i),dptopx(100),dptopx(100),true));
+            uploadedImages[i].setImageBitmap(tempPhotoView.get(i));
         }
         else if (requestCode == REQUEST_LATLONG){
             if(resultCode== LocateOnMapActivity.RESULT_LATLONG){
@@ -299,7 +298,7 @@ public class RealEstateAddActivity extends ActionBarActivity {
                 JSONParser parser = new JSONParser();
                 adID = parser.getId(object);
 
-                pictureURLs = ImageLoaderAPI.AzureImageUploader(photosToUpload, "RealEstate" + adID);
+                pictureURLs = ImageLoaderAPI.AzureImageUploader(photosToUpload,tempPhotoView,"RealEstate" + adID);
 
                 object = api.AddtoRealEstateGallery(adID, pictureURLs);
                 result = parser.getResult(object);

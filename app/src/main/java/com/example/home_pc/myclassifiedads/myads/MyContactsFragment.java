@@ -1,19 +1,14 @@
-package com.example.home_pc.myclassifiedads.common_contactsnwanted;
+package com.example.home_pc.myclassifiedads.myads;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -21,25 +16,25 @@ import android.widget.Toast;
 import com.example.home_pc.myclassifiedads.R;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
 import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
+import com.example.home_pc.myclassifiedads.common_contactsnwanted.ContactnWantedAdsAdapter;
+import com.example.home_pc.myclassifiedads.common_contactsnwanted.ContactsnWantedAdObject;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-
 /**
- * Created by Ruchi on 2015-08-12.
+ * Created by Ruchi on 2015-09-05.
  */
-public class ContactsnWantedListFragment extends Fragment {
+public class MyContactsFragment extends Fragment {
     RecyclerView contactsList;
-    SwipeRefreshLayout mswipeRefreshLayout;
     ProgressDialog progressDialog;
     ArrayList<ContactsnWantedAdObject> cObject;
     Context context;
     ContactnWantedAdsAdapter contactAdsAdapter;
     String tableCategory,userID,userCategory;
+    public MyContactsFragment(){
 
-    public ContactsnWantedListFragment() {
     }
 
     @Override
@@ -49,34 +44,22 @@ public class ContactsnWantedListFragment extends Fragment {
         View view = inflater.inflate(R.layout.ads_recycler_view, container,
                 false);
         context = getActivity();
-        tableCategory=getArguments().getString("tableCategory");
         userID=getArguments().getString("userID");
+        tableCategory=getArguments().getString("tableCategory");
         userCategory=getArguments().getString("userCategory");
         contactsList=(RecyclerView) view.findViewById(R.id.cardList);
-        mswipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipeRefreshLayout);
         contactsList.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         contactsList.setLayoutManager(llm);
         loadContactAds();
 
-        mswipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                loadContactAds();
-                onItemLoadComplete();
-            }
-        });
-
         return view;
     }
 
-    public void onItemLoadComplete(){
-        mswipeRefreshLayout.setRefreshing(false);
-    }
 
     public void loadContactAds(){
-        new AsyncLoadContactAds().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        new AsyncLoadContactAds().execute();
     }
 
 
@@ -90,12 +73,12 @@ public class ContactsnWantedListFragment extends Fragment {
             RestAPI api = new RestAPI();
             try {
                 cObject=new ArrayList<ContactsnWantedAdObject>();
-                JSONObject jsonObj = api.GetContactsList(tableCategory);
+                JSONObject jsonObj = api.GetMyContactsList(userID,tableCategory);
                 JSONParser parser = new JSONParser();
                 cObject = parser.parseContactsList(jsonObj);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                Log.d("AsyncLoadContactList", ""+e);
+                Log.d("AsyncLoadContactList", "" + e);
             }
             return cObject;
         }
@@ -116,14 +99,12 @@ public class ContactsnWantedListFragment extends Fragment {
                 progressDialog.dismiss();
             }
             if(result!=null){
-                contactAdsAdapter =new ContactnWantedAdsAdapter(context,result,tableCategory,userID,0);
+                contactAdsAdapter =new ContactnWantedAdsAdapter(context,result,tableCategory,userID,1);
                 contactsList.setAdapter(contactAdsAdapter);
             } else{
                 Toast.makeText(context, "NO ADS FOUND :(", Toast.LENGTH_LONG).show();
             }
         }
     }
-
-
-
 }
+

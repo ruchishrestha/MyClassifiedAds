@@ -7,8 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.util.Log;
@@ -25,20 +25,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.home_pc.myclassifiedads.R;
+import com.example.home_pc.myclassifiedads.classified_api.ImageLoaderAPI;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
 import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
 import com.example.home_pc.myclassifiedads.comments.AllCommentsActivity;
 import com.example.home_pc.myclassifiedads.comments.CommentObject;
 import com.example.home_pc.myclassifiedads.mainactivity.MainActivity;
 import com.example.home_pc.myclassifiedads.mainactivity.ViewOnMap;
+import com.example.home_pc.myclassifiedads.userdetailview.ViewCompanyDetail;
+import com.example.home_pc.myclassifiedads.userdetailview.ViewIndividualDetail;
+import com.example.home_pc.myclassifiedads.userdetailview.ViewShopDetail;
 
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 public class ContactsnWantedViewDetail extends ActionBarActivity {
-    public ArrayList<ContactsnWantedAdObject> contactsAdObject=null;
+    public ContactsnWantedAdObject contactsAdObject=null;
     ImageView contact_photo,comment_cancel,comment_save,read_comment;
     TextView category,username,ad_description,ad_title,contactNo,address,email,comment,commentText,postedDate,commenterUsername,myComments,
     ad_postedDate,mobileNo,viewOnMap;
@@ -47,6 +50,8 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
     CardView commentContacts;
     ProgressDialog progressDialog;
     String userID,tableCategory;
+    Bitmap contactswanted_image;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,10 +106,17 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getApplicationContext(), ViewOnMap.class);
-                intent.putExtra("longitute", contactsAdObject.get(0).longitute);
-                intent.putExtra("addres", contactsAdObject.get(0).aDdress);
-                intent.putExtra("latitute",contactsAdObject.get(0).latitude);
+                intent.putExtra("longitute", contactsAdObject.longitute);
+                intent.putExtra("addres", contactsAdObject.aDdress);
+                intent.putExtra("latitute",contactsAdObject.latitude);
                 startActivity(intent);
+            }
+        });
+        username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),""+username.getText().toString(),Toast.LENGTH_LONG).show();
+                new AsyncLoadUserCategory().execute(username.getText().toString());
             }
         });
     }
@@ -130,12 +142,12 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
     }
 
     protected class AsyncLoadContactDetail extends
-            AsyncTask<ContactsnWantedAdObject, Void, ArrayList<ContactsnWantedAdObject>> {
+            AsyncTask<ContactsnWantedAdObject, Void, ContactsnWantedAdObject> {
 
         @Override
-        protected ArrayList<ContactsnWantedAdObject> doInBackground(ContactsnWantedAdObject...params) {
+        protected ContactsnWantedAdObject doInBackground(ContactsnWantedAdObject...params) {
             // TODO Auto-generated method stub
-            contactsAdObject=new ArrayList<ContactsnWantedAdObject>();
+
             RestAPI api = new RestAPI();
             try {
                 JSONObject jsonObj = api.GetContactDetails(params[0].adid,params[0].tableCategory);
@@ -166,21 +178,26 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
 
 
         @Override
-        protected void onPostExecute(ArrayList<ContactsnWantedAdObject> result) {
+        protected void onPostExecute(ContactsnWantedAdObject result) {
             // TODO Auto-generated method stub
           //  contact_photo.setImageBitmap(bitmap);
             if(progressDialog.isShowing()){
                 progressDialog.dismiss();
             }
-            username.setText(Html.fromHtml("<u>"+result.get(0).userName+"</u>"));
-            ad_title.setText(result.get(0).title);
-            ad_description.setText(result.get(0).description);
-            category.setText(result.get(0).category);
-            address.setText(result.get(0).aDdress);
-            contactNo.setText(result.get(0).contactNo);
-            email.setText(result.get(0).emailId);
-            ad_postedDate.setText(result.get(0).ad_insertdate);
-            mobileNo.setText(result.get(0).mobileNo);
+            username.setText(Html.fromHtml("<u>"+result.userName+"</u>"));
+            ad_title.setText(result.title);
+            ad_description.setText(result.description);
+            category.setText(result.category);
+            address.setText(result.aDdress);
+            contactNo.setText(result.contactNo);
+            email.setText(result.emailId);
+            ad_postedDate.setText(result.ad_insertdate);
+            mobileNo.setText(result.mobileNo);
+            if(!result.adImageURL.equals("-")){
+                new AsyncLoadImage().execute(result.getAdImage());
+            }
+
+
 
         }
     }
@@ -216,7 +233,6 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
         protected void onPostExecute(ArrayList<CommentObject> result) {
             // TODO Auto-generated method stub
             if(result==null){
-                //Toast.makeText(getApplicationContext(),""+result.get(0).userID,Toast.LENGTH_LONG).show();
                 commentContacts.setVisibility(View.GONE);
             }
             else{
@@ -299,6 +315,73 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
             loadMyComments();
         }
     }
+
+    protected class AsyncLoadImage extends
+            AsyncTask<String, Void, Bitmap> {
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            try {
+                contactswanted_image = ImageLoaderAPI.AzureImageDownloader(params[0]);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                Log.d("AsyncLoadImage", ""+e);
+            }
+
+            return contactswanted_image;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result){
+            contactswanted_image=Bitmap.createScaledBitmap(result,dptopx(140),dptopx(140),true);
+            contact_photo.setImageBitmap(contactswanted_image);
+        }
+    }
+
+    protected class AsyncLoadUserCategory extends
+            AsyncTask<String, Void,String > {
+        String userCategory;
+
+        @Override
+        protected String doInBackground(String ...params) {
+            // TODO Auto-generated method stub
+
+            RestAPI api = new RestAPI();
+            try {
+                JSONObject jsonObj = api.GetUserCategory(params[0]);
+                JSONParser parser = new JSONParser();
+                userCategory = parser.parseUserCategory(jsonObj);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                Log.d("AsyncSaveComment", ""+e);
+            }
+            return userCategory;
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            System.out.println("here=>"+result);
+            switch (result){
+                case "individual":
+                    intent=new Intent(getApplicationContext(), ViewIndividualDetail.class);
+                    break;
+                case "organization":
+                    intent=new Intent(getApplicationContext(), ViewCompanyDetail.class);
+                    break;
+                case "shop":
+                    intent=new Intent(getApplicationContext(), ViewShopDetail.class);
+                    break;
+                default:
+                    break;
+            }
+            intent.putExtra("username",username.getText().toString());
+            startActivity(intent);
+
+        }
+    }
+
 
 
     @Override
