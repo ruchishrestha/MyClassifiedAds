@@ -378,7 +378,6 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
             }
             intent.putExtra("username",username.getText().toString());
             startActivity(intent);
-
         }
     }
 

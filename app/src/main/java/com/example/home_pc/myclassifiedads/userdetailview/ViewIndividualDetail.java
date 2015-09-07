@@ -34,7 +34,7 @@ public class ViewIndividualDetail extends ActionBarActivity {
     }
 
     protected class AsyncGetDetail extends AsyncTask<Void,Void,IndividualUser> {
-
+        ProgressDialog progressDialog;
         IndividualUser individualUser;
 
         @Override
@@ -55,7 +55,7 @@ public class ViewIndividualDetail extends ActionBarActivity {
 
         @Override
         protected void onPreExecute(){
-            ProgressDialog progressDialog=new ProgressDialog(ViewIndividualDetail.this);
+            progressDialog=new ProgressDialog(ViewIndividualDetail.this);
             progressDialog.setMessage("Loading...");
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setIndeterminate(true);
@@ -64,7 +64,9 @@ public class ViewIndividualDetail extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(IndividualUser result) {
-
+            if(progressDialog.isShowing()){
+                progressDialog.dismiss();
+            }
             fullname = (TextView)findViewById(R.id.fullname);
             addres = (TextView)findViewById(R.id.addres);
             contact = (TextView)findViewById(R.id.contact);
