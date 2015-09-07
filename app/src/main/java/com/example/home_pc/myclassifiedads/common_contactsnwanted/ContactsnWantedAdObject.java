@@ -105,6 +105,14 @@ public class ContactsnWantedAdObject /*implements Parcelable*/{
         this.userName = userName;
     }
 
+    public String getUserID() {
+        return userID;
+    }
+
+    public String getTableCategory() {
+        return tableCategory;
+    }
+
     public String getCategory() {
         return category;
     }

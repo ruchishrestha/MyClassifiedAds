@@ -3,7 +3,7 @@ package com.example.home_pc.myclassifiedads.draweritemsfragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,7 +18,6 @@ import com.example.home_pc.myclassifiedads.myads.MyContactsFragment;
 import com.example.home_pc.myclassifiedads.myads.MyJobsFragment;
 import com.example.home_pc.myclassifiedads.myads.MyRealestateFragment;
 import com.example.home_pc.myclassifiedads.myads.MySalesFragment;
-import com.example.home_pc.myclassifiedads.myads.MyWantedFragment;
 
 import java.util.Locale;
 
@@ -48,13 +47,13 @@ public class MyAdsFragment extends Fragment {
         viewPager = (ViewPager) v.findViewById(R.id.fragmentPager);
         sectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(sectionsPagerAdapter);
-        viewPager.setCurrentItem(0, false);
+        //viewPager.setCurrentItem(0, false);
         fragmentTabs.setViewPager(viewPager);
 
         return v;
 
     }
-    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);

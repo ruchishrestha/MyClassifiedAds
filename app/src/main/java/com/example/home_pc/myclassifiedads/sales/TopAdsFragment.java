@@ -110,7 +110,7 @@ public class TopAdsFragment extends Fragment {
                 progressDialog.dismiss();
             }
             if(result!=null){
-                SalesAdsAdapter salesAdsAdapter=new SalesAdsAdapter(context,result,userID,salesCategory);
+                SalesAdsAdapter salesAdsAdapter=new SalesAdsAdapter(context,result,userID,salesCategory,0);
                 salesList.setAdapter(salesAdsAdapter);
             } else{
                 Toast.makeText(getActivity(), "NO ADS FOUND :(", Toast.LENGTH_LONG).show();

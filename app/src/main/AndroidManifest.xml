@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.home_pc.myclassifiedads" >
 
@@ -31,7 +32,7 @@
         <!-- You must insert your own Google Maps for Android API v2 key in here. -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyD4d98tBmpcsQpk_fcDlNR_5SpCmtvNgFo" />
+            android:value="AIzaSyDGJjGg6Pouf2AqRtUSzKHq4IVbzYG4ZFM" />
 
         <activity
             android:name=".mainactivity.MainActivity"
@@ -116,7 +117,8 @@
         </activity>
         <activity
             android:name=".mainactivity.SearchResultActivity"
-            android:label="@string/title_activity_search_result" >
+            android:label="@string/title_activity_search_result"
+            android:launchMode="singleTop">
 
             <!-- to identify this activity as "searchable" -->
             <intent-filter>
@@ -129,6 +131,7 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+
         <activity
             android:name=".common_contactsnwanted.ContactsnWantedAddActivity"
             android:label="@string/title_activity_contacts_add"
@@ -141,9 +144,9 @@
             android:name=".mainactivity.ViewOnMap"
             android:label="@string/title_view_on_map"
             android:parentActivityName=".mainactivity.NavigationActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".mainactivity.NavigationActivity" />
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".mainactivity.NavigationActivity" />
         </activity>
         <activity
             android:name=".sales.SalesAddActivity"
@@ -214,6 +217,12 @@
             android:name=".userdetailview.ViewShopDetail"
             android:label="@string/title_activity_view_shop_detail" >
         </activity>
+        <activity
+            android:name=".myads.MyContactsWantedEditActivity"
+            android:label="@string/title_activity_my_contacts_wanted_edit" >
+        </activity>
     </application>
 
 </manifest>
+
+

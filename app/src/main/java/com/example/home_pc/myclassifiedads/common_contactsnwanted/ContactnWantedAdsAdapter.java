@@ -23,6 +23,7 @@ import com.example.home_pc.myclassifiedads.classified_api.ImageLoaderAPI;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
 import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
 import com.example.home_pc.myclassifiedads.mainactivity.MainActivity;
+import com.example.home_pc.myclassifiedads.myads.MyContactsWantedEditActivity;
 
 import org.json.JSONObject;
 
@@ -52,7 +53,7 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         protected ImageView adImage;
-        protected TextView adTitle,aDdress,adContact,username;
+        protected TextView adTitle,aDdress,adContact,username,mobileNo;
         public ImageView popupMenu;
 
         public ViewHolder(View v) {
@@ -62,6 +63,7 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
             adContact=(TextView)v.findViewById(R.id.adContact);
             aDdress=(TextView)v.findViewById(R.id.aDdress);
             username=(TextView)v.findViewById(R.id.userId);
+            mobileNo=(TextView)v.findViewById(R.id.mobileNo);
             popupMenu=(ImageView)v.findViewById(R.id.popupMenu);
         }
     }
@@ -90,7 +92,7 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
         holder.aDdress.setText(cao.aDdress);
         holder.username.setText(cao.userName);
         if(!cao.adImageURL.equals("-")){
-           // new AsyncLoadImage(position,holder,cao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,cao.adImageURL);
+            new AsyncLoadImage(position,holder,cao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,cao.adImageURL);
         }
 
        view.setOnClickListener(new View.OnClickListener() {
@@ -105,9 +107,9 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
                context.startActivity(intent);
            }
        });
+
         switch (flag){
             case 0:
-               // normalContactList(holder,cao);
                 holder.popupMenu.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -131,14 +133,60 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
                         });
                     }
                 });
-
                 break;
             case 1:
-                mycontactlist(holder,cao);
+                holder.popupMenu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final PopupMenu popup = new PopupMenu(v.getContext(), v);
+                        popup.inflate(R.menu.myoverflow_popup_menu);
+                        popup.show();
+                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem menuItem) {
+                                switch (menuItem.getItemId()) {
+                                    case R.id.item_edit:
+                                        int ad_id=cao.adid;
+                                        navigatetoEditActivity(ad_id);
+                                        break;
+                                    case R.id.item_delete:
+                                        final AlertDialog alertDialog = new AlertDialog.Builder(
+                                                context).create();
+                                        alertDialog.setMessage("Are you sure?");
+                                        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                deleteFromDb(cao.adid);
+                                                remove(cao);
+                                            }
+                                        });
+                                        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "CANCEL", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                alertDialog.dismiss();
+                                            }
+                                        });
+                                        alertDialog.show();
+                                        break;
+                                }
+                                return true;
+                            }
+                        });
+                    }
+                });
                 break;
             default:
                 break;
         }
+
+    }
+
+    public void navigatetoEditActivity(int ad_id){
+        intent =new Intent(context, MyContactsWantedEditActivity.class);
+        intent.putExtra("userID", userID);
+        intent.putExtra("tableCategory", tableCategory);
+        intent.putExtra("adid", ad_id);
+        context.startActivity(intent);
 
     }
 
@@ -221,7 +269,7 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
         protected Bitmap doInBackground(String... params) {
             // TODO Auto-generated method stub
             try {
-                contactswanted_image = ImageLoaderAPI.AzureImageDownloader2(params[0]);
+                contactswanted_image = ImageLoaderAPI.AzureImageDownloader(params[0]);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 Log.d("AsyncLoadImage", e.getMessage());
@@ -237,50 +285,7 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
 
     }
 
-    public void normalContactList(ViewHolder holder, final ContactsnWantedAdObject cao){
 
-
-    }
-
-    public void mycontactlist(ViewHolder holder, final ContactsnWantedAdObject cao){
-        holder.popupMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final PopupMenu popup = new PopupMenu(v.getContext(), v);
-                popup.inflate(R.menu.myoverflow_popup_menu);
-                popup.show();
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        switch (menuItem.getItemId()){
-                            case R.id.item_edit:
-                               break;
-                            case R.id.item_delete:
-                                final AlertDialog alertDialog = new AlertDialog.Builder(
-                                        context).create();
-                                alertDialog.setMessage("Are you sure??");
-                                alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        deleteFromDb(cao.adid);
-                                        remove(cao);
-                                    }
-                                });
-                                alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "CANCEL", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        alertDialog.dismiss();
-                                    }
-                                });
-                                alertDialog.show();
-                                break;
-                        }
-                        return true;
-                    }
-                });
-            }
-        });
-    }
 
     public void deleteFromDb(int adid) {
         Toast.makeText(context, "" + adid, Toast.LENGTH_LONG).show();
@@ -297,7 +302,7 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
 
             RestAPI api = new RestAPI();
             try {
-                    api.DeleteContactsWantedAd(params[0],tableCategory);
+                api.DeleteContactsWantedAd(params[0],tableCategory);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 Log.d("AsyncLoadResult", e.getMessage());
@@ -325,6 +330,5 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
         // Convert the dps to pixels, based on density scale
         return ((int) (dp * scale + 0.5f));
     }
-
 
 }

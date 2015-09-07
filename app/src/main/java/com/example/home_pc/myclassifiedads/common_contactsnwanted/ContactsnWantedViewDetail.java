@@ -7,8 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.util.Log;
@@ -37,12 +37,11 @@ import com.example.home_pc.myclassifiedads.userdetailview.ViewIndividualDetail;
 import com.example.home_pc.myclassifiedads.userdetailview.ViewShopDetail;
 
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 public class ContactsnWantedViewDetail extends ActionBarActivity {
-    public ArrayList<ContactsnWantedAdObject> contactsAdObject=null;
+    public ContactsnWantedAdObject contactsAdObject=null;
     ImageView contact_photo,comment_cancel,comment_save,read_comment;
     TextView category,username,ad_description,ad_title,contactNo,address,email,comment,commentText,postedDate,commenterUsername,myComments,
     ad_postedDate,mobileNo,viewOnMap;
@@ -107,9 +106,9 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getApplicationContext(), ViewOnMap.class);
-                intent.putExtra("longitute", contactsAdObject.get(0).longitute);
-                intent.putExtra("addres", contactsAdObject.get(0).aDdress);
-                intent.putExtra("latitute",contactsAdObject.get(0).latitude);
+                intent.putExtra("longitute", contactsAdObject.longitute);
+                intent.putExtra("addres", contactsAdObject.aDdress);
+                intent.putExtra("latitute",contactsAdObject.latitude);
                 startActivity(intent);
             }
         });
@@ -143,12 +142,12 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
     }
 
     protected class AsyncLoadContactDetail extends
-            AsyncTask<ContactsnWantedAdObject, Void, ArrayList<ContactsnWantedAdObject>> {
+            AsyncTask<ContactsnWantedAdObject, Void, ContactsnWantedAdObject> {
 
         @Override
-        protected ArrayList<ContactsnWantedAdObject> doInBackground(ContactsnWantedAdObject...params) {
+        protected ContactsnWantedAdObject doInBackground(ContactsnWantedAdObject...params) {
             // TODO Auto-generated method stub
-            contactsAdObject=new ArrayList<ContactsnWantedAdObject>();
+
             RestAPI api = new RestAPI();
             try {
                 JSONObject jsonObj = api.GetContactDetails(params[0].adid,params[0].tableCategory);
@@ -179,23 +178,23 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
 
 
         @Override
-        protected void onPostExecute(ArrayList<ContactsnWantedAdObject> result) {
+        protected void onPostExecute(ContactsnWantedAdObject result) {
             // TODO Auto-generated method stub
           //  contact_photo.setImageBitmap(bitmap);
             if(progressDialog.isShowing()){
                 progressDialog.dismiss();
             }
-            username.setText(Html.fromHtml("<u>"+result.get(0).userName+"</u>"));
-            ad_title.setText(result.get(0).title);
-            ad_description.setText(result.get(0).description);
-            category.setText(result.get(0).category);
-            address.setText(result.get(0).aDdress);
-            contactNo.setText(result.get(0).contactNo);
-            email.setText(result.get(0).emailId);
-            ad_postedDate.setText(result.get(0).ad_insertdate);
-            mobileNo.setText(result.get(0).mobileNo);
-            if(!result.get(0).adImageURL.equals("-")){
-                new AsyncLoadImage().execute(result.get(0).adImageURL);
+            username.setText(Html.fromHtml("<u>"+result.userName+"</u>"));
+            ad_title.setText(result.title);
+            ad_description.setText(result.description);
+            category.setText(result.category);
+            address.setText(result.aDdress);
+            contactNo.setText(result.contactNo);
+            email.setText(result.emailId);
+            ad_postedDate.setText(result.ad_insertdate);
+            mobileNo.setText(result.mobileNo);
+            if(!result.adImageURL.equals("-")){
+                new AsyncLoadImage().execute(result.getAdImage());
             }
 
 

@@ -79,6 +79,7 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
 
+
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_real_estate_view_detail">Real Estate</string>
     <string name="title_activity_job_detail">JobDetailActivity</string>
@@ -88,6 +89,7 @@
     <string name="title_activity_view_individual_detail">ViewIndividualDetail</string>
     <string name="title_activity_view_company_detail">ViewCompanyDetail</string>
     <string name="title_activity_view_shop_detail">ViewShopDetail</string>
+    <string name="title_activity_my_contacts_wanted_edit">MyContactsWantedEditActivity</string>
 
 
 

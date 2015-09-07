@@ -4,8 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -113,7 +113,7 @@ Bitmap shop_image;
         protected Bitmap doInBackground(String... params) {
             // TODO Auto-generated method stub
             try {
-                shop_image = ImageLoaderAPI.AzureImageDownloader2(params[0]);
+                shop_image = ImageLoaderAPI.AzureImageDownloader(params[0]);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 Log.d("AsyncLoadImage", e.getMessage());

@@ -112,7 +112,7 @@ public class NewAdsFragment extends Fragment {
                 progressDialog.dismiss();
             }
             if(result!=null){
-                SalesAdsAdapter salesAdsAdapter=new SalesAdsAdapter(context,result,userID,salesCategory);
+                SalesAdsAdapter salesAdsAdapter=new SalesAdsAdapter(context,result,userID,salesCategory,0);
                 salesList.setAdapter(salesAdsAdapter);
             }
             else{

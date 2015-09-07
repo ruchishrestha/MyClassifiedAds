@@ -3,8 +3,8 @@ package com.example.home_pc.myclassifiedads.userdetailview;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,8 +18,6 @@ import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
 import com.example.home_pc.myclassifiedads.user_login.IndividualUser;
 
 import org.json.JSONObject;
-
-import java.util.concurrent.ThreadPoolExecutor;
 
 public class ViewIndividualDetail extends ActionBarActivity {
     String userName;
@@ -93,7 +91,7 @@ public class ViewIndividualDetail extends ActionBarActivity {
         protected Bitmap doInBackground(String... params) {
             // TODO Auto-generated method stub
             try {
-                individual_image = ImageLoaderAPI.AzureImageDownloader2(params[0]);
+                individual_image = ImageLoaderAPI.AzureImageDownloader(params[0]);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 Log.d("AsyncLoadImage", e.getMessage());

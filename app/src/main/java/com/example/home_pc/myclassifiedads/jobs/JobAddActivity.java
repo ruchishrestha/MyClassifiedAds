@@ -185,7 +185,7 @@ public class JobAddActivity extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         organizationLogo.setImageResource(R.drawable.camerapic);
-                        picture=null;
+                        picture.recycle();
                         photoCount--;
                         dialog.dismiss();
                     }
@@ -299,10 +299,15 @@ public class JobAddActivity extends ActionBarActivity {
                 JSONParser parser = new JSONParser();
                 adID = parser.getId(object);
 
-                pictureURL = ImageLoaderAPI.AzureImageUploader(picture, "Jobs" + adID);
+                System.out.println(adID);
 
-                object = api.UpdateJobAd(adID, pictureURL);
-                result = parser.getResult(object);
+                if(!(adID.length() > 7)) {
+
+                    pictureURL = ImageLoaderAPI.AzureImageUploader(picture,temp, "Jobs" + adID);
+
+                    object = api.UpdateJobAd(adID, pictureURL);
+                    result = parser.getResult(object);
+                }
             }
             catch (Exception e){
 

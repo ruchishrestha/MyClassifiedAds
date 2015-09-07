@@ -30,6 +30,28 @@ public class JSONParser {
 
 
     @SuppressLint("LongLogTag")
+    public ArrayList<String> getMyQueryResult(JSONObject object){
+        ArrayList<String> categoryList = new ArrayList<String>();
+
+        try {
+            JSONArray jsonArray=object.getJSONArray("Value");
+            JSONObject jsonObj;
+            for(int i=0;i<jsonArray.length();i++)
+            {
+                jsonObj=jsonArray.getJSONObject(i);
+                categoryList.add(jsonObj.getString("MyUserName"));
+            }
+
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            Log.d("JSONParser => MyQueryResult", e.getMessage());
+        }
+        return categoryList;
+    }
+
+
+
+    @SuppressLint("LongLogTag")
     public IndividualUser getIndividualDetail(JSONObject object)
     {
         IndividualUser iUser=null;
@@ -183,16 +205,16 @@ public class JSONParser {
     }
 
     @SuppressLint("LongLogTag")
-    public ArrayList<ContactsnWantedAdObject> parseContactDetails(JSONObject object)
+    public ContactsnWantedAdObject parseContactDetails(JSONObject object)
     {
-        ArrayList<ContactsnWantedAdObject> arrayList=new ArrayList<>();
+        ContactsnWantedAdObject arrayList=null;
         try {
             JSONArray jsonArray=object.getJSONArray("Value");
             JSONObject jsonObj;
             for(int i=0;i<jsonArray.length();i++)
             {
                 jsonObj=jsonArray.getJSONObject(i);
-                arrayList.add(new ContactsnWantedAdObject(jsonObj.getInt("adid"),jsonObj.getString("dateOnly"),jsonObj.getString("username"),jsonObj.getString("title"),jsonObj.getString("ad_description"),jsonObj.getString("Category"),jsonObj.getString("contact"),jsonObj.getString("mobile"),jsonObj.getString("addres"),jsonObj.getString("email"),jsonObj.getDouble("latitude"),jsonObj.getDouble("longitude"),jsonObj.getString("photoURL")));
+                arrayList=(new ContactsnWantedAdObject(jsonObj.getInt("adid"),jsonObj.getString("dateOnly"),jsonObj.getString("username"),jsonObj.getString("title"),jsonObj.getString("ad_description"),jsonObj.getString("Category"),jsonObj.getString("contact"),jsonObj.getString("mobile"),jsonObj.getString("addres"),jsonObj.getString("email"),jsonObj.getDouble("latitude"),jsonObj.getDouble("longitude"),jsonObj.getString("photoURL")));
             }
 
         } catch (JSONException e) {
@@ -442,5 +464,24 @@ public class JSONParser {
             Log.d("JSONParser => parseUserCategory", e.getMessage());
         }
         return userCategory;
+    }
+
+    @SuppressLint("LongLogTag")
+    public ArrayList<SalesAdsObject> parseMySalesList(JSONObject object) {
+        ArrayList<SalesAdsObject> arrayList = new ArrayList<>();
+        try {
+            JSONArray jsonArray = object.getJSONArray("Value");
+            JSONObject jsonObj;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                jsonObj = jsonArray.getJSONObject(i);
+                arrayList.add(new SalesAdsObject(jsonObj.getInt("salesID"),jsonObj.getString("username"),jsonObj.getString("title"),jsonObj.getString("brand"),
+                        jsonObj.getString("model"),jsonObj.getString("price"),jsonObj.getString("salesStatus"),jsonObj.getString("condition"),jsonObj.getDouble("averageRating"),jsonObj.getString("salesCategory")));
+
+            }
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            Log.d("JSONParser => parseMySalesList", e.getMessage());
+        }
+        return arrayList;
     }
 }

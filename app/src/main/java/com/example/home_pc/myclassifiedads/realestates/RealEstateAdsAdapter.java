@@ -201,8 +201,10 @@ public class RealEstateAdsAdapter extends RecyclerView.Adapter<RealEstateAdsAdap
                 JSONObject jsonObject = api.GetRealestatePictureURL(params[0]);
                 JSONParser parser = new JSONParser();
                 picURL= parser.parseReturnedURL(jsonObject);
+                String sub1 = picURL.substring(0,61);
+                String sub2 = "temp_"+picURL.substring(61);
                 if(picURL!=null){
-                    realestatePic= ImageLoaderAPI.AzureImageDownloader(picURL);
+                    realestatePic= ImageLoaderAPI.AzureImageDownloader(sub1+sub2);
                 }
                 else{
                     realestatePic=null;
@@ -218,8 +220,8 @@ public class RealEstateAdsAdapter extends RecyclerView.Adapter<RealEstateAdsAdap
         @Override
         protected void onPostExecute(Bitmap result){
             if(result!=null){
-                realestatePic=Bitmap.createScaledBitmap(result, dptopx(100), dptopx(100), true);
-                holder.realEstateImage.setImageBitmap(realestatePic);
+                //realestatePic=Bitmap.createScaledBitmap(result, dptopx(100), dptopx(100), true);
+                holder.realEstateImage.setImageBitmap(result);
             }
 
         }

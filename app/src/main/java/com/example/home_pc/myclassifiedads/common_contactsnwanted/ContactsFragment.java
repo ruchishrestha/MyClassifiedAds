@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ public class ContactsFragment extends Fragment {
     private SectionsPagerAdapter sectionsPagerAdapter;
     private Fragment selectFragment;
     private ViewPager viewPager;
+    public ArrayList<ContactsnWantedAdObject> contactsAdObject;
     String userID,userCategory;
 
 
@@ -45,6 +47,8 @@ public class ContactsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        contactsAdObject=new ArrayList<ContactsnWantedAdObject>();
 
         View v = inflater.inflate(R.layout.tab_fragments, container, false);
         setHasOptionsMenu(true);
@@ -115,6 +119,18 @@ public class ContactsFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu,MenuInflater inflater){
         inflater.inflate(R.menu.menu_add_ads, menu);
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences pref = getActivity().getSharedPreferences("ExtraSearch", 0);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("AdCategory", "Contacts");
+                editor.apply();
+            }
+        });
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -138,14 +154,14 @@ public class ContactsFragment extends Fragment {
                 getActivity()).create();
         alertDialog.setMessage("Please Login or Sign Up");
         alertDialog.setIcon(R.drawable.backward);
-        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,"OK", new DialogInterface.OnClickListener() {
+        alertDialog.setButton2("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
             }
         });
-        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"CANCEL", new DialogInterface.OnClickListener() {
+        alertDialog.setButton("CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();

@@ -1,5 +1,6 @@
 package com.example.home_pc.myclassifiedads.classified_api;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -10,6 +11,7 @@ import com.microsoft.azure.storage.blob.*;
 import org.apache.http.util.ByteArrayBuffer;
 
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -19,12 +21,18 @@ import java.util.ArrayList;
  */
 public class ImageLoaderAPI {
 
+    Context context;
+
     public static final String storageConnectionString =
                       "DefaultEndpointsProtocol=https;"
                     + "AccountName=classifiedimagestorage;"
                     + "AccountKey=hTeFYaGi2hEmF3jF0vK860iIIq6IPUFe5k+aIk+H3vzdZnMQI0Ry19RQyOVUCxYGgUquTuChjvBDH1fQV9jQwg==";
 
-    public static ArrayList<String> AzureImageUploader(ArrayList<Bitmap> uploadImages,String adID){
+    public ImageLoaderAPI(Context context) {
+        this.context = context;
+    }
+
+    public static ArrayList<String> AzureImageUploader(ArrayList<Bitmap> uploadImages,ArrayList<Bitmap> thumbnailpics,String adID){
         ArrayList<String> imagePaths = new ArrayList<String>();
         int photoCount=uploadImages.size();
 
@@ -41,12 +49,17 @@ public class ImageLoaderAPI {
                 String imageName=adID+"_"+i;
                 // Upload an image file.
                 CloudBlockBlob blob = container.getBlockBlobReference(imageName);
+                CloudBlockBlob tempblob = container.getBlockBlobReference("temp_"+imageName);
                 ByteArrayOutputStream uploadImageOS = new ByteArrayOutputStream();
-                uploadImages.get(i).compress(Bitmap.CompressFormat.PNG, 0, uploadImageOS);
+                uploadImages.get(i).compress(Bitmap.CompressFormat.JPEG, 75, uploadImageOS);
                 byte[] uploadImageData = uploadImageOS.toByteArray();
                 uploadImageOS.flush();
                 blob.upload(new ByteArrayInputStream(uploadImageData), uploadImageData.length);
                 imagePaths.add(blob.getUri().toString());
+                thumbnailpics.get(i).compress(Bitmap.CompressFormat.JPEG, 75, uploadImageOS);
+                uploadImageData = uploadImageOS.toByteArray();
+                uploadImageOS.flush();
+                tempblob.upload(new ByteArrayInputStream(uploadImageData), uploadImageData.length);
             }
 
            return imagePaths;
@@ -74,7 +87,7 @@ public class ImageLoaderAPI {
         return null;
     }
 
-    public static String AzureImageUploader(Bitmap uploadProfilePic,String stringKey){
+    public static String AzureImageUploader(Bitmap uploadProfilePic,Bitmap thumbnailpic,String stringKey){
 
 
         try {
@@ -88,15 +101,19 @@ public class ImageLoaderAPI {
 
 
             // Upload an image file.
-            CloudBlockBlob blob = container.getBlockBlobReference(stringKey);
+            CloudBlockBlob mainblob = container.getBlockBlobReference(stringKey);
+            CloudBlockBlob tempblob = container.getBlockBlobReference("temp_"+stringKey);
             ByteArrayOutputStream uploadImageOS = new ByteArrayOutputStream();
-            uploadProfilePic.compress(Bitmap.CompressFormat.PNG, 0, uploadImageOS);
+            uploadProfilePic.compress(Bitmap.CompressFormat.JPEG, 75, uploadImageOS);
             byte[] uploadImageData = uploadImageOS.toByteArray();
             uploadImageOS.flush();
-            blob.upload(new ByteArrayInputStream(uploadImageData), uploadImageData.length);
+            mainblob.upload(new ByteArrayInputStream(uploadImageData), uploadImageData.length);
+            thumbnailpic.compress(Bitmap.CompressFormat.JPEG, 75, uploadImageOS);
+            uploadImageData = uploadImageOS.toByteArray();
+            uploadImageOS.flush();
+            tempblob.upload(new ByteArrayInputStream(uploadImageData), uploadImageData.length);
 
-
-            return blob.getUri().toString();
+            return mainblob.getUri().toString();
 
         }
         catch (FileNotFoundException fileNotFoundException) {
@@ -157,80 +174,32 @@ public class ImageLoaderAPI {
         return downloadedImages;
     }
 
-    public static Bitmap AzureImageDownloader (String imagePath){
+    public static Bitmap AzureImageDownloader (String imagePath) {
 
         Bitmap downloadedImage;
         int current;
 
         try {
 
-                URL imageUrl = new URL(imagePath);
-                URLConnection ucon = imageUrl.openConnection();
-                InputStream imageIS = ucon.getInputStream();
+            URL imageUrl = new URL(imagePath);
+            URLConnection ucon = imageUrl.openConnection();
+            InputStream imageIS = ucon.getInputStream();
 
-                BufferedInputStream imageBIS = new BufferedInputStream(imageIS);
-                ByteArrayBuffer imageBAB = new ByteArrayBuffer(1000);
+            BufferedInputStream imageBIS = new BufferedInputStream(imageIS);
+            ByteArrayBuffer imageBAB = new ByteArrayBuffer(1000);
 
-                while ((current = imageBIS.read()) != -1) {
-                    imageBAB.append((byte) current);
-                }
-
-                downloadedImage = BitmapFactory.decodeByteArray( imageBAB.toByteArray(),0,imageBAB.toByteArray().length);
-                imageBAB.clear();
-                imageBIS.close();
-                imageIS.close();
-
-                return downloadedImage;
-
-            } catch (Exception e) {
-
-                System.out.print("Exception encountered: ");
-                System.out.println(e.getMessage());
-
+            while ((current = imageBIS.read()) != -1) {
+                imageBAB.append((byte) current);
             }
 
-        return null;
-    }
+            downloadedImage = BitmapFactory.decodeByteArray(imageBAB.toByteArray(), 0, imageBAB.toByteArray().length);
+            imageBAB.clear();
+            imageBIS.close();
+            imageIS.close();
 
-    public static Bitmap AzureImageDownloader2 (String imagePath){
+            return downloadedImage;
 
-        try {
-            String stringKey = imagePath.substring(61);
-
-            CloudStorageAccount account = CloudStorageAccount.parse(storageConnectionString);
-            CloudBlobClient serviceClient = account.createCloudBlobClient();
-
-            // Container name must be lower case.
-            CloudBlobContainer container = serviceClient.getContainerReference("gallery");
-            container.createIfNotExists();
-
-
-            CloudBlockBlob blob = container.getBlockBlobReference(stringKey);
-
-            byte[] downloadedImage = new byte[1024*1024];
-
-            blob.downloadToByteArray(downloadedImage, 0);
-
-            Bitmap img = BitmapFactory.decodeByteArray(downloadedImage,0,downloadedImage.length);
-
-            System.out.println(downloadedImage.length);
-
-            return img;
-
-        }
-      /*  catch (FileNotFoundException fileNotFoundException) {
-
-            System.out.print("FileNotFoundException encountered: ");
-            System.out.println(fileNotFoundException.getMessage());
-
-        }*/
-        catch (StorageException storageException) {
-
-            System.out.print("StorageException encountered: ");
-            System.out.println(storageException.getMessage());
-
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
 
             System.out.print("Exception encountered: ");
             System.out.println(e.getMessage());
@@ -238,6 +207,6 @@ public class ImageLoaderAPI {
         }
 
         return null;
-    }
 
+    }
 }
