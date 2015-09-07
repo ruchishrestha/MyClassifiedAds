@@ -82,6 +82,7 @@ public class RealEstateFragment extends Fragment {
                     break;
                 case 1:
                     selectFragment= new RealEstateMapFragment();
+                    selectFragment.setArguments(args);
                     break;
                 default:
                     break;

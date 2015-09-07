@@ -76,6 +76,17 @@ public class ContactsnWantedAdObject /*implements Parcelable*/{
         this.latitude=latitude;
         this.longitute=longitute;
     }
+
+    public ContactsnWantedAdObject(int adid,Bitmap image,String title,String category,String contactNo,String mobileNo,Double latitude,Double longitute){
+        this.adid=adid;
+        this.image=image;
+        this.title=title;
+        this.category=category;
+        this.contactNo=contactNo;
+        this.mobileNo=mobileNo;
+        this.latitude=latitude;
+        this.longitute=longitute;
+    }
     public int getAdid() {
         return adid;
     }

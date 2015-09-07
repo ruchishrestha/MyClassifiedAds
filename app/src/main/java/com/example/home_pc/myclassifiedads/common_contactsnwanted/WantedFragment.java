@@ -34,7 +34,6 @@ public class WantedFragment extends Fragment {
     private SectionsPagerAdapter sectionsPagerAdapter;
     private Fragment selectFragment;
     private ViewPager viewPager;
-    public ArrayList<ContactsnWantedAdObject> contactsAdObject;
     String userID;
 
     public WantedFragment() {
@@ -44,8 +43,6 @@ public class WantedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        contactsAdObject=new ArrayList<ContactsnWantedAdObject>();
 
         View v = inflater.inflate(R.layout.tab_fragments, container, false);
         setHasOptionsMenu(true);

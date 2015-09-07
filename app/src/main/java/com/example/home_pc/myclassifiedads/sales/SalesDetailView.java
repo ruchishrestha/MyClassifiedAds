@@ -34,6 +34,9 @@ import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
 import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
 import com.example.home_pc.myclassifiedads.comments.CommentObject;
 import com.example.home_pc.myclassifiedads.mainactivity.MainActivity;
+import com.example.home_pc.myclassifiedads.userdetailview.ViewCompanyDetail;
+import com.example.home_pc.myclassifiedads.userdetailview.ViewIndividualDetail;
+import com.example.home_pc.myclassifiedads.userdetailview.ViewShopDetail;
 
 import org.json.JSONObject;
 
@@ -52,6 +55,7 @@ public class SalesDetailView extends ActionBarActivity {
     ArrayList<SalesAdsObject> salesAdsObjects=null;
     RatingBar averageRating,MyRating,MyRatingMain;
     Double myrating=0.0;
+    Intent intent;
 
 
     @Override
@@ -115,6 +119,13 @@ public class SalesDetailView extends ActionBarActivity {
             public void onClick(View v) {
                 allCommentsPopup(salesID,salesCategory);
 
+            }
+        });
+        username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),""+username.getText().toString(),Toast.LENGTH_LONG).show();
+                new AsyncLoadUserCategory().execute(username.getText().toString());
             }
         });
     }
@@ -375,7 +386,48 @@ public class SalesDetailView extends ActionBarActivity {
 
         }
     }
+    protected class AsyncLoadUserCategory extends
+            AsyncTask<String, Void,String > {
+        String userCategory;
 
+        @Override
+        protected String doInBackground(String ...params) {
+            // TODO Auto-generated method stub
+
+            RestAPI api = new RestAPI();
+            try {
+                JSONObject jsonObj = api.GetUserCategory(params[0]);
+                JSONParser parser = new JSONParser();
+                userCategory = parser.parseUserCategory(jsonObj);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                Log.d("AsyncSaveComment", ""+e);
+            }
+            return userCategory;
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            System.out.println("here=>"+result);
+            switch (result){
+                case "individual":
+                    intent=new Intent(getApplicationContext(), ViewIndividualDetail.class);
+                    break;
+                case "organization":
+                    intent=new Intent(getApplicationContext(), ViewCompanyDetail.class);
+                    break;
+                case "shop":
+                    intent=new Intent(getApplicationContext(), ViewShopDetail.class);
+                    break;
+                default:
+                    break;
+            }
+            intent.putExtra("username",username.getText().toString());
+            startActivity(intent);
+
+        }
+    }
 
 
     @Override

@@ -42,6 +42,7 @@ public class ContactsnWantedListFragment extends Fragment {
     public ContactsnWantedListFragment() {
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -76,7 +77,7 @@ public class ContactsnWantedListFragment extends Fragment {
     }
 
     public void loadContactAds(){
-        new AsyncLoadContactAds().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        new AsyncLoadContactAds().execute();
     }
 
 
@@ -123,7 +124,6 @@ public class ContactsnWantedListFragment extends Fragment {
             }
         }
     }
-
 
 
 }
