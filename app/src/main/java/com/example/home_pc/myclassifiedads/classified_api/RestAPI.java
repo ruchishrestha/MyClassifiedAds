@@ -100,12 +100,68 @@ public class RestAPI {
 		return finalValue;
 	}
 
-    public JSONObject MyFullTextSearcher(String myQuery) throws Exception {
+    public JSONObject contactsSearcher(String myQuery) throws Exception {
         JSONObject result = null;
         JSONObject o = new JSONObject();
         JSONObject p = new JSONObject();
         o.put("interface","RestAPI");
-        o.put("method", "MyFullTextSearcher");
+        o.put("method", "contactsSearcher");
+        p.put("myQuery",mapObject(myQuery));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject wantedSearcher(String myQuery) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "wantedSearcher");
+        p.put("myQuery",mapObject(myQuery));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject salesSearcher(String myQuery) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "salesSearcher");
+        p.put("myQuery",mapObject(myQuery));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject realEstateSearcher(String myQuery) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "realEstateSearcher");
+        p.put("myQuery",mapObject(myQuery));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject jobsSearcher(String myQuery) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "jobsSearcher");
         p.put("myQuery",mapObject(myQuery));
         o.put("parameters", p);
         String s = o.toString();
