@@ -484,4 +484,25 @@ public class JSONParser {
         }
         return arrayList;
     }
+
+    @SuppressLint("LongLogTag")
+    public ArrayList<RealEstatesAdObject> parseRealestateForMap(JSONObject object)
+    {
+        ArrayList<RealEstatesAdObject> arrayList=new ArrayList<>();
+        try {
+            JSONArray jsonArray=object.getJSONArray("Value");
+            JSONObject jsonObj;
+            for(int i=0;i<jsonArray.length();i++)
+            {
+                jsonObj=jsonArray.getJSONObject(i);
+                arrayList.add(new RealEstatesAdObject(jsonObj.getInt("realestateID"),jsonObj.getString("title"),jsonObj.getString("saleType"),
+                        jsonObj.getDouble("price"),jsonObj.getString("contact"),jsonObj.getString("mobile"),jsonObj.getDouble("latitude"), jsonObj.getDouble("longitude")));
+            }
+
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            Log.d("JSONParser => parseRealEstateForMap", e.getMessage());
+        }
+        return arrayList;
+    }
 }

@@ -52,12 +52,31 @@ public class RealEstatesAdObject {
 
     }
 
+    public RealEstatesAdObject(int realestateID,String title,String saleType,Double price,String contactNo,String mobileNo,Double latitude,Double longitude){
+        this.realestateID=realestateID;
+        this.title=title;
+        this.price=price;
+        this.saleType=saleType;
+        this.contactNo=contactNo;
+       this.mobileNo=mobileNo;
+        this.latitude=latitude;
+        this.longitude=longitude;
+
+    }
+
     public RealEstatesAdObject(int realestateID,String tableCategory,String userID){
         this.realestateID=realestateID;
         this.tableCategory=tableCategory;
         this.userID=userID;
     }
 
+    public int getRealestateID() {
+        return realestateID;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
 
     public String getUserName() {
         return userName;

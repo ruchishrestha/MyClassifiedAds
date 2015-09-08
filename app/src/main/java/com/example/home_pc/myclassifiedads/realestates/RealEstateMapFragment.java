@@ -42,16 +42,16 @@ public class RealEstateMapFragment extends Fragment {
     MarkerOptions marker;
     Boolean first = true;
     String tableCategory,userID;
-    ImageView adImage;
+    ImageView photo;
     View v;
     Bitmap contactad_Image;
-    TextView title,contactNo,mobileNo,category;
+    TextView title,contactNo,mobileNo,saleType,price;
 
     public RealEstateMapFragment(){
 
     }
 
-    /*@Override
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // inflat and return the layout
@@ -104,7 +104,7 @@ public class RealEstateMapFragment extends Fragment {
         protected void onPostExecute(ArrayList<RealEstatesAdObject> result) {
 
             for (int i = 0; i < result.size(); i++) {
-                mMyMarkersArray.add(new RealEstatesAdObject(result.get(i).getAdid(),result.get(i).getAdImage(), result.get(i).gettitle(),result.get(i).getCategory(),result.get(i).getContactNo(),result.get(i).getMobileNo(),result.get(i).getLatitude(),result.get(i).getLongitute()));
+                mMyMarkersArray.add(new RealEstatesAdObject(result.get(i).getRealestateID(),result.get(i).gettitle(),result.get(i).getSaleType(),result.get(i).getPrice(),result.get(i).getContactNo(),result.get(i).getMobileNo(),result.get(i).getLatitude(),result.get(i).getLongitude()));
             }
             plotMarkers(mMyMarkersArray);
         }
@@ -149,25 +149,25 @@ public class RealEstateMapFragment extends Fragment {
             title = (TextView)v.findViewById(R.id.ad_title);
             contactNo = (TextView)v.findViewById(R.id.contactNo);
             mobileNo=(TextView)v.findViewById(R.id.mobileNo);
-            category=(TextView)v.findViewById(R.id.category);
-            adImage=(ImageView)v.findViewById(R.id.contact_photo);
-            if(myMarker.getAdImage()!=null){
-                //  contactad_Image=Bitmap.createScaledBitmap(myMarker.image, dptopx(100), dptopx(100), true);
-                //  Toast.makeText(getActivity(),myMarker.getAdImage(),Toast.LENGTH_LONG).show();
-                new AsyncLoadImage(marker).execute(myMarker.getAdImage());
-                adImage.setImageBitmap(contactad_Image);
-            }
+            saleType=(TextView)v.findViewById(R.id.saleType);
+           price=(TextView)v.findViewById(R.id.price);
+            photo=(ImageView)v.findViewById(R.id.photo);
+            AsyncLoadImage getimage = new AsyncLoadImage();
+            try {
+                photo.setImageBitmap(getimage.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, myMarker.getRealestateID()).get());
+            }catch (Exception e){}
             title.setText(myMarker.gettitle());
-            category.setText(myMarker.getCategory());
-            contactNo.setText(myMarker.getContactNo());
             mobileNo.setText(myMarker.getMobileNo());
+            contactNo.setText(myMarker.getContactNo());
+           saleType.setText(myMarker.getSaleType());
+            price.setText("NPR."+myMarker.getPrice());
 
             googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
                 public void onInfoWindowClick(Marker marker) {
                     Intent intent = new Intent(v.getContext(), RealEstateViewDetail.class);
                     Bundle bundle = new Bundle();
-                    bundle.putInt("adid",myMarker.getAdid());
+                    bundle.putInt("adid", myMarker.getRealestateID());
                     bundle.putString("userID", userID);
                     bundle.putString("tableCategory", tableCategory);
                     intent.putExtras(bundle);
@@ -181,46 +181,35 @@ public class RealEstateMapFragment extends Fragment {
     }
 
     protected class AsyncLoadImage extends
-            AsyncTask<String, Void, Bitmap> {
-        ProgressDialog progressDialog;
-        Marker markerShowingInfoWindow;
+            AsyncTask<Integer, Void, Bitmap> {
+        int pos;
+        Bitmap realestatePic;
+        String picURL;
 
-        public AsyncLoadImage(Marker marker){
-            this.markerShowingInfoWindow=marker;
-        }
         @Override
-        protected Bitmap doInBackground(String... params) {
-            // TODO Auto-generated method stub
+        protected Bitmap doInBackground(Integer... params) {
+            RestAPI api = new RestAPI();
             try {
-                contactad_Image = ImageLoaderAPI.AzureImageDownloader(params[0]);
+                JSONObject jsonObject = api.GetRealestatePictureURL(params[0]);
+                JSONParser parser = new JSONParser();
+                picURL= parser.parseReturnedURL(jsonObject);
+                if(picURL!=null){
+                    realestatePic= ImageLoaderAPI.AzureImageDownloader(picURL);
+                }
+                else{
+                    realestatePic=null;
+                }
+
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                Log.d("AsyncLoadImage", e.getMessage());
+                Log.d("AsyncLoadURl", e.getMessage());
             }
-            return contactad_Image;
-        }
-
-        @Override protected void onPreExecute(){
-            progressDialog=new ProgressDialog(getActivity());
-            progressDialog.setMessage("Please Wait...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setIndeterminate(true);
-            progressDialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap result){
-            contactad_Image=Bitmap.createScaledBitmap(result, dptopx(100), dptopx(100), true);
-            if(progressDialog.isShowing()){
-                progressDialog.dismiss();
-            }
-            if (markerShowingInfoWindow != null && markerShowingInfoWindow.isInfoWindowShown()) {
-                markerShowingInfoWindow.hideInfoWindow();
-                markerShowingInfoWindow.showInfoWindow();
-            }
+            return realestatePic;
         }
 
     }
+
+
 
     public int dptopx(float dp){
         // Get the screen's density scale
@@ -228,7 +217,6 @@ public class RealEstateMapFragment extends Fragment {
         // Convert the dps to pixels, based on density scale
         return ((int) (dp * scale + 0.5f));
     }
-*/
 
 
 }

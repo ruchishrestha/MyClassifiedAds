@@ -314,7 +314,7 @@ ProgressDialog progressDialog;
         }
     }
 
-    protected class AsyncUpdateSalesAds extends AsyncTask<SalesAdsObject,Void,String>{
+    protected class AsyncUpdateSalesAds extends AsyncTask<SalesAdsObject,Void,Void> {
 
         String adID;
         ArrayList<String> pictureURLs = new ArrayList<String>();
@@ -322,29 +322,27 @@ ProgressDialog progressDialog;
         String alter;
 
         @Override
-        protected String doInBackground(SalesAdsObject... params) {
+        protected Void doInBackground(SalesAdsObject... params) {
             RestAPI api = new RestAPI();
 
             try {
                 api.UpdateSalesAds(params[0].getSalesID(), params[0].gettitle(), params[0].getDescription(), params[0].getBrand(), params[0].getModelNo(), params[0].getPrice(), params[0].getStatus(), params[0].getCondition(), params[0].getUsedTime(), params[0].getContactNo());
                 alter = scategory.replace(" ", "_");
-                pictureURLs = ImageLoaderAPI.AzureImageUploader(photosToUpload,tempPhotoView,"Sales" + alter + ""+adid);
-                if(flag==1){
+                pictureURLs = ImageLoaderAPI.AzureImageUploader(photosToUpload, tempPhotoView, "Sales" + alter + "" + adid);
+                if (flag == 1) {
                     api.DeleteSalesURL(adid);
-                    api.AddtoSalesGallery(""+adid, scategory, pictureURLs);
+                    api.AddtoSalesGallery("" + adid, scategory, pictureURLs);
                 }
 
-            }
-            catch (Exception e){
+            } catch (Exception e) {
 
             }
-
-            return result;
+            return null;
         }
 
+
         @Override
-        protected void onPostExecute(String result) {
-            System.out.println("Sales: "+result);
+        protected void onPostExecute(Void result) {
             saveButton.setEnabled(true);
             onBackPressed();
         }
