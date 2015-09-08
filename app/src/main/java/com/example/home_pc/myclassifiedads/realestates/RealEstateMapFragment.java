@@ -144,13 +144,13 @@ public class RealEstateMapFragment extends Fragment {
         public View getInfoContents(Marker marker)
         {
 
-            v = View.inflate(getActivity(),R.layout.infowindow_layout_contacts,null);
+            v = View.inflate(getActivity(),R.layout.infowindow_layout_realestate,null);
             final RealEstatesAdObject myMarker = mMarkersHashMap.get(marker);
             title = (TextView)v.findViewById(R.id.ad_title);
             contactNo = (TextView)v.findViewById(R.id.contactNo);
             mobileNo=(TextView)v.findViewById(R.id.mobileNo);
             saleType=(TextView)v.findViewById(R.id.saleType);
-           price=(TextView)v.findViewById(R.id.price);
+            price=(TextView)v.findViewById(R.id.price);
             photo=(ImageView)v.findViewById(R.id.photo);
             AsyncLoadImage getimage = new AsyncLoadImage();
             try {
@@ -159,17 +159,16 @@ public class RealEstateMapFragment extends Fragment {
             title.setText(myMarker.gettitle());
             mobileNo.setText(myMarker.getMobileNo());
             contactNo.setText(myMarker.getContactNo());
-           saleType.setText(myMarker.getSaleType());
-            price.setText("NPR."+myMarker.getPrice());
+            saleType.setText(/*myMarker.getSaleType()*/ "for sale");
+            price.setText(/*"NPR."+myMarker.getPrice()*/ "23432");
 
             googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
                 public void onInfoWindowClick(Marker marker) {
                     Intent intent = new Intent(v.getContext(), RealEstateViewDetail.class);
                     Bundle bundle = new Bundle();
-                    bundle.putInt("adid", myMarker.getRealestateID());
+                    bundle.putInt("realestateID", myMarker.getRealestateID());
                     bundle.putString("userID", userID);
-                    bundle.putString("tableCategory", tableCategory);
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }

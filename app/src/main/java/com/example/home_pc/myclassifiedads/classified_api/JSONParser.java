@@ -538,7 +538,7 @@ public class JSONParser {
             {
                 jsonObj=jsonArray.getJSONObject(i);
                 arrayList.add(new RealEstatesAdObject(jsonObj.getInt("realestateID"),jsonObj.getString("title"),jsonObj.getString("saleType"),
-                        jsonObj.getDouble("price"),jsonObj.getString("contact"),jsonObj.getString("mobile"),jsonObj.getDouble("latitude"), jsonObj.getDouble("longitude")));
+                        jsonObj.getString("price"),jsonObj.getString("contact"),jsonObj.getString("mobile"),jsonObj.getDouble("latitude"), jsonObj.getDouble("longitude")));
             }
 
         } catch (JSONException e) {

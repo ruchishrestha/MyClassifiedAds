@@ -52,7 +52,7 @@ public class RealEstatesAdObject {
 
     }
 
-    public RealEstatesAdObject(int realestateID,String title,String saleType,Double price,String contactNo,String mobileNo,Double latitude,Double longitude){
+    public RealEstatesAdObject(int realestateID,String title,String saleType,String price,String contactNo,String mobileNo,Double latitude,Double longitude){
         this.realestateID=realestateID;
         this.title=title;
         this.price=price;
@@ -74,7 +74,7 @@ public class RealEstatesAdObject {
         return realestateID;
     }
 
-    public Double getPrice() {
+    public String getPrice() {
         return price;
     }
 
@@ -101,9 +101,7 @@ public class RealEstatesAdObject {
         this.saleType = saleType;
     }
 
-    public String getPrice() {
-        return price;
-    }
+
 
     public void setADdress(String aDdress){this.aDdress=aDdress;}
     public String getADdress(){return this.aDdress ;}
