@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +19,14 @@ import android.widget.TextView;
 import com.example.home_pc.myclassifiedads.R;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
 import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
+import com.example.home_pc.myclassifiedads.common_contactsnwanted.ContactnWantedAdsAdapter;
+import com.example.home_pc.myclassifiedads.common_contactsnwanted.ContactsnWantedAdObject;
+import com.example.home_pc.myclassifiedads.jobs.JobAdsAdapter;
+import com.example.home_pc.myclassifiedads.jobs.JobAdsObject;
+import com.example.home_pc.myclassifiedads.realestates.RealEstateAdsAdapter;
+import com.example.home_pc.myclassifiedads.realestates.RealEstatesAdObject;
+import com.example.home_pc.myclassifiedads.sales.SalesAdsAdapter;
+import com.example.home_pc.myclassifiedads.sales.SalesAdsObject;
 
 import org.json.JSONObject;
 
@@ -25,16 +35,22 @@ import java.util.ArrayList;
 
 public class SearchResultActivity extends ActionBarActivity {
 
-    ListView queryResult;
-    ArrayAdapter<String> myAdapter;
-    ArrayList<String> myQueryList;
+    RecyclerView queryResult;
+    ContactnWantedAdsAdapter contactAdsAdapter;
+    SalesAdsAdapter salesAdsAdapter;
+    RealEstateAdsAdapter realEstateAdsAdapter;
+    JobAdsAdapter jobAdsAdapter;
+    Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
-        myQueryList = new ArrayList<String>();
-        queryResult = (ListView) findViewById(R.id.queryResult);
+        queryResult = (RecyclerView) findViewById(R.id.resultList);
+        queryResult.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(context);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        queryResult.setLayoutManager(llm);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         handleIntent(getIntent());
@@ -76,40 +92,102 @@ public class SearchResultActivity extends ActionBarActivity {
 
     private void handleIntent(Intent intent) {
         String category="";
+        String userID="";
 
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             SharedPreferences pref = getApplicationContext().getSharedPreferences("ExtraSearch",0);
             category = pref.getString("AdCategory","");
-            System.out.println("Query: "+category+";"+query);
+            userID = pref.getString("userID","");
+            System.out.println("Query: "+category+" "+userID+";"+query);
 
-            new AsyncSearchMyQuery().execute(query);
+            new AsyncSearchMyQuery(category,userID).execute(query);
         }
     }
 
-    protected class AsyncSearchMyQuery extends AsyncTask<String,Void,ArrayList<String>>{
+    protected class AsyncSearchMyQuery extends AsyncTask<String,Void,Void>{
+
+        String category;
+        String userID;
+        ArrayList<ContactsnWantedAdObject> contactsnWantedAdObjects;
+        ArrayList<SalesAdsObject> salesAdsObjects;
+        ArrayList<RealEstatesAdObject> realEstatesAdObjects;
+        ArrayList<JobAdsObject> jobAdsObjects;
+
+        public AsyncSearchMyQuery(String category,String userID) {
+            this.category=category;
+            this.userID = userID;
+        }
 
         @Override
-        protected ArrayList<String> doInBackground(String... params) {
+        protected Void doInBackground(String... params) {
             RestAPI api = new RestAPI();
-            ArrayList<String> queryList = new ArrayList<String>();
-            try{
-                JSONObject jsonObject = api.MyFullTextSearcher(params[0]);
+           try{
+                JSONObject jsonObject=new JSONObject();
                 JSONParser parser = new JSONParser();
-                queryList = parser.getMyQueryResult(jsonObject);
+                switch(category){
+                    case "contacts":
+                        contactsnWantedAdObjects = new ArrayList<>();
+                        jsonObject = api.contactsSearcher(params[0]);
+                        contactsnWantedAdObjects = parser.parseContactsList1(jsonObject);
+                        break;
+                    case "wanted":
+                        contactsnWantedAdObjects = new ArrayList<>();
+                        jsonObject = api.wantedSearcher(params[0]);
+                        contactsnWantedAdObjects = parser.parseContactsList1(jsonObject);
+                        break;
+                    case "RealEstates":
+                        realEstatesAdObjects = new ArrayList<>();
+                        jsonObject = api.realEstateSearcher(params[0]);
+                        realEstatesAdObjects = parser.dummyRealestateList(jsonObject);
+                        break;
+                    case "Jobs":
+                        jobAdsObjects = new ArrayList<>();
+                        jsonObject = api.jobsSearcher(params[0]);
+                        jobAdsObjects = parser.parseJobsList(jsonObject);
+                        break;
+                    default:
+                        salesAdsObjects = new ArrayList<>();
+                        jsonObject = api.salesSearcher(params[0]);
+                        salesAdsObjects = parser.parseSalesList(jsonObject);
+                        break;
+                }
             }
             catch(Exception e){
                 System.out.println("ERROR in Searching: " + e);
             }
-            return queryList;
+            return null;
         }
 
+
+
         @Override
-        protected void onPostExecute(ArrayList<String> result) {
-            myQueryList = result;
-            System.out.println(result.get(0));
-            myAdapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,myQueryList);
-            queryResult.setAdapter(myAdapter);
+        protected void onPostExecute(Void aVoid) {
+            switch(category){
+                case "contacts":
+                    contactAdsAdapter = new ContactnWantedAdsAdapter(getApplicationContext(),contactsnWantedAdObjects,category,userID,0);
+                    queryResult.setAdapter(contactAdsAdapter);
+                    break;
+                case "wanted":
+                    contactAdsAdapter =new ContactnWantedAdsAdapter(getApplicationContext(),contactsnWantedAdObjects,category,userID,0);
+                    queryResult.setAdapter(contactAdsAdapter);
+                    break;
+                case "RealEstates":
+                    ArrayList<RealEstatesAdObject> reo = new ArrayList<>();
+                    reo.add(new RealEstatesAdObject(13,"Real","12000","ForSale","Here","5656567","t"));
+                    realEstateAdsAdapter=new RealEstateAdsAdapter(getApplicationContext(),reo,"t");
+                    queryResult.setAdapter(realEstateAdsAdapter);
+                    break;
+                case "Jobs":
+                    jobAdsAdapter=new JobAdsAdapter(getApplicationContext(),jobAdsObjects,userID);
+                    queryResult.setAdapter(jobAdsAdapter);
+                    break;
+                default:
+                    SalesAdsAdapter salesAdsAdapter=new SalesAdsAdapter(getApplicationContext(),salesAdsObjects,category,userID,0);
+                    queryResult.setAdapter(salesAdsAdapter);
+                    break;
+            }
+
         }
     }
 }

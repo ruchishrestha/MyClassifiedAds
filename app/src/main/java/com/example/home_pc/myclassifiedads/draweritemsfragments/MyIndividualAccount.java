@@ -36,7 +36,7 @@ public class MyIndividualAccount extends Fragment {
         View view = inflater.inflate(R.layout.account_individual, container,
                 false);
 
-        userNam = getArguments().getString("UserName");
+        userNam = getArguments().getString("userID");
 
         new AsyncGetDetail(view).execute();
 

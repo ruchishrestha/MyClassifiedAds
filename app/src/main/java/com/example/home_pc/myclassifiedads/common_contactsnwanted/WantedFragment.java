@@ -118,7 +118,8 @@ public class WantedFragment extends Fragment {
             public void onClick(View v) {
                 SharedPreferences pref = getActivity().getSharedPreferences("ExtraSearch", 0);
                 SharedPreferences.Editor editor = pref.edit();
-                editor.putString("AdCategory", "Wanted");
+                editor.putString("AdCategory", "wanted");
+                editor.putString("userID",userID);
                 editor.apply();
             }
         });

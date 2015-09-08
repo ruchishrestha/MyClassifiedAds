@@ -42,7 +42,7 @@ public class MyShopAccount extends Fragment {
         View view = inflater.inflate(R.layout.account_shop, container,
                 false);
 
-        userNam = getArguments().getString("UserName");
+        userNam = getArguments().getString("userID");
 
         locateOnMap = (TextView) view.findViewById(R.id.locateOnMap);
 

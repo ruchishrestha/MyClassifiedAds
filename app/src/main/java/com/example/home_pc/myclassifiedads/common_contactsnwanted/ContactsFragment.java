@@ -127,7 +127,8 @@ public class ContactsFragment extends Fragment {
             public void onClick(View v) {
                 SharedPreferences pref = getActivity().getSharedPreferences("ExtraSearch", 0);
                 SharedPreferences.Editor editor = pref.edit();
-                editor.putString("AdCategory", "Contacts");
+                editor.putString("AdCategory", "contacts");
+                editor.putString("userID",userID);
                 editor.apply();
             }
         });

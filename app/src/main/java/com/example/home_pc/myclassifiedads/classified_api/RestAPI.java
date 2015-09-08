@@ -21,7 +21,7 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 
 public class RestAPI {
-    private final String urlString = "http://classifiedadsapi.azurewebsites.net/Handler1.ashx";
+    private final String urlString = "http://classifiedapi.azurewebsites.net/Handler1.ashx";
 
     private static String convertStreamToUTF8String(InputStream stream) throws IOException {
 	    String result = "";
@@ -100,12 +100,68 @@ public class RestAPI {
 		return finalValue;
 	}
 
-    public JSONObject MyFullTextSearcher(String myQuery) throws Exception {
+    public JSONObject contactsSearcher(String myQuery) throws Exception {
         JSONObject result = null;
         JSONObject o = new JSONObject();
         JSONObject p = new JSONObject();
         o.put("interface","RestAPI");
-        o.put("method", "MyFullTextSearcher");
+        o.put("method", "contactsSearcher");
+        p.put("myQuery",mapObject(myQuery));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject wantedSearcher(String myQuery) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "wantedSearcher");
+        p.put("myQuery",mapObject(myQuery));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject salesSearcher(String myQuery) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "salesSearcher");
+        p.put("myQuery",mapObject(myQuery));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject realEstateSearcher(String myQuery) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "realEstateSearcher");
+        p.put("myQuery",mapObject(myQuery));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject jobsSearcher(String myQuery) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "jobsSearcher");
         p.put("myQuery",mapObject(myQuery));
         o.put("parameters", p);
         String s = o.toString();
@@ -193,10 +249,10 @@ public class RestAPI {
         JSONObject result = null;
         JSONObject o = new JSONObject();
         JSONObject p = new JSONObject();
-        o.put("interface", "RestAPI");
+        o.put("interface","RestAPI");
         o.put("method", "UserAuthentication");
-        p.put("userName", mapObject(userName));
-        p.put("passWord", mapObject(passWord));
+        p.put("userName",mapObject(userName));
+        p.put("passWord",mapObject(passWord));
         o.put("parameters", p);
         String s = o.toString();
         String r = load(s);
@@ -529,6 +585,7 @@ public class RestAPI {
         result = new JSONObject(r);
         return result;
     }
+
     public JSONObject GetContactsList(String category) throws Exception {
         JSONObject result = null;
         JSONObject o = new JSONObject();
@@ -908,6 +965,43 @@ public class RestAPI {
         o.put("interface","RestAPI");
         o.put("method", "GetMySalesList");
         p.put("userID",mapObject(userID));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject UpdateSalesAds(int adid,String title,String description,String brand,String model,String price,String salesStatus,String condition,String timeUsed,String contactNo) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "UpdateSalesAds");
+        p.put("adid",mapObject(adid));
+        p.put("title",mapObject(title));
+        p.put("description",mapObject(description));
+        p.put("brand",mapObject(brand));
+        p.put("model",mapObject(model));
+        p.put("price",mapObject(price));
+        p.put("salesStatus",mapObject(salesStatus));
+        p.put("condition",mapObject(condition));
+        p.put("timeUsed",mapObject(timeUsed));
+        p.put("contactNo",mapObject(contactNo));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject DeleteSalesURL(int salesID) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "DeleteSalesURL");
+        p.put("salesID",mapObject(salesID));
         o.put("parameters", p);
         String s = o.toString();
         String r = load(s);

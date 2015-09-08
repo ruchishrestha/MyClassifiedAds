@@ -6,8 +6,8 @@ package com.example.home_pc.myclassifiedads.realestates;
 public class RealEstatesAdObject {
     String[] realEstateImages;
     int realestateID;
-    String title,description,houseNo,propertyType,saleType,aDdress,contactNo,mobileNo,email,userName,userID,ad_insertdate,tableCategory;
-    Double latitude,longitude,price;
+    String title,description,houseNo,propertyType,saleType,price,aDdress,contactNo,mobileNo,email,userName,userID,ad_insertdate,tableCategory;
+    Double latitude,longitude;
 
     public RealEstatesAdObject (String userName,String title,String description,String houseNo,String propertyType,String saleType,String aDdress,String contactNo,String mobileNo,String email,Double latitude,Double longitude ){
         this.userName = userName;
@@ -24,7 +24,7 @@ public class RealEstatesAdObject {
         this.longitude=longitude;
     }
 
-    public RealEstatesAdObject (int realestateID,String ad_insertdate,String username,String title,String description,String houseNo,String propertyType,String saleType,Double price,String aDdress,String contactNo,String mobileNo,Double latitude,Double longitute ){
+    public RealEstatesAdObject (int realestateID,String ad_insertdate,String username,String title,String description,String houseNo,String propertyType,String saleType,String price,String aDdress,String contactNo,String mobileNo,Double latitude,Double longitute ){
         this.realestateID=realestateID;
         this.ad_insertdate=ad_insertdate;
         this.userName =username;
@@ -41,7 +41,7 @@ public class RealEstatesAdObject {
         this.longitude =longitute;
     }
 
-    public RealEstatesAdObject(int realestateID,String title,Double price,String saleType,String aDdress,String contactNo,String username){
+    public RealEstatesAdObject(int realestateID,String title,String price,String saleType,String aDdress,String contactNo,String username){
         this.realestateID=realestateID;
         this.title=title;
         this.price=price;
@@ -81,6 +81,11 @@ public class RealEstatesAdObject {
     public void setSaleType(String saleType) {
         this.saleType = saleType;
     }
+
+    public String getPrice() {
+        return price;
+    }
+
     public void setADdress(String aDdress){this.aDdress=aDdress;}
     public String getADdress(){return this.aDdress ;}
     public void setContactNo(String contactNo){this.contactNo=contactNo;}

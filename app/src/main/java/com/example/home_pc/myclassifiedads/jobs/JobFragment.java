@@ -143,6 +143,7 @@ public class JobFragment extends Fragment {
                 SharedPreferences pref = getActivity().getSharedPreferences("ExtraSearch", 0);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("AdCategory", "Jobs");
+                editor.putString("userID",userID);
                 editor.apply();
             }
         });

@@ -81,7 +81,7 @@ public class RealEstateAdsAdapter extends RecyclerView.Adapter<RealEstateAdsAdap
         holder.realEstateAddress.setText(reo.aDdress);
         holder.realEstateContact.setText(reo.contactNo);
         holder.username.setText(reo.userName);
-        new AsyncLoadImage(position,holder).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,reo.realestateID);
+        //new AsyncLoadImage(position,holder).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,reo.realestateID);
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -294,7 +294,7 @@ public class RealEstateAddActivity extends ActionBarActivity {
             RestAPI api = new RestAPI();
 
             try{
-                JSONObject object = api.AddRealEstateAds(params[0].getUserName(), params[0].gettitle(), params[0].getDescription(),params[0].getHouseNo(),params[0].getPropertyType(), params[0].getSaleType(),params[0].getADdress(),params[0].getContactNo(), params[0].getMobileNo(), params[0].getemail(), params[0].getLatitude(), params[0].getLongitude());
+                JSONObject object = api.AddRealEstateAds(params[0].getUserName(), params[0].gettitle(), params[0].getDescription(),params[0].getHouseNo(),params[0].getPropertyType(), params[0].getSaleType(),params[0].getPrice(),params[0].getADdress(),params[0].getContactNo(), params[0].getMobileNo(), params[0].getLatitude(), params[0].getLongitude());
                 JSONParser parser = new JSONParser();
                 adID = parser.getId(object);
 
