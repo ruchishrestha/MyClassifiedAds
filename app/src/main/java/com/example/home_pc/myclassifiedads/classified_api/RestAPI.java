@@ -100,68 +100,12 @@ public class RestAPI {
 		return finalValue;
 	}
 
-    public JSONObject contactsSearcher(String myQuery) throws Exception {
+    public JSONObject MyFullTextSearcher(String myQuery) throws Exception {
         JSONObject result = null;
         JSONObject o = new JSONObject();
         JSONObject p = new JSONObject();
         o.put("interface","RestAPI");
-        o.put("method", "contactsSearcher");
-        p.put("myQuery",mapObject(myQuery));
-        o.put("parameters", p);
-        String s = o.toString();
-        String r = load(s);
-        result = new JSONObject(r);
-        return result;
-    }
-
-    public JSONObject wantedSearcher(String myQuery) throws Exception {
-        JSONObject result = null;
-        JSONObject o = new JSONObject();
-        JSONObject p = new JSONObject();
-        o.put("interface","RestAPI");
-        o.put("method", "wantedSearcher");
-        p.put("myQuery",mapObject(myQuery));
-        o.put("parameters", p);
-        String s = o.toString();
-        String r = load(s);
-        result = new JSONObject(r);
-        return result;
-    }
-
-    public JSONObject salesSearcher(String myQuery) throws Exception {
-        JSONObject result = null;
-        JSONObject o = new JSONObject();
-        JSONObject p = new JSONObject();
-        o.put("interface","RestAPI");
-        o.put("method", "salesSearcher");
-        p.put("myQuery",mapObject(myQuery));
-        o.put("parameters", p);
-        String s = o.toString();
-        String r = load(s);
-        result = new JSONObject(r);
-        return result;
-    }
-
-    public JSONObject realEstateSearcher(String myQuery) throws Exception {
-        JSONObject result = null;
-        JSONObject o = new JSONObject();
-        JSONObject p = new JSONObject();
-        o.put("interface","RestAPI");
-        o.put("method", "realEstateSearcher");
-        p.put("myQuery",mapObject(myQuery));
-        o.put("parameters", p);
-        String s = o.toString();
-        String r = load(s);
-        result = new JSONObject(r);
-        return result;
-    }
-
-    public JSONObject jobsSearcher(String myQuery) throws Exception {
-        JSONObject result = null;
-        JSONObject o = new JSONObject();
-        JSONObject p = new JSONObject();
-        o.put("interface","RestAPI");
-        o.put("method", "jobsSearcher");
+        o.put("method", "MyFullTextSearcher");
         p.put("myQuery",mapObject(myQuery));
         o.put("parameters", p);
         String s = o.toString();
@@ -249,10 +193,10 @@ public class RestAPI {
         JSONObject result = null;
         JSONObject o = new JSONObject();
         JSONObject p = new JSONObject();
-        o.put("interface","RestAPI");
+        o.put("interface", "RestAPI");
         o.put("method", "UserAuthentication");
-        p.put("userName",mapObject(userName));
-        p.put("passWord",mapObject(passWord));
+        p.put("userName", mapObject(userName));
+        p.put("passWord", mapObject(passWord));
         o.put("parameters", p);
         String s = o.toString();
         String r = load(s);
@@ -585,7 +529,6 @@ public class RestAPI {
         result = new JSONObject(r);
         return result;
     }
-
     public JSONObject GetContactsList(String category) throws Exception {
         JSONObject result = null;
         JSONObject o = new JSONObject();
@@ -1002,6 +945,21 @@ public class RestAPI {
         o.put("interface","RestAPI");
         o.put("method", "DeleteSalesURL");
         p.put("salesID",mapObject(salesID));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+
+
+    public JSONObject GetRealestateForMap() throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetRealestateForMap");
         o.put("parameters", p);
         String s = o.toString();
         String r = load(s);

@@ -35,7 +35,7 @@ public class SalesAdsObject {
         this.condition=condition;
     }
 
-    public SalesAdsObject(int salesID, String userName, String title, String brand, String modelNo, String price, String status, String condition, Double rating, String ad_postedDate, String usedTime, String contactNo, String description){
+    public SalesAdsObject(int salesID, String userName, String title, String brand, String modelNo, String price, String status, String condition, Double rating, String ad_postedDate, String usedTime, String contactNo, String description,String category){
         this.salesID=salesID;
         this.ad_postedDate=ad_postedDate;
         this.usedTime=usedTime;
@@ -49,6 +49,7 @@ public class SalesAdsObject {
         this.brand=brand;
         this.modelNo=modelNo;
         this.condition=condition;
+        this.category=category;
     }
 
     public SalesAdsObject(int salesID, String userName, String title, String brand, String modelNo, String price, String status, String condition, Double rating, String salesCategory){
@@ -62,6 +63,24 @@ public class SalesAdsObject {
         this.modelNo=modelNo;
         this.condition=condition;
         this.category=salesCategory;
+    }
+
+    public SalesAdsObject(int salesID, String title,String description,String category, String brand, String modelNo, String price, String status, String contactNo,String condition, String usedTime){
+        this.salesID=salesID;
+        this.description=description;
+        this.category=category;
+        this.title=title;
+        this.price=price;
+        this.status=status;
+        this.brand=brand;
+        this.modelNo=modelNo;
+        this.condition=condition;
+        this.contactNo=contactNo;
+        this.usedTime=usedTime;
+    }
+
+    public int getSalesID() {
+        return salesID;
     }
 
     public String getUserName() {

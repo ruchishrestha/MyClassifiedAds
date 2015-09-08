@@ -90,6 +90,7 @@
     <string name="title_activity_view_company_detail">ViewCompanyDetail</string>
     <string name="title_activity_view_shop_detail">ViewShopDetail</string>
     <string name="title_activity_my_contacts_wanted_edit">MyContactsWantedEditActivity</string>
+    <string name="title_activity_my_sales_edit">MySalesEditActivity</string>
 
 
 

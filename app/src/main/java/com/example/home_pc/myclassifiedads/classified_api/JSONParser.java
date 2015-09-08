@@ -465,7 +465,7 @@ public class JSONParser {
                 jsonObj = jsonArray.getJSONObject(i);
                 arrayList.add(new SalesAdsObject(jsonObj.getInt("salesID"),jsonObj.getString("username"),jsonObj.getString("title"),jsonObj.getString("brand"),
                         jsonObj.getString("model"),jsonObj.getString("price"),jsonObj.getString("salesStatus"),jsonObj.getString("condition"),jsonObj.getDouble("averageRating"),jsonObj.getString("dateOnly"),jsonObj.getString("timeused"),
-                        jsonObj.getString("contact"),jsonObj.getString("ad_description")));
+                        jsonObj.getString("contact"),jsonObj.getString("ad_description"),jsonObj.getString("salesCategory")));
 
             }
         } catch (JSONException e) {
@@ -523,6 +523,27 @@ public class JSONParser {
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             Log.d("JSONParser => parseMySalesList", e.getMessage());
+        }
+        return arrayList;
+    }
+
+    @SuppressLint("LongLogTag")
+    public ArrayList<RealEstatesAdObject> parseRealestateForMap(JSONObject object)
+    {
+        ArrayList<RealEstatesAdObject> arrayList=new ArrayList<>();
+        try {
+            JSONArray jsonArray=object.getJSONArray("Value");
+            JSONObject jsonObj;
+            for(int i=0;i<jsonArray.length();i++)
+            {
+                jsonObj=jsonArray.getJSONObject(i);
+                arrayList.add(new RealEstatesAdObject(jsonObj.getInt("realestateID"),jsonObj.getString("title"),jsonObj.getString("saleType"),
+                        jsonObj.getDouble("price"),jsonObj.getString("contact"),jsonObj.getString("mobile"),jsonObj.getDouble("latitude"), jsonObj.getDouble("longitude")));
+            }
+
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            Log.d("JSONParser => parseRealEstateForMap", e.getMessage());
         }
         return arrayList;
     }
