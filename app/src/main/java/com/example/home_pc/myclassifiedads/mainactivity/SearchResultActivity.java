@@ -129,17 +129,17 @@ public class SearchResultActivity extends ActionBarActivity {
                     case "contacts":
                         contactsnWantedAdObjects = new ArrayList<>();
                         jsonObject = api.contactsSearcher(params[0]);
-                        contactsnWantedAdObjects = parser.parseContactsList1(jsonObject);
+                        contactsnWantedAdObjects = parser.parseContactsList(jsonObject);
                         break;
                     case "wanted":
                         contactsnWantedAdObjects = new ArrayList<>();
                         jsonObject = api.wantedSearcher(params[0]);
-                        contactsnWantedAdObjects = parser.parseContactsList1(jsonObject);
+                        contactsnWantedAdObjects = parser.parseContactsList(jsonObject);
                         break;
                     case "RealEstates":
                         realEstatesAdObjects = new ArrayList<>();
                         jsonObject = api.realEstateSearcher(params[0]);
-                        realEstatesAdObjects = parser.dummyRealestateList(jsonObject);
+                        realEstatesAdObjects = parser.parseRealestateList(jsonObject);
                         break;
                     case "Jobs":
                         jobAdsObjects = new ArrayList<>();
@@ -173,9 +173,7 @@ public class SearchResultActivity extends ActionBarActivity {
                     queryResult.setAdapter(contactAdsAdapter);
                     break;
                 case "RealEstates":
-                    ArrayList<RealEstatesAdObject> reo = new ArrayList<>();
-                    reo.add(new RealEstatesAdObject(13,"Real","12000","ForSale","Here","5656567","t"));
-                    realEstateAdsAdapter=new RealEstateAdsAdapter(getApplicationContext(),reo,"t");
+                    realEstateAdsAdapter=new RealEstateAdsAdapter(getApplicationContext(),realEstatesAdObjects,userID);
                     queryResult.setAdapter(realEstateAdsAdapter);
                     break;
                 case "Jobs":

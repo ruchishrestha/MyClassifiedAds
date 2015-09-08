@@ -178,7 +178,6 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
             default:
                 break;
         }
-
     }
 
     public void navigatetoEditActivity(int ad_id){

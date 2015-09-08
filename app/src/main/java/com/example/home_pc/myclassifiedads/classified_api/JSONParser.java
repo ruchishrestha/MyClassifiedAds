@@ -205,26 +205,6 @@ public class JSONParser {
     }
 
     @SuppressLint("LongLogTag")
-    public ArrayList<ContactsnWantedAdObject> parseContactsList1(JSONObject object)
-    {
-        ArrayList<ContactsnWantedAdObject> arrayList=new ArrayList<>();
-        try {
-            JSONArray jsonArray=object.getJSONArray("Value");
-            JSONObject jsonObj;
-            for(int i=0;i<jsonArray.length();i++)
-            {
-                jsonObj=jsonArray.getJSONObject(i);
-                arrayList.add(new ContactsnWantedAdObject(Integer.getInteger(jsonObj.getString("adid")), jsonObj.getString("photoURL"),jsonObj.getString("username"),jsonObj.getString("title"),jsonObj.getString("addres"),jsonObj.getString("contact"),jsonObj.getString("mobile")));
-            }
-
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            Log.d("JSONParser => parseContactsList", e.getMessage());
-        }
-        return arrayList;
-    }
-
-    @SuppressLint("LongLogTag")
     public ContactsnWantedAdObject parseContactDetails(JSONObject object)
     {
         ContactsnWantedAdObject arrayList=null;
@@ -538,7 +518,7 @@ public class JSONParser {
             {
                 jsonObj=jsonArray.getJSONObject(i);
                 arrayList.add(new RealEstatesAdObject(jsonObj.getInt("realestateID"),jsonObj.getString("title"),jsonObj.getString("saleType"),
-                        jsonObj.getDouble("price"),jsonObj.getString("contact"),jsonObj.getString("mobile"),jsonObj.getDouble("latitude"), jsonObj.getDouble("longitude")));
+                        jsonObj.getString("price"),jsonObj.getString("contact"),jsonObj.getString("mobile"),jsonObj.getDouble("latitude"), jsonObj.getDouble("longitude")));
             }
 
         } catch (JSONException e) {

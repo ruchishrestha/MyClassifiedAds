@@ -52,7 +52,7 @@ public class RealEstatesAdObject {
 
     }
 
-    public RealEstatesAdObject(int realestateID,String title,String saleType,Double price,String contactNo,String mobileNo,Double latitude,Double longitude){
+    public RealEstatesAdObject(int realestateID,String title,String saleType,String price,String contactNo,String mobileNo,Double latitude,Double longitude){
         this.realestateID=realestateID;
         this.title=title;
         this.price=price;
@@ -72,10 +72,6 @@ public class RealEstatesAdObject {
 
     public int getRealestateID() {
         return realestateID;
-    }
-
-    public Double getPrice() {
-        return price;
     }
 
     public String getUserName() {

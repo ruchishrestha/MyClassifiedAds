@@ -87,6 +87,9 @@ public class ContactsnWantedAdObject /*implements Parcelable*/{
         this.latitude=latitude;
         this.longitute=longitute;
     }
+
+
+
     public int getAdid() {
         return adid;
     }
