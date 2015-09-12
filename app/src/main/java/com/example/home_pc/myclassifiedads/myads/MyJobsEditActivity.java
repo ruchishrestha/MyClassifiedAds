@@ -111,6 +111,8 @@ public class MyJobsEditActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent locateOnMap= new Intent(getApplicationContext(), LocateOnMapActivity.class);
+                locateOnMap.putExtra("Latitude",_latitude);
+                locateOnMap.putExtra("Longitude",_longitude);
                 startActivityForResult(locateOnMap, REQUEST_LATLONG);
             }
         });
@@ -289,7 +291,6 @@ public class MyJobsEditActivity extends ActionBarActivity {
 
             try{
                 api.UpdateJobAds(jobID,params[0].gettitle(), params[0].getDescription(), params[0].getResponsibility(), params[0].getSkills(), params[0].getJobCategory(), params[0].getJobTime(), params[0].getVaccancyNo(), params[0].getSalary(), params[0].getaDdress(), params[0].getContactNo(), params[0].getEmailId(), params[0].getWebSite(), params[0].getLatitude(), params[0].getLongitude(), params[0].getLogoURL());
-                JSONParser parser = new JSONParser();
 
                 if(picture!=null) {
                     pictureURL = ImageLoaderAPI.AzureImageUploader(picture,temp, "Jobs" + ""+jobID);
@@ -354,7 +355,7 @@ ProgressDialog progressDialog;
             }
             title.setText(result.get(0).gettitle());
             jobCategoryOthers.setText(result.get(0).getJobCategory());
-            salary.setText("NPR." + result.get(0).getSalary());
+            salary.setText(result.get(0).getSalary());
             description.setText(result.get(0).getDescription());
             responsibility.setText(result.get(0).getResponsibility());
             skills.setText(result.get(0).getSkills());
@@ -400,6 +401,8 @@ ProgressDialog progressDialog;
 
         @Override
         protected void onPostExecute(Bitmap result){
+            picture=jobs_image;
+            temp=Bitmap.createScaledBitmap(result,dptopx(100),dptopx(100),true);
             jobs_image=Bitmap.createScaledBitmap(result,dptopx(140),dptopx(140),true);
             organizationLogo.setImageBitmap(jobs_image);
         }

@@ -13,49 +13,57 @@ import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.home_pc.myclassifiedads.R;
 import com.example.home_pc.myclassifiedads.classified_api.ImageLoaderAPI;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
 import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
-import com.example.home_pc.myclassifiedads.sales.SalesAdsObject;
+import com.example.home_pc.myclassifiedads.mainactivity.LocateOnMapActivity;
+import com.example.home_pc.myclassifiedads.realestates.RealEstatesAdObject;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MySalesEditActivity extends ActionBarActivity {
-    private final Context context=this;
-    private ImageView[] uploadedImages;
-    private TextView uploadPics,dialogOptionOne,dialogOptionTwo;
-    private EditText title,description,brand,modelNo,price,contactNo,usedTime;
-    String userName,stitle,sdescription,scategory,sbrand,smodelNo,sprice,sstatus,scondition,scontactNo,susedTime,srating,userID;
-    private Spinner status,condition;
+public class MyRealestateEditActivity extends ActionBarActivity {
+    private final int REQUEST_LATLONG=2;
     private static int RESULT_LOAD_IMAGE = 1;
     private static int RESULT_CAMERA_IMAGE = 0;
+    private final Context context=this;
+    private ImageView[] uploadedImages;
+    private TextView uploadPics,dialogOptionOne,dialogOptionTwo,locateOnMap;
+    private EditText title,description,houseNo,price,aDdress,contactNo,mobileNo;
+    String userName,rtitle,rdescription,rhouseNo,rpropertyType,rsaleType,rprice,raDdress,rcontactNo,rmobileNo,userID;
+    private Spinner propertyType,saleType;
+    ArrayAdapter<String> propertyTypeAdapter;
     private ArrayList<Bitmap> photosToUpload,tempPhotoView;
-    private int i;
+    Double _latitude,_longitude;
+    private int i,realestateID;
     private Dialog dialog;
     private Button saveButton;
-    SalesAdsObject salesAdsObject;
-    ArrayList<SalesAdsObject> salesAdsObjects;
-    int adid,flag=0;
+    RealEstatesAdObject realEstatesAdObject;
+    ArrayList<RealEstatesAdObject> realEstatesAdObjects;
+    ArrayList<String> propertyList;
+    int flag=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_salesitems);
+        setContentView(R.layout.add_real_estates);
 
+        realestateID=getIntent().getExtras().getInt("realestateID");
+        userID=getIntent().getExtras().getString("userID");
 
         uploadedImages=new ImageView[10];
 
@@ -70,11 +78,8 @@ public class MySalesEditActivity extends ActionBarActivity {
         uploadedImages[8]=(ImageView) findViewById(R.id.img9);
         uploadedImages[9]=(ImageView) findViewById(R.id.img10);
 
-        photosToUpload= new ArrayList<Bitmap>();
+        photosToUpload = new ArrayList<Bitmap>();
         tempPhotoView =new ArrayList<Bitmap>();
-
-        userID = getIntent().getStringExtra("userID");
-        adid=getIntent().getExtras().getInt("adid");
 
         dialog=new Dialog(context);
         dialog.setContentView(R.layout.custom_dialog);
@@ -84,21 +89,32 @@ public class MySalesEditActivity extends ActionBarActivity {
         uploadPics=(TextView) findViewById(R.id.uploadPics);
         title=(EditText) findViewById(R.id.title);
         description=(EditText) findViewById(R.id.description);
-        brand = (EditText) findViewById(R.id.salesBrand);
-        modelNo = (EditText) findViewById(R.id.modelNo);
-        contactNo=(EditText) findViewById(R.id.salesContact);
-        usedTime=(EditText) findViewById(R.id.usedTime);
-        price = (EditText) findViewById(R.id.salesPrice);
-        status= (Spinner) findViewById(R.id.salesStatus);
-        condition=(Spinner) findViewById(R.id.conditionList);
+        houseNo = (EditText) findViewById(R.id.houseBuildingNo);
+        propertyType = (Spinner) findViewById(R.id.propertyTypeList);
+        new AsyncLoadPropertyList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        saleType=(Spinner) findViewById(R.id.saleTypeList);
+        contactNo=(EditText) findViewById(R.id.realEstateContact);
+        mobileNo=(EditText) findViewById(R.id.mobileNo);
+        aDdress=(EditText) findViewById(R.id.aDdress);
+        price = (EditText) findViewById(R.id.realEstatePrice);
+        locateOnMap=(TextView) findViewById(R.id.locateOnMap);
         saveButton = (Button) findViewById(R.id.saveButton);
-        new AsyncLoadSalesDetail().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,adid);
-        new AsyncLoadImages().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,adid);
-
+        new AsyncLoadRealestateDetail().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, realestateID);
+        new AsyncLoadImages().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, realestateID);
         uploadPics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 uploadPicsclick();
+            }
+        });
+
+        locateOnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent locateOnMap= new Intent(getApplicationContext(), LocateOnMapActivity.class);
+                locateOnMap.putExtra("Latitude",_latitude);
+                locateOnMap.putExtra("Longitude",_longitude);
+                startActivityForResult(locateOnMap, REQUEST_LATLONG);
             }
         });
 
@@ -111,19 +127,18 @@ public class MySalesEditActivity extends ActionBarActivity {
     }
 
     public void saveButtonClick(){
-        stitle = title.getText().toString();
-        sdescription = description.getText().toString();
-        sbrand = brand.getText().toString();
-        smodelNo = modelNo.getText().toString();
-        sprice = price.getText().toString();
-        sstatus = status.getSelectedItem().toString();
-        scondition = condition.getSelectedItem().toString();
-        scontactNo = contactNo.getText().toString();
-        susedTime = usedTime.getText().toString();
-        salesAdsObject = new SalesAdsObject(adid,stitle,sdescription,scategory,sbrand,smodelNo,sprice,sstatus,scontactNo,scondition,susedTime);
+        rtitle = title.getText().toString();
+        rdescription = description.getText().toString();
+        rhouseNo = houseNo.getText().toString();
+        rpropertyType = propertyType.getSelectedItem().toString();
+        rsaleType = saleType.getSelectedItem().toString();
+        rprice = price.getText().toString();
+        raDdress = aDdress.getText().toString();
+        rcontactNo = contactNo.getText().toString();
+        rmobileNo = mobileNo.getText().toString();
+        realEstatesAdObject = new RealEstatesAdObject(userID,rtitle,rdescription,rhouseNo,rpropertyType,rsaleType,rprice,raDdress,rcontactNo,rmobileNo,_latitude,_longitude);
         saveButton.setEnabled(false);
-        new AsyncUpdateSalesAds().execute(salesAdsObject);
-
+        new AsyncUpdateRealEstateAds().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,realEstatesAdObject);
     }
 
     public void uploadPicsclick(){
@@ -155,7 +170,6 @@ public class MySalesEditActivity extends ActionBarActivity {
     }
 
     public void imageclick(View v){
-        flag=1;
         if(i<9 && v.getId()== R.id.img10){return;}
         if(i>-1) {
             dialog.setTitle("Do you want to remove this photo?");
@@ -185,7 +199,7 @@ public class MySalesEditActivity extends ActionBarActivity {
     public void resetimg(int j){
         photosToUpload.remove(j);
         tempPhotoView.remove(j);
-        for(int k=j;k<i;k++){
+        for(int k=j;k<i;k++) {
             uploadedImages[k].setImageBitmap(tempPhotoView.get(k));
         }
         uploadedImages[i].setImageBitmap(null);
@@ -218,78 +232,122 @@ public class MySalesEditActivity extends ActionBarActivity {
             tempPhotoView.add(Bitmap.createScaledBitmap(photosToUpload.get(i),dptopx(100),dptopx(100),true));
             uploadedImages[i].setImageBitmap(tempPhotoView.get(i));
         }
+        else if (requestCode == REQUEST_LATLONG){
+            if(resultCode== LocateOnMapActivity.RESULT_LATLONG){
+                _latitude=data.getDoubleExtra("Latitude",0.0);
+                _longitude=data.getDoubleExtra("Longitude",0.0);
+                if(_latitude==0.0 && _longitude==0.0){
+                    _latitude=null;
+                    _longitude=null;
+                }
+                Toast.makeText(this, "" + _latitude + " " + _longitude, Toast.LENGTH_LONG).show();
+            }
+        }
         dialog.dismiss();
     }
 
 
-    protected class AsyncLoadSalesDetail extends
-            AsyncTask<Integer, Void, ArrayList<SalesAdsObject>> {
-ProgressDialog progressDialog;
+    protected class AsyncLoadPropertyList extends AsyncTask<Void,Void,ArrayList<String>>{
+
+        @Override
+        protected ArrayList<String> doInBackground(Void... params) {
+            System.out.println("LOADLIST");
+            ArrayList<String> categoryLst = new ArrayList<String>();
+            RestAPI api = new RestAPI();
+            try{
+                JSONObject object = api.GetContactsCategory();
+                JSONParser parser = new JSONParser();
+                categoryLst = parser.getList(object);
+            }
+            catch(Exception e){}
+
+            return categoryLst;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> result) {
+            propertyList = new ArrayList<String>();
+            if(result.size() != 0 && result !=null) {
+                for (int i = 0; i < result.size(); i++) {
+                    propertyList.add(result.get(i));
+                }
+            }
+            else{
+                propertyList.add("Not Available");
+            }
+            propertyTypeAdapter = new ArrayAdapter<String>(context,android.R.layout.simple_spinner_item,propertyList);
+            propertyTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            propertyType.setAdapter(propertyTypeAdapter);
+        }
+    }
+
+    protected class AsyncLoadRealestateDetail extends
+            AsyncTask<Integer, Void, ArrayList<RealEstatesAdObject>> {
+        ProgressDialog progressDialog;
         @SuppressLint("LongLogTag")
         @Override
-        protected ArrayList<SalesAdsObject> doInBackground(Integer... params) {
+        protected ArrayList<RealEstatesAdObject> doInBackground(Integer ...params) {
             // TODO Auto-generated method stub
-            salesAdsObjects = new ArrayList<>();
+            realEstatesAdObjects=new ArrayList<>();
             RestAPI api = new RestAPI();
             try {
-                JSONObject jsonObj = api.GetSalesDetail(params[0]);
+                JSONObject jsonObj = api.GetRealestateDetails(params[0]);
                 JSONParser parser = new JSONParser();
-                salesAdsObjects = parser.parseSalesDetails(jsonObj);
+                realEstatesAdObjects= parser.parseRealestateDetails(jsonObj);
 
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 Log.d("AsyncLoadRealEstateDetails", e.getMessage());
             }
 
-            return salesAdsObjects;
+            return realEstatesAdObjects;
         }
 
 
         @Override
-        protected void onPreExecute() {
-            progressDialog = new ProgressDialog(MySalesEditActivity.this);
+        protected void onPreExecute(){
+            progressDialog=new ProgressDialog(MyRealestateEditActivity.this);
             progressDialog.setMessage("Loading...");
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setIndeterminate(true);
             progressDialog.show();
-
         }
 
         @Override
-        protected void onPostExecute(ArrayList<SalesAdsObject> result) {
+        protected void onPostExecute(ArrayList<RealEstatesAdObject> result) {
             // TODO Auto-generated method stub
             //  contact_photo.setImageBitmap(bitmap);
-            if (progressDialog.isShowing()) {
+            if(progressDialog.isShowing()){
                 progressDialog.dismiss();
             }
             title.setText(result.get(0).gettitle());
-            price.setText(result.get(0).getPrice());
-            brand.setText(result.get(0).getBrand());
-            modelNo.setText(result.get(0).getModelNo());
-            contactNo.setText(result.get(0).getContactNo());
+            price.setText((result.get(0).getPrice()).toString());
             description.setText(result.get(0).getDescription());
-            usedTime.setText(result.get(0).getUsedTime());
-            scategory=result.get(0).getCategory();
-
+            houseNo.setText(result.get(0).getHouseNo());
+            aDdress.setText(result.get(0).getADdress());
+            contactNo.setText(result.get(0).getContactNo());
+            mobileNo.setText(result.get(0).getMobileNo());
+            _latitude=result.get(0).getLatitude();
+            _longitude=result.get(0).getLongitude();
         }
     }
 
     protected class AsyncLoadImages extends
             AsyncTask<Integer, Void, ArrayList<Bitmap>> {
-        ArrayList<String> sales_pictures=null;
+        ArrayList<String> realestate_pictures=null;
 
         @Override
         protected ArrayList<Bitmap> doInBackground(Integer... params) {
             RestAPI api=new RestAPI();
-            sales_pictures=new ArrayList<>();
+            realestate_pictures=new ArrayList<>();
             try{
-                JSONObject jsonObj = api.GetSalesImages(params[0]);
+                JSONObject jsonObj = api.GetAllImages(params[0]);
                 JSONParser parser = new JSONParser();
-                sales_pictures = parser.parseReturnedURLs(jsonObj);
-                if(sales_pictures==null){
+                realestate_pictures = parser.parseReturnedURLs(jsonObj);
+                if(realestate_pictures==null){
                     photosToUpload=null;
                 }else{
-                    photosToUpload= ImageLoaderAPI.AzureImageDownloader(sales_pictures);
+                    photosToUpload = ImageLoaderAPI.AzureImageDownloader(realestate_pictures);
                 }
 
 
@@ -309,39 +367,41 @@ ProgressDialog progressDialog;
                     uploadedImages[i].setImageBitmap(Bitmap.createScaledBitmap(result.get(i), dptopx(100), dptopx(100), true));
                 }
                 i=result.size()-1;
-                }else{
+            }else{
                 i=-1;
             }
         }
     }
 
-    protected class AsyncUpdateSalesAds extends AsyncTask<SalesAdsObject,Void,Void> {
+    protected class AsyncUpdateRealEstateAds extends AsyncTask<RealEstatesAdObject,Void,String>{
 
         ArrayList<String> pictureURLs = new ArrayList<String>();
-        String alter;
+        String result;
 
         @Override
-        protected Void doInBackground(SalesAdsObject... params) {
+        protected String doInBackground(RealEstatesAdObject... params) {
+
             RestAPI api = new RestAPI();
 
-            try {
-                api.UpdateSalesAds(params[0].getSalesID(), params[0].gettitle(), params[0].getDescription(), params[0].getBrand(), params[0].getModelNo(), params[0].getPrice(), params[0].getStatus(), params[0].getCondition(), params[0].getUsedTime(), params[0].getContactNo());
-                alter = scategory.replace(" ", "_");
-                pictureURLs = ImageLoaderAPI.AzureImageUploader(photosToUpload, tempPhotoView, "Sales" + alter + "" + adid);
+            try{
+                api.UpdateRealEstateAds(realestateID, params[0].gettitle(), params[0].getDescription(), params[0].getHouseNo(), params[0].getPropertyType(), params[0].getSaleType(), params[0].getPrice(), params[0].getADdress(), params[0].getContactNo(), params[0].getMobileNo(), params[0].getLatitude(), params[0].getLongitude());
+
+                pictureURLs = ImageLoaderAPI.AzureImageUploader(photosToUpload,tempPhotoView,"RealEstate"+realestateID);
+
                 if (flag == 1) {
-                    api.DeleteSalesURL(adid);
-                    api.AddtoSalesGallery("" + adid, scategory, pictureURLs);
+                    api.DeleteRealestateURL(realestateID);
+                    api.AddtoRealEstateGallery("" + realestateID, pictureURLs);
                 }
-
-            } catch (Exception e) {
-
             }
-            return null;
+            catch(Exception e){
+                System.out.println("ERORUPDATE: "+e);
+            }
+            return result;
         }
 
-
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(String result) {
+            System.out.println("Real: "+result);
             saveButton.setEnabled(true);
             onBackPressed();
         }
@@ -351,7 +411,7 @@ ProgressDialog progressDialog;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_my_sales_edit, menu);
+        getMenuInflater().inflate(R.menu.menu_my_realestate_edit, menu);
         return true;
     }
 
@@ -369,10 +429,10 @@ ProgressDialog progressDialog;
 
         return super.onOptionsItemSelected(item);
     }
-    public int dptopx(float dp){
-        // Get the screen's density scale
-        final float scale = getResources().getDisplayMetrics().density;
-        // Convert the dps to pixels, based on density scale
-        return ((int) (dp * scale + 0.5f));
-    }
+        public int dptopx(float dp){
+            // Get the screen's density scale
+            final float scale = getResources().getDisplayMetrics().density;
+            // Convert the dps to pixels, based on density scale
+            return ((int) (dp * scale + 0.5f));
+        }
 }

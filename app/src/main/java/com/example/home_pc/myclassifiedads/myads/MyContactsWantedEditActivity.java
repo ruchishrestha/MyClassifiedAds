@@ -383,7 +383,9 @@ public class MyContactsWantedEditActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(Bitmap result){
-            contactswanted_image=Bitmap.createScaledBitmap(result,dptopx(140),dptopx(140),true);
+            picture=result;
+            temp=Bitmap.createScaledBitmap(result,dptopx(100),dptopx(100),true);
+            contactswanted_image=Bitmap.createScaledBitmap(result,dptopx(110),dptopx(110),true);
             uploadedPic.setImageBitmap(contactswanted_image);
         }
     }

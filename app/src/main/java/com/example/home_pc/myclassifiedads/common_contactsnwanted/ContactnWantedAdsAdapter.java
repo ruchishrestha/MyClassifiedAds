@@ -92,7 +92,10 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
         holder.aDdress.setText(cao.aDdress);
         holder.username.setText(cao.userName);
         if(!cao.adImageURL.equals("-")){
-            new AsyncLoadImage(position,holder,cao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,cao.adImageURL);
+            String sub1 = cao.adImageURL.substring(0,61);
+            String sub2 = "temp_"+cao.adImageURL.substring(61);
+            System.out.println(sub1+sub2);
+            new AsyncLoadImage(position,holder,cao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,sub1+sub2);
         }
 
        view.setOnClickListener(new View.OnClickListener() {
@@ -279,7 +282,7 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
 
         @Override
         protected void onPostExecute(Bitmap result){
-            contactswanted_image=Bitmap.createScaledBitmap(result, dptopx(100), dptopx(100), true);
+            contactswanted_image=Bitmap.createScaledBitmap(result, dptopx(110), dptopx(110), true);
             holder.adImage.setImageBitmap(contactswanted_image);
         }
 

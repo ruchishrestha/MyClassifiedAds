@@ -151,7 +151,7 @@ public class ImageLoaderAPI {
                 URLConnection ucon = imageUrl.openConnection();
                 InputStream imageIS = ucon.getInputStream();
                 BufferedInputStream imageBIS = new BufferedInputStream(imageIS);
-                ByteArrayBuffer imageBAB = new ByteArrayBuffer(1000);
+                ByteArrayBuffer imageBAB = new ByteArrayBuffer(1024*1024);
 
                 while ((current = imageBIS.read()) != -1) {
                     imageBAB.append((byte) current);
@@ -186,7 +186,7 @@ public class ImageLoaderAPI {
             InputStream imageIS = ucon.getInputStream();
 
             BufferedInputStream imageBIS = new BufferedInputStream(imageIS);
-            ByteArrayBuffer imageBAB = new ByteArrayBuffer(1000);
+            ByteArrayBuffer imageBAB = new ByteArrayBuffer(1024*1024);
 
             while ((current = imageBIS.read()) != -1) {
                 imageBAB.append((byte) current);

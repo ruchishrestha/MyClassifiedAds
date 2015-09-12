@@ -6,10 +6,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.CardView;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
@@ -82,7 +85,7 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
 
         commentContacts.setVisibility(View.GONE);
 
-        new AsyncLoadContactDetail().execute(new ContactsnWantedAdObject(adid, tableCategory));
+        new AsyncLoadContactDetail().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new ContactsnWantedAdObject(adid, tableCategory));
 
         comment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +101,7 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
         read_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                allCommentsPopup(adid,tableCategory);
+                allCommentsPopup(adid, tableCategory);
 
             }
         });
@@ -108,7 +111,7 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
                 Intent intent=new Intent(getApplicationContext(), ViewOnMap.class);
                 intent.putExtra("longitute", contactsAdObject.longitute);
                 intent.putExtra("addres", contactsAdObject.aDdress);
-                intent.putExtra("latitute",contactsAdObject.latitude);
+                intent.putExtra("latitute", contactsAdObject.latitude);
                 startActivity(intent);
             }
         });
@@ -119,6 +122,74 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
                 new AsyncLoadUserCategory().execute(username.getText().toString());
             }
         });
+        PhoneCallListener phoneListener = new PhoneCallListener();
+        TelephonyManager telephonyManager = (TelephonyManager) this
+                .getSystemService(Context.TELEPHONY_SERVICE);
+        telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+
+        contactNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                callIntent.setData(Uri.parse("tel:" + contactNo));
+                startActivity(callIntent);
+            }
+        });
+
+        mobileNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent("android.intent.action.VIEW");
+                Uri data = Uri.parse("sms:"+mobileNo);
+                intent.setData(data);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private class PhoneCallListener extends PhoneStateListener {
+
+        private boolean isPhoneCalling = false;
+
+        String LOG_TAG = "LOGGING 123";
+
+        @Override
+        public void onCallStateChanged(int state, String incomingNumber) {
+
+            if (TelephonyManager.CALL_STATE_RINGING == state) {
+                // phone ringing
+                Log.i(LOG_TAG, "RINGING, number: " + incomingNumber);
+            }
+
+            if (TelephonyManager.CALL_STATE_OFFHOOK == state) {
+                // active
+                Log.i(LOG_TAG, "OFFHOOK");
+
+                isPhoneCalling = true;
+            }
+
+            if (TelephonyManager.CALL_STATE_IDLE == state) {
+                // run when class initial and phone call ended,
+                // need detect flag from CALL_STATE_OFFHOOK
+                Log.i(LOG_TAG, "IDLE");
+
+                if (isPhoneCalling) {
+
+                    Log.i(LOG_TAG, "restart app");
+
+                    // restart app
+                    Intent i = getBaseContext().getPackageManager()
+                            .getLaunchIntentForPackage(
+                                    getBaseContext().getPackageName());
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+
+                    isPhoneCalling = false;
+                }
+
+            }
+        }
     }
 
     public void popupalert(){
@@ -189,10 +260,10 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
             ad_description.setText(result.description);
             category.setText(result.category);
             address.setText(result.aDdress);
-            contactNo.setText(result.contactNo);
+            contactNo.setText(Html.fromHtml("<u>"+result.contactNo+"</u>"));
             email.setText(result.emailId);
             ad_postedDate.setText(result.ad_insertdate);
-            mobileNo.setText(result.mobileNo);
+            mobileNo.setText(Html.fromHtml("<u>"+result.mobileNo+"</u>"));
             if(!result.adImageURL.equals("-")){
                 new AsyncLoadImage().execute(result.getAdImage());
             }

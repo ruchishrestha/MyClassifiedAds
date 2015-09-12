@@ -175,7 +175,7 @@ public class SearchResultActivity extends ActionBarActivity {
                 case "RealEstates":
                     ArrayList<RealEstatesAdObject> reo = new ArrayList<>();
                     reo.add(new RealEstatesAdObject(13,"Real","12000","ForSale","Here","5656567","t"));
-                    realEstateAdsAdapter=new RealEstateAdsAdapter(getApplicationContext(),reo,"t");
+                    realEstateAdsAdapter=new RealEstateAdsAdapter(getApplicationContext(),reo,"t",0);
                     queryResult.setAdapter(realEstateAdsAdapter);
                     break;
                 case "Jobs":
