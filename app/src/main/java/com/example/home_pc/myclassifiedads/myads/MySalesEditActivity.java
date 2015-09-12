@@ -305,7 +305,8 @@ ProgressDialog progressDialog;
         protected void onPostExecute(ArrayList<Bitmap> result){
             if(result!=null){
                 for(int i=0;i<result.size();i++){
-                    uploadedImages[i].setImageBitmap(Bitmap.createScaledBitmap(result.get(i),dptopx(150),dptopx(150),true));
+                    tempPhotoView.add(Bitmap.createScaledBitmap(result.get(i), dptopx(100), dptopx(100), true));
+                    uploadedImages[i].setImageBitmap(Bitmap.createScaledBitmap(result.get(i), dptopx(100), dptopx(100), true));
                 }
                 i=result.size()-1;
                 }else{

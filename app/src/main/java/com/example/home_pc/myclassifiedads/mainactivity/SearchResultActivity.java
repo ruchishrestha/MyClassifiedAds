@@ -179,7 +179,7 @@ public class SearchResultActivity extends ActionBarActivity {
                     queryResult.setAdapter(realEstateAdsAdapter);
                     break;
                 case "Jobs":
-                    jobAdsAdapter=new JobAdsAdapter(getApplicationContext(),jobAdsObjects,userID);
+                    jobAdsAdapter=new JobAdsAdapter(getApplicationContext(),jobAdsObjects,userID,0);
                     queryResult.setAdapter(jobAdsAdapter);
                     break;
                 default:

@@ -16,12 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.home_pc.myclassifiedads.R;
 import com.example.home_pc.myclassifiedads.classified_api.ImageLoaderAPI;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
 import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
 import com.example.home_pc.myclassifiedads.mainactivity.MainActivity;
+import com.example.home_pc.myclassifiedads.myads.MyJobsEditActivity;
 
 import org.json.JSONObject;
 
@@ -39,11 +41,13 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
     String userID;
     public Bitmap jobs_image;
     ViewHolder vh;
+    int flag;
 
-    public JobAdsAdapter(Context context,ArrayList<JobAdsObject> jobAdsObjects,String userID) {
+    public JobAdsAdapter(Context context,ArrayList<JobAdsObject> jobAdsObjects,String userID,int flag) {
         this.context=context;
         this.jobAdsObjects=jobAdsObjects;
         this.userID=userID;
+        this.flag=flag;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -73,6 +77,12 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
         return vh;
     }
 
+    public void remove(JobAdsObject jao) {
+        int position=jobAdsObjects.indexOf(jao);
+        jobAdsObjects.remove(position);
+        notifyItemRemoved(position);
+    }
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
@@ -82,9 +92,10 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
         holder.jobsVaccancies.setText(jao.vaccancyNo);
         holder.jobsSalary.setText("NPR." + jao.salary);
         holder.jobsUserID.setText(jao.userName);
-        String sub1 = jao.getLogoURL().substring(0,61);
-        String sub2 = "temp_"+jao.getLogoURL().substring(61);
+
         if(!jao.logoURL.equals("-")){
+            String sub1 = jao.getLogoURL().substring(0,61);
+            String sub2 = "temp_"+jao.getLogoURL().substring(61);
             new AsyncLoadImage(position,holder,jao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,sub1+sub2);
         }
 
@@ -99,38 +110,89 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
                 context.startActivity(intent);
             }
         });
-
-        holder.jobsPopupMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final PopupMenu popup = new PopupMenu(v.getContext(), v);
-                popup.inflate(R.menu.overflow_popup_menu);
-                popup.show();
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+        switch (flag) {
+            case 0:
+                holder.jobsPopupMenu.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        switch (menuItem.getItemId()) {
-                            case R.id.item_watchlist:
-                                if (userID.equals("Guest")) {
-                                    navigatetohome();
-                                } else {
-                                    new AsyncSavetoWatchlist().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,jao.jobID);
+                    public void onClick(View v) {
+                        final PopupMenu popup = new PopupMenu(v.getContext(), v);
+                        popup.inflate(R.menu.overflow_popup_menu);
+                        popup.show();
+                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem menuItem) {
+                                switch (menuItem.getItemId()) {
+                                    case R.id.item_watchlist:
+                                        if (userID.equals("Guest")) {
+                                            navigatetohome();
+                                        } else {
+                                            new AsyncSavetoWatchlist().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, jao.jobID);
+                                        }
                                 }
-                        }
-                        return true;
+                                return true;
+                            }
+                        });
                     }
                 });
-            }
-        });
+                break;
+            case 1:
+                holder.jobsPopupMenu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final PopupMenu popup = new PopupMenu(v.getContext(), v);
+                        popup.inflate(R.menu.myoverflow_popup_menu);
+                        popup.show();
+                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem menuItem) {
+                                switch (menuItem.getItemId()) {
+                                    case R.id.item_edit:
+                                        int ad_id=jao.jobID;
+                                        navigatetoEditActivity(ad_id);
+                                        break;
+                                    case R.id.item_delete:
+                                        final AlertDialog alertDialog = new AlertDialog.Builder(
+                                                context).create();
+                                        alertDialog.setMessage("Are you sure?");
+                                        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                deleteFromDb(jao.jobID);
+                                                remove(jao);
+                                            }
+                                        });
+                                        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "CANCEL", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                alertDialog.dismiss();
+                                            }
+                                        });
+                                        alertDialog.show();
+                                        break;
+                                }
+                                return true;
+                            }
+                        });
+                    }
+                });
+                break;
+            default:
+                break;
+        }
+
+        }
+
+    public void navigatetoEditActivity(int ad_id){
+        intent =new Intent(context, MyJobsEditActivity.class);
+        intent.putExtra("userID", userID);
+        intent.putExtra("adid", ad_id);
+        context.startActivity(intent);
 
     }
-
     public void navigatetohome(){
         final AlertDialog alertDialog = new AlertDialog.Builder(
                 context).create();
         alertDialog.setMessage("Please create your account first or Login");
-        alertDialog.setIcon(R.drawable.backward);
-        alertDialog.setTitle("The Classified Ads App");
         alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,"OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -216,6 +278,39 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
             holder.jobsImage.setImageBitmap(bitresult);
         }
 
+    }
+
+    public void deleteFromDb(int adid) {
+        Toast.makeText(context, "" + adid, Toast.LENGTH_LONG).show();
+        new AsyncDeleteJobsAd().execute(adid);
+    }
+
+    protected class AsyncDeleteJobsAd extends
+            AsyncTask<Integer, Void, Void> {
+
+
+        @Override
+        protected Void doInBackground(Integer ...params) {
+            // TODO Auto-generated method stub
+
+            RestAPI api = new RestAPI();
+            try {
+                api.DeleteJobsAd(params[0],"jobs");
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                Log.d("AsyncLoadResult", e.getMessage());
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            // TODO Auto-generated method stub
+
+            Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     @Override

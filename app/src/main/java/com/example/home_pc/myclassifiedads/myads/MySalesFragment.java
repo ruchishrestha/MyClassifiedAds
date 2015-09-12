@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -32,7 +33,7 @@ public class MySalesFragment extends Fragment {
     ArrayList<SalesAdsObject> salesAdsObjects;
     Context context;
     String userID,salesCategory;
-
+    SwipeRefreshLayout mswipeRefreshLayout;
     public MySalesFragment(){
 
     }
@@ -45,6 +46,7 @@ public class MySalesFragment extends Fragment {
                 false);
         userID = getArguments().getString("userID");
         salesList = (RecyclerView) view.findViewById(R.id.cardList);
+        mswipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipeRefreshLayout);
         context = getActivity();
         setHasOptionsMenu(true);
         salesList.setHasFixedSize(true);
@@ -52,11 +54,20 @@ public class MySalesFragment extends Fragment {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         salesList.setLayoutManager(llm);
         loadSalesList();
+        mswipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadSalesList();
+                onItemLoadComplete();
+            }
+        });
 
 
         return view;
     }
-
+    public void onItemLoadComplete(){
+        mswipeRefreshLayout.setRefreshing(false);
+    }
 
     public void loadSalesList(){
         new AsyncLoadSalesList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

@@ -223,6 +223,10 @@
             android:name=".myads.MySalesEditActivity"
             android:label="@string/title_activity_my_sales_edit" >
         </activity>
+        <activity
+            android:name=".myads.MyJobsEditActivity"
+            android:label="@string/title_activity_my_jobs_edit" >
+        </activity>
     </application>
 
 </manifest>

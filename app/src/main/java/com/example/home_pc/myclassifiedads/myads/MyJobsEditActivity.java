@@ -9,10 +9,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -27,74 +29,78 @@ import com.example.home_pc.myclassifiedads.R;
 import com.example.home_pc.myclassifiedads.classified_api.ImageLoaderAPI;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
 import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
-import com.example.home_pc.myclassifiedads.common_contactsnwanted.ContactsnWantedAdObject;
+import com.example.home_pc.myclassifiedads.jobs.JobAdsObject;
 import com.example.home_pc.myclassifiedads.mainactivity.LocateOnMapActivity;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MyContactsWantedEditActivity extends ActionBarActivity {
-    int adid;
-    String userID,tableCategory;
+public class MyJobsEditActivity extends ActionBarActivity {
+
     Context context = this;
     private final int RESULT_LOAD_IMAGE = 0;
     private final int RESULT_CAMERA_PIC = 1;
     private final int REQUEST_LATLONG = 2;
-    private ImageView uploadedPic;
-    private TextView uploadPic,locateOnMap,dialogOption1,dialogOption2;
-    private EditText title,description,aDdress,contactNo,mobileNo,emailId;
-    String userName,adTitle,adDescription,adAddress,adContactNo,adMobileNo,adEmailId,adCategory,adtype,adImageURL;
-    private Spinner category;
-    ArrayAdapter<String> categoryAdapter;
-    Double _latitude=0.0,_longitude=0.0;
-    private Button saveButton;
+    ImageView organizationLogo;
+    TextView uploadLogo,locateOnMap,dialogOption1,dialogOption2;
+    EditText title,description,responsibility,skills,jobCategoryOthers,vacancies,salary,aDdress,contactNo,emailId,webSite;
+    String userName,jtitle,jdescription,jresponsibility,jskills,jjobCategory,jjobTime,jvacancies,jsalary,jaDdress,jcontactNo,jemailId,jwebSite,jpictureURL,userID;
+    private Spinner jobCategory,jobTiming;
+    ArrayAdapter<String> jobCategoryAdapter;
+    Double _latitude,_longitude;
+    Button saveButton;
     Bitmap picture,temp;
     int photoCount;
     Boolean toggle;
     Dialog dialog;
-    ContactsnWantedAdObject contactsnWantedAdObject;
+    ArrayList<JobAdsObject> jobAdsObjects;
+    JobAdsObject jobAdsObject;
     ArrayList<String> categoryList;
+    int jobID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_contactsnwanted);
+        setContentView(R.layout.add_jobs);
 
-        adid=getIntent().getExtras().getInt("adid");
-        adtype=getIntent().getExtras().getString("tableCategory");
+        jobID=getIntent().getExtras().getInt("adid");
         userID=getIntent().getExtras().getString("userID");
-
-        uploadedPic=(ImageView) findViewById(R.id.adImage);
-        uploadPic=(TextView) findViewById(R.id.uploadPics);
+        organizationLogo = (ImageView) findViewById(R.id.jobsImage);
+        uploadLogo = (TextView) findViewById(R.id.uploadPic);
         title=(EditText) findViewById(R.id.title);
         description=(EditText) findViewById(R.id.description);
-        category=(Spinner) findViewById(R.id.adCategory);
-        switch(adtype){
-            case "contacts":new AsyncLoadContactsList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);break;
-            case "wanted":new AsyncLoadWantedList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);break;
-        }
-        new AsyncLoadDetails().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        aDdress=(EditText) findViewById(R.id.aDdress);
-        contactNo=(EditText) findViewById(R.id.contactNo);
-        mobileNo=(EditText) findViewById(R.id.mobileNo);
-        emailId=(EditText) findViewById(R.id.emailId);
-        locateOnMap=(TextView) findViewById(R.id.locateOnMap);
-        saveButton= (Button) findViewById(R.id.saveButton);
+        responsibility=(EditText) findViewById(R.id.responsibility);
+        skills=(EditText) findViewById(R.id.requirement);
+        jobCategoryOthers=(EditText) findViewById(R.id.others);
+        vacancies=(EditText) findViewById(R.id.noOfVacancy);
+        salary=(EditText) findViewById(R.id.salary);
+        aDdress=(EditText) findViewById(R.id.organizationAddress);
+        contactNo=(EditText) findViewById(R.id.organizationContact);
+        emailId=(EditText) findViewById(R.id.organizationEmail);
+        webSite=(EditText) findViewById(R.id.organizationWebsite);
+        jobCategory=(Spinner) findViewById(R.id.jobCategory);
+
+        jobTiming=(Spinner) findViewById(R.id.jobTime);
+        locateOnMap = (TextView) findViewById(R.id.locateOnMap);
+        saveButton =(Button) findViewById(R.id.saveButton);
 
         dialog=new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog);
         dialogOption1=(TextView)dialog.findViewById(R.id.dialogOption1);
         dialogOption2=(TextView)dialog.findViewById(R.id.dialogOption2);
+        new AsyncLoadList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        new AsyncLoadJobsDetail().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,jobID);
 
-        uploadedPic.setOnClickListener(new View.OnClickListener() {
+        organizationLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 uploadPictureClick(v);
             }
         });
 
-        uploadPic.setOnClickListener(new View.OnClickListener() {
+        uploadLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 uploadPictureClick(v);
@@ -105,8 +111,6 @@ public class MyContactsWantedEditActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent locateOnMap= new Intent(getApplicationContext(), LocateOnMapActivity.class);
-                locateOnMap.putExtra("Latitude",_latitude);
-                locateOnMap.putExtra("Longitude",_longitude);
                 startActivityForResult(locateOnMap, REQUEST_LATLONG);
             }
         });
@@ -120,21 +124,22 @@ public class MyContactsWantedEditActivity extends ActionBarActivity {
     }
 
     public void saveButtonClick(){
-        adTitle = title.getText().toString();
-        adDescription = description.getText().toString();
-        adAddress = aDdress.getText().toString();
-        adContactNo = contactNo.getText().toString();
-        adMobileNo = mobileNo.getText().toString();
-        adEmailId = emailId.getText().toString();
-        adCategory = category.getSelectedItem().toString();
-        adImageURL = "-";
-        contactsnWantedAdObject = new ContactsnWantedAdObject(userID,adTitle,adDescription,adAddress,adContactNo,adMobileNo,adEmailId,adCategory,_latitude,_longitude,adImageURL);
+        jtitle = title.getText().toString();
+        jdescription = description.getText().toString();
+        jresponsibility = responsibility.getText().toString();
+        jskills = skills.getText().toString();
+        jjobCategory = jobCategory.getSelectedItem().toString();
+        jjobTime = jobTiming.getSelectedItem().toString();
+        jvacancies = vacancies.getText().toString();
+        jsalary = salary.getText().toString();
+        jaDdress = aDdress.getText().toString();
+        jcontactNo = contactNo.getText().toString();
+        jemailId = emailId.getText().toString();
+        jwebSite = webSite.getText().toString();
+        jpictureURL = "-";
+        jobAdsObject = new JobAdsObject(userID,jpictureURL,jtitle,jdescription,jresponsibility,jskills,jjobCategory,jjobTime,jvacancies,jsalary,jaDdress,jcontactNo,jemailId,jwebSite,_latitude,_longitude);
         saveButton.setEnabled(false);
-        switch(adtype){
-            case "contacts":new AsyncUpdateContactsAds().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,contactsnWantedAdObject);break;
-            case "wanted":new AsyncUpdateWantedAds().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,contactsnWantedAdObject);break;
-        }
-
+        new AsyncUpdateJobAds().execute(jobAdsObject);
     }
 
     public void uploadPictureClick(View view){
@@ -180,8 +185,8 @@ public class MyContactsWantedEditActivity extends ActionBarActivity {
                 dialogOption1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        uploadedPic.setImageResource(R.drawable.camerapic);
-                        picture = null;
+                        organizationLogo.setImageResource(R.drawable.camerapic);
+                        picture.recycle();
                         photoCount--;
                         dialog.dismiss();
                     }
@@ -224,20 +229,19 @@ public class MyContactsWantedEditActivity extends ActionBarActivity {
             cursor.close();
             picture = BitmapFactory.decodeFile(picturePath);
             temp = Bitmap.createScaledBitmap(picture, dptopx(100), dptopx(100), true);
-            uploadedPic.setImageBitmap(temp);
+            organizationLogo.setImageBitmap(temp);
             photoCount++;
         } else if (requestCode == RESULT_CAMERA_PIC && resultCode == RESULT_OK && data!=null) {
             picture = (Bitmap) data.getExtras().get("data");
             temp = Bitmap.createScaledBitmap(picture, dptopx(100), dptopx(100), true);
-            uploadedPic.setImageBitmap(temp);
+            organizationLogo.setImageBitmap(temp);
             photoCount++;
         }
 
         dialog.dismiss();
     }
 
-
-    protected class AsyncLoadContactsList extends AsyncTask<Void,Void,ArrayList<String>>{
+    protected class AsyncLoadList extends AsyncTask<Void,Void,ArrayList<String>>{
 
         @Override
         protected ArrayList<String> doInBackground(Void... params) {
@@ -245,7 +249,7 @@ public class MyContactsWantedEditActivity extends ActionBarActivity {
             ArrayList<String> categoryLst = new ArrayList<String>();
             RestAPI api = new RestAPI();
             try{
-                JSONObject object = api.GetContactsCategory();
+                JSONObject object = api.GetJobCategory();
                 JSONParser parser = new JSONParser();
                 categoryLst = parser.getList(object);
             }
@@ -257,7 +261,7 @@ public class MyContactsWantedEditActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(ArrayList<String> result) {
             categoryList = new ArrayList<String>();
-            if(result.size() != 0 && result !=null) {
+            if(result.size() != 0 && result != null) {
                 for (int i = 0; i < result.size(); i++) {
                     categoryList.add(result.get(i));
                 }
@@ -265,96 +269,106 @@ public class MyContactsWantedEditActivity extends ActionBarActivity {
             else{
                 categoryList.add("Not Available");
             }
-            categoryAdapter = new ArrayAdapter<String>(context,android.R.layout.simple_spinner_item,categoryList);
-            categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            category.setAdapter(categoryAdapter);
+            jobCategoryAdapter = new ArrayAdapter<String>(context,android.R.layout.simple_spinner_item,categoryList);
+            jobCategoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            jobCategory.setAdapter(jobCategoryAdapter);
         }
     }
 
-    protected class AsyncLoadWantedList extends AsyncTask<Void,Void,ArrayList<String>>{
+    protected class AsyncUpdateJobAds extends AsyncTask <JobAdsObject,Void,String>
+    {
+
+        String pictureURL;
+        String result;
 
         @Override
-        protected ArrayList<String> doInBackground(Void... params) {
-            System.out.println("LOADLIST");
-            ArrayList<String> categoryLst = new ArrayList<String>();
+        protected String doInBackground(JobAdsObject... params) {
+
+
             RestAPI api = new RestAPI();
-            try{
-                JSONObject object = api.GetWantedCategory();
-                JSONParser parser = new JSONParser();
-                categoryLst = parser.getList(object);
-            }
-            catch(Exception e){}
 
-            return categoryLst;
+            try{
+                api.UpdateJobAds(jobID,params[0].gettitle(), params[0].getDescription(), params[0].getResponsibility(), params[0].getSkills(), params[0].getJobCategory(), params[0].getJobTime(), params[0].getVaccancyNo(), params[0].getSalary(), params[0].getaDdress(), params[0].getContactNo(), params[0].getEmailId(), params[0].getWebSite(), params[0].getLatitude(), params[0].getLongitude(), params[0].getLogoURL());
+                JSONParser parser = new JSONParser();
+
+                if(picture!=null) {
+                    pictureURL = ImageLoaderAPI.AzureImageUploader(picture,temp, "Jobs" + ""+jobID);
+                    api.UpdateJobAd(""+jobID, pictureURL);
+                }
+            }
+            catch (Exception e){
+
+            }
+
+            return result;
         }
 
         @Override
-        protected void onPostExecute(ArrayList<String> result) {
-            categoryList = new ArrayList<String>();
-            if(result.size() != 0 && result !=null) {
-                for (int i = 0; i < result.size(); i++) {
-                    categoryList.add(result.get(i));
-                }
-            }
-            else{
-                categoryList.add("Not Available");
-            }
-            categoryAdapter = new ArrayAdapter<String>(context,android.R.layout.simple_spinner_item,categoryList);
-            categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            category.setAdapter(categoryAdapter);
+        protected void onPostExecute(String result) {
+
+            Toast.makeText(getApplicationContext(),"Information updated",Toast.LENGTH_LONG).show();
+            saveButton.setEnabled(true);
+            onBackPressed();
         }
     }
 
 
-    protected class AsyncLoadDetails extends
-            AsyncTask<Void, Void,ContactsnWantedAdObject> {
-        ProgressDialog progressDialog;
+    protected class AsyncLoadJobsDetail extends
+            AsyncTask<Integer, Void, ArrayList<JobAdsObject>> {
+ProgressDialog progressDialog;
+
         @Override
-        protected ContactsnWantedAdObject doInBackground(Void...params) {
+        protected ArrayList<JobAdsObject> doInBackground(Integer ...params) {
             // TODO Auto-generated method stub
+            jobAdsObjects=new ArrayList<>();
             RestAPI api = new RestAPI();
             try {
-                JSONObject jsonObj = api.GetContactDetails(adid, adtype);
+                JSONObject jsonObj = api.GetJobsDetail(params[0]);
                 JSONParser parser = new JSONParser();
-                contactsnWantedAdObject = parser.parseContactDetails(jsonObj);
+                jobAdsObjects= parser.parseJobDetails(jsonObj);
 
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-              //  Log.d("AsyncLoadContactDetails", e.getMessage());
-                System.out.println("Error=>"+e);
+                Log.d("AsyncLoadJobsDetails", "" + e);
             }
 
-            return contactsnWantedAdObject;
+            return jobAdsObjects;
         }
+
 
         @Override
         protected void onPreExecute(){
-            progressDialog=new ProgressDialog(MyContactsWantedEditActivity.this);
+            progressDialog=new ProgressDialog(MyJobsEditActivity.this);
             progressDialog.setMessage("Loading...");
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setIndeterminate(true);
             progressDialog.show();
-
         }
 
-
-
         @Override
-        protected void onPostExecute(ContactsnWantedAdObject result) {
+        protected void onPostExecute(ArrayList<JobAdsObject> result) {
             // TODO Auto-generated method stub
-            if(progressDialog.isShowing()){
+            //  contact_photo.setImageBitmap(bitmap);
+            if(progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-            title.setText(result.gettitle());
-            description.setText(result.getDescription());
-            aDdress.setText(result.getaDdress());
-            contactNo.setText(result.getContactNo());
-            emailId.setText(result.getemail());
-            mobileNo.setText(result.getMobileNo());
-            _latitude=result.getLatitude();
-           _longitude=result.getLongitute();
-            if(!result.getAdImage().equals("-")){
-                new AsyncLoadImage().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,result.getAdImage());
+            title.setText(result.get(0).gettitle());
+            jobCategoryOthers.setText(result.get(0).getJobCategory());
+            salary.setText("NPR." + result.get(0).getSalary());
+            description.setText(result.get(0).getDescription());
+            responsibility.setText(result.get(0).getResponsibility());
+            skills.setText(result.get(0).getSkills());
+            contactNo.setText(result.get(0).getContactNo());
+            webSite.setText(result.get(0).getWebSite());
+            emailId.setText(result.get(0).getEmailId());
+           aDdress.setText(result.get(0).getaDdress());
+            vacancies.setText(result.get(0).getVaccancyNo());
+            _latitude=result.get(0).getLatitude();
+            _longitude=result.get(0).getLongitude();
+            if(!result.get(0).getLogoURL().equals("-")){
+                String sub1 = result.get(0).getLogoURL().substring(0, 61);
+                String sub2 = "temp_"+result.get(0).getLogoURL().substring(61);
+                new AsyncLoadImage().execute(sub1 + sub2);
                 photoCount=1;
                 toggle=true;
             }else
@@ -362,108 +376,41 @@ public class MyContactsWantedEditActivity extends ActionBarActivity {
                 photoCount=0;
                 toggle=false;
             }
+
         }
     }
 
     protected class AsyncLoadImage extends
             AsyncTask<String, Void, Bitmap> {
-            Bitmap contactswanted_image;
+        Bitmap jobs_image;
+        Bitmap img;
+
         @Override
         protected Bitmap doInBackground(String... params) {
             // TODO Auto-generated method stub
             try {
-                contactswanted_image = ImageLoaderAPI.AzureImageDownloader(params[0]);
+                img = ImageLoaderAPI.AzureImageDownloader(params[0]);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 Log.d("AsyncLoadImage", ""+e);
             }
 
-            return contactswanted_image;
+            return img;
         }
 
         @Override
         protected void onPostExecute(Bitmap result){
-            contactswanted_image=Bitmap.createScaledBitmap(result,dptopx(140),dptopx(140),true);
-            uploadedPic.setImageBitmap(contactswanted_image);
+            jobs_image=Bitmap.createScaledBitmap(result,dptopx(140),dptopx(140),true);
+            organizationLogo.setImageBitmap(jobs_image);
         }
     }
 
-    protected class AsyncUpdateContactsAds extends AsyncTask<ContactsnWantedAdObject,Void,String>
-    {
-        String pictureURL;
-        String result;
-
-        @Override
-        protected String doInBackground(ContactsnWantedAdObject... params) {
-
-
-            RestAPI api = new RestAPI();
-
-            try{
-                api.UpdateContactsAds(adid,params[0].gettitle(), params[0].getDescription(), params[0].getCategory(), params[0].getaDdress(), params[0].getContactNo(), params[0].getMobileNo(), params[0].getemail(), params[0].getLatitude(), params[0].getLongitute(), params[0].getAdImage());
-                JSONParser parser = new JSONParser();
-                if(picture!=null) {
-                    pictureURL = ImageLoaderAPI.AzureImageUploader(picture,temp,"Contacts" + adid);
-                    JSONObject object = api.UpdateContactsAd("" + adid, pictureURL);
-                    result = parser.getResult(object);
-                }
-                else{result = "Success";}
-            }
-            catch (Exception e){
-
-            }
-
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-
-            System.out.println("Contacts: " + result);
-            saveButton.setEnabled(true);
-            onBackPressed();
-        }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_my_jobs_edit, menu);
+        return true;
     }
-
-
-    protected class AsyncUpdateWantedAds extends AsyncTask <ContactsnWantedAdObject,Void,String>
-    {
-
-        String adID;
-        String pictureURL;
-        String result;
-
-        @Override
-        protected String doInBackground(ContactsnWantedAdObject... params) {
-
-
-            RestAPI api = new RestAPI();
-
-            try{
-                api.UpdateWantedAds(adid,params[0].gettitle(), params[0].getDescription(), params[0].getCategory(), params[0].getaDdress(), params[0].getContactNo(), params[0].getMobileNo(), params[0].getemail(), params[0].getLatitude(), params[0].getLongitute(), params[0].getAdImage());
-                JSONParser parser = new JSONParser();
-                pictureURL = ImageLoaderAPI.AzureImageUploader(picture,temp,"Wanted" + adid);
-                System.out.println(pictureURL);
-
-                JSONObject object = api.UpdateWantedAd(""+adid, pictureURL);
-                result = parser.getResult(object);
-            }
-            catch (Exception e){
-                result = ""+e;
-            }
-
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-
-            System.out.println("Wanted: "+result);
-            saveButton.setEnabled(true);
-            onBackPressed();
-        }
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

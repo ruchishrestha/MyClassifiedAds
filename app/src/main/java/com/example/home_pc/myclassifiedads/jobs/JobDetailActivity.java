@@ -221,10 +221,11 @@ public class JobDetailActivity extends ActionBarActivity {
             email.setText(result.get(0).emailId);
             addres.setText(result.get(0).aDdress);
             vaccancyNo.setText(result.get(0).vaccancyNo);
-            String sub1 = result.get(0).logoURL.substring(0, 61);
-            String sub2 = "temp_"+result.get(0).logoURL.substring(61);
-            new AsyncLoadImage().execute(sub1+sub2);
-            System.out.println(result.get(0).logoURL);
+            if(!result.get(0).getLogoURL().equals("-")) {
+                String sub1 = result.get(0).logoURL.substring(0, 61);
+                String sub2 = "temp_" + result.get(0).logoURL.substring(61);
+                new AsyncLoadImage().execute(sub1 + sub2);
+            }
         }
     }
 

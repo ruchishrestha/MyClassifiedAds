@@ -1023,6 +1023,66 @@ public class RestAPI {
         return result;
     }
 
+    public JSONObject GetMyJobsList(String userID) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetMyJobsList");
+        p.put("userID",mapObject(userID));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject DeleteJobsAd(int adid,String category) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "DeleteJobsAd");
+        p.put("adid",mapObject(adid));
+        p.put("category",mapObject(category));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject UpdateJobAds(int adid,String jobTitle,String jobDescription,String responsibility,String skills,String jobCategory,String jobTiming,String vacancy,String salary,String aDdress,String contactNo,String emailId,String webSite,double latitude,double longitude,String organizationLogoURL) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "UpdateJobAds");
+        p.put("adid",mapObject(adid));
+        p.put("jobTitle",mapObject(jobTitle));
+        p.put("jobDescription",mapObject(jobDescription));
+        p.put("responsibility",mapObject(responsibility));
+        p.put("skills",mapObject(skills));
+        p.put("jobCategory",mapObject(jobCategory));
+        p.put("jobTiming",mapObject(jobTiming));
+        p.put("vacancy",mapObject(vacancy));
+        p.put("salary",mapObject(salary));
+        p.put("aDdress",mapObject(aDdress));
+        p.put("contactNo",mapObject(contactNo));
+        p.put("emailId",mapObject(emailId));
+        p.put("webSite",mapObject(webSite));
+        p.put("latitude",mapObject(latitude));
+        p.put("longitude",mapObject(longitude));
+        p.put("organizationLogoURL",mapObject(organizationLogoURL));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+
+
 }
 
 
