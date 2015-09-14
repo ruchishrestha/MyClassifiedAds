@@ -71,11 +71,12 @@ public class NavigationActivity extends ActionBarActivity {
         // Initializing all view items
         selectedItemTitle = navDrawerTitle = getTitle();
 
-        userCategory = getIntent().getStringExtra("userCategory");
-        fullUserName = getIntent().getStringExtra("FullUserName");
-        userID = getIntent().getStringExtra("userID");
-        pictureURL = getIntent().getStringExtra("PictureURL");
-        int selection = getIntent().getIntExtra("Selection",2);
+        SharedPreferences pref = this.getSharedPreferences("UserProfile", 0);
+        userCategory = pref.getString("userCategory","Guest");
+        fullUserName = pref.getString("FullUserName","Welcome To Classified Ads");
+        userID = pref.getString("userID","Guest");
+        pictureURL = pref.getString("PictureURL","-");
+        int selection = pref.getInt("Selection",2);
 
         navigationDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLinearLayout= (LinearLayout) findViewById(R.id.navigationDrawer);
@@ -333,11 +334,6 @@ public class NavigationActivity extends ActionBarActivity {
         // ActionBarDrawerToggle will take care of this.
         if (navDrawerToggle.onOptionsItemSelected(item)) {
             return true;
-        }
-        if(item.getItemId()==R.id.menu_search)
-        {
-            System.out.println("ThroughHereFirst!!");
-            return onSearchRequested();
         }
         return false;
     }

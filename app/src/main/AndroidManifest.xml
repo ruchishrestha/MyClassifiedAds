@@ -6,6 +6,9 @@
         android:name="com.mapfragment.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <uses-permission android:name="com.mapfragment.permission.MAPS_RECEIVE" />
     <!-- Copied from Google Maps Library/AndroidManifest.xml. -->
 
@@ -31,7 +34,7 @@
         <!-- You must insert your own Google Maps for Android API v2 key in here. -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyD4d98tBmpcsQpk_fcDlNR_5SpCmtvNgFo" />
+            android:value="AIzaSyDGJjGg6Pouf2AqRtUSzKHq4IVbzYG4ZFM" />
 
         <activity
             android:name=".mainactivity.MainActivity"
@@ -223,6 +226,44 @@
             android:name=".myads.MySalesEditActivity"
             android:label="@string/title_activity_my_sales_edit" >
         </activity>
+
+        <!-- [START gcm_receiver] -->
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.example.home_pc.myclassifiedads" />
+            </intent-filter>
+        </receiver>
+        <!-- [END gcm_receiver] -->
+
+        <!-- [START gcm_listener] -->
+        <service
+            android:name=".gcm_service.MyGcmListenerService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <!-- [END gcm_listener] -->
+
+        <!-- [START instanceId_listener] -->
+        <service
+            android:name=".gcm_service.MyInstanceIDListenerService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
+        <!-- [END instanceId_listener] -->
+        <service
+            android:name=".gcm_service.RegistrationIntentService"
+            android:exported="false" >
+        </service>
+
     </application>
 
 </manifest>

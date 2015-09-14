@@ -2,6 +2,7 @@ package com.example.home_pc.myclassifiedads.mainactivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -76,10 +77,14 @@ public class MainActivity extends ActionBarActivity {
     public void guestButtonClick(){
 
         Intent guestIntent = new Intent(this,NavigationActivity.class);
-        guestIntent.putExtra("Selection",2);
-        guestIntent.putExtra("FullUserName","Welcome To Classified Ads");
-        guestIntent.putExtra("userID","Guest");
-        guestIntent.putExtra("PictureURL","-");
+        SharedPreferences pref = this.getSharedPreferences("UserProfile", 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("Selection",2);
+        editor.putString("FullUserName", "Welcome To Classified Ads");
+        editor.putString("userID", "Guest");
+        editor.putString("PictureURL","-");
+        editor.putString("userCategory","Guest");
+        editor.commit();
         startActivity(guestIntent);
 
     }

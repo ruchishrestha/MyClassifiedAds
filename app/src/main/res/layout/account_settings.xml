@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Registration"
+        android:textSize="14sp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="#dadadc"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <Button
+        android:id="@+id/registerDevice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register Device"
+        android:textSize="14sp"/>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/registrationProgressBar" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enable Notification"
+        android:textSize="14sp"
+        android:layout_marginTop="20dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="#dadadc"/>
+    <CheckBox
+        android:id="@+id/contactsBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Contacts"
+        android:textSize="16sp"/>
+    <CheckBox
+        android:id="@+id/wantedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Wanted"
+        android:textSize="16sp"/>
+    <CheckBox
+        android:id="@+id/salesBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sales"
+        android:textSize="16sp"/>
+    <CheckBox
+        android:id="@+id/realEstateBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="RealEstate"
+        android:textSize="16sp"/>
+    <CheckBox
+        android:id="@+id/jobsBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Jobs"
+        android:textSize="16sp"/>
+</LinearLayout>
