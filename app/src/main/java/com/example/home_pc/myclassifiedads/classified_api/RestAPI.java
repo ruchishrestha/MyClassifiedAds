@@ -662,7 +662,7 @@ public class RestAPI {
         return result;
     }
 
-    public JSONObject PushtoWatchlist(int adid,String category,String username) throws Exception {
+    public JSONObject PushtoWatchlist(int adid,String category,String username,String title) throws Exception {
         JSONObject result = null;
         JSONObject o = new JSONObject();
         JSONObject p = new JSONObject();
@@ -671,6 +671,7 @@ public class RestAPI {
         p.put("adid",mapObject(adid));
         p.put("category",mapObject(category));
         p.put("username",mapObject(username));
+        p.put("title",mapObject(title));
         o.put("parameters", p);
         String s = o.toString();
         String r = load(s);
@@ -1148,6 +1149,36 @@ public class RestAPI {
         result = new JSONObject(r);
         return result;
     }
+
+    public JSONObject GetWatchlist(String userID) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetWatchlist");
+        p.put("userID",mapObject(userID));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject DeleteWatchlist(int adid,String category) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "DeleteWatchlist");
+        p.put("adid",mapObject(adid));
+        p.put("category",mapObject(category));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
 
 
 

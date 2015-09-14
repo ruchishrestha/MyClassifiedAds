@@ -49,7 +49,7 @@ public class ViewCompanyDetail extends ActionBarActivity {
     }
 
     protected class AsyncGetDetail extends AsyncTask<Void,Void,OrganizationUser> {
-
+        ProgressDialog progressDialog;
         OrganizationUser organizationUser;
 
         @Override
@@ -70,7 +70,7 @@ public class ViewCompanyDetail extends ActionBarActivity {
 
         @Override
         protected void onPreExecute(){
-           ProgressDialog progressDialog=new ProgressDialog(ViewCompanyDetail.this);
+            progressDialog=new ProgressDialog(ViewCompanyDetail.this);
             progressDialog.setMessage("Loading...");
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setIndeterminate(true);
@@ -79,7 +79,9 @@ public class ViewCompanyDetail extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(OrganizationUser result) {
-
+        if(progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }
             organizationName = (TextView)findViewById(R.id.organizationName);
             registrationNo = (TextView)findViewById(R.id.registrationNo);
             addres = (TextView)findViewById(R.id.addres);

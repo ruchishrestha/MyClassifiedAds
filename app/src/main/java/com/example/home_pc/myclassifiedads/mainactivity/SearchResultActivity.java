@@ -139,7 +139,7 @@ public class SearchResultActivity extends ActionBarActivity {
                     case "RealEstates":
                         realEstatesAdObjects = new ArrayList<>();
                         jsonObject = api.realEstateSearcher(params[0]);
-                        realEstatesAdObjects = parser.dummyRealestateList(jsonObject);
+                        realEstatesAdObjects = parser.parseRealestateList(jsonObject);
                         break;
                     case "Jobs":
                         jobAdsObjects = new ArrayList<>();

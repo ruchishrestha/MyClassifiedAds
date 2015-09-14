@@ -1,6 +1,9 @@
 package com.example.home_pc.myclassifiedads.user_login;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -36,16 +39,27 @@ public class LoginActivity extends ActionBarActivity {
         passWord=(EditText) findViewById(R.id.passWord);
         forgotPassWord=(TextView) findViewById(R.id.forgotPassWord);
         logInButton =(Button) findViewById(R.id.log_in);
+        final Context context=this.getApplicationContext();
 
         logInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                log_inclick();
+                CheckConnectivity check = new CheckConnectivity();
+                Boolean conn = check.checkNow(context);
+                if(conn == true){
+                    log_inclick();
+                }
+                else{
+                    //Send a warning message to the user
+                    Toast.makeText(context,"Check internet connection",Toast.LENGTH_LONG).show(); }
             }
+
+
         });
     }
 
     public void log_inclick(){
+
         if(userName.getText().toString().equals("") || passWord.getText().toString().equals("")){
             Toast.makeText(this,"Missing Username or Password!!",Toast.LENGTH_SHORT).show();
         }
@@ -99,7 +113,36 @@ public class LoginActivity extends ActionBarActivity {
             }
         }
     }
+    public class CheckConnectivity{
+        ConnectivityManager connectivityManager;
+        NetworkInfo wifiInfo, mobileInfo;
 
+        /**
+         * Check for <code>TYPE_WIFI</code> and <code>TYPE_MOBILE</code> connection using <code>isConnected()</code>
+         * Checks for generic Exceptions and writes them to logcat as <code>CheckConnectivity Exception</code>.
+         * Make sure AndroidManifest.xml has appropriate permissions.
+         * @param con Application context
+         * @return Boolean
+         */
+        public Boolean checkNow(Context con){
+
+            try{
+                connectivityManager = (ConnectivityManager) con.getSystemService(Context.CONNECTIVITY_SERVICE);
+                wifiInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+                mobileInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+                if(wifiInfo.isConnected() || mobileInfo.isConnected())
+                {
+                    return true;
+                }
+            }
+            catch(Exception e){
+                System.out.println("CheckConnectivity Exception: " + e.getMessage());
+            }
+
+            return false;
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

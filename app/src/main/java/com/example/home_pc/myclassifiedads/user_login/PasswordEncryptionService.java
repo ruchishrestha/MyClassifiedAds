@@ -123,9 +123,7 @@ public class PasswordEncryptionService
     }
 
     /**
-     * Compares two byte arrays in length-constant time. This comparison method
-     * is used so that password hashes cannot be extracted from an on-line 
-     * system using a timing attack and then attacked off-line.
+     * c
      * 
      * @param   a       the first byte array
      * @param   b       the second byte array 

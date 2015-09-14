@@ -60,10 +60,9 @@ public class JobAdsObject {
        this.logoURL=logoURL;
    }
 
-    public JobAdsObject(int jobID,String tableCategory,String userID){
+    public JobAdsObject(int jobID,String title){
         this.jobID=jobID;
-        this.tableCategory=tableCategory;
-        this.userID=userID;
+       this.title=title;
     }
 
     public String getUserName() {

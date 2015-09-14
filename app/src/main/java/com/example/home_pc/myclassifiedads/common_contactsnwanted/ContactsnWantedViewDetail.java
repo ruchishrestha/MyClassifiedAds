@@ -131,7 +131,7 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
-                callIntent.setData(Uri.parse("tel:" + contactNo));
+                callIntent.setData(Uri.parse("tel:" + contactNo.getText().toString()));
                 startActivity(callIntent);
             }
         });
@@ -141,7 +141,7 @@ public class ContactsnWantedViewDetail extends ActionBarActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent("android.intent.action.VIEW");
-                Uri data = Uri.parse("sms:"+mobileNo);
+                Uri data = Uri.parse("sms:"+mobileNo.getText().toString());
                 intent.setData(data);
                 startActivity(intent);
             }

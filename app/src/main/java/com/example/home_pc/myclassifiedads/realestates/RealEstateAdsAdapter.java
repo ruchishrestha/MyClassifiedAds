@@ -120,8 +120,8 @@ public class RealEstateAdsAdapter extends RecyclerView.Adapter<RealEstateAdsAdap
                                         if (userID.equals("Guest")) {
                                             navigatetohome();
                                         } else {
-
-                                            new AsyncSavetoWatchlist().execute(reo.realestateID);
+                                            RealEstatesAdObject ro=new RealEstatesAdObject(reo.realestateID,reo.title);
+                                            new AsyncSavetoWatchlist().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,ro);
                                         }
                                 }
                                 return true;
@@ -208,14 +208,14 @@ public class RealEstateAdsAdapter extends RecyclerView.Adapter<RealEstateAdsAdap
 
 
     protected class AsyncSavetoWatchlist extends
-            AsyncTask<Integer, Void, Boolean> {
+            AsyncTask<RealEstatesAdObject, Void, Boolean> {
 
         Boolean flag=false;
         @Override
-        protected Boolean doInBackground(Integer... params) {
+        protected Boolean doInBackground(RealEstatesAdObject... params) {
             RestAPI api = new RestAPI();
             try {
-                JSONObject jsonObject = api.PushtoWatchlist(params[0],"RealEstate",userID);
+                JSONObject jsonObject = api.PushtoWatchlist(params[0].realestateID,"RealEstate",userID,params[0].title);
                 JSONParser parser = new JSONParser();
                 flag= parser.parseReturnedValue(jsonObject);
             } catch (Exception e) {

@@ -79,6 +79,11 @@ public class SalesAdsObject {
         this.usedTime=usedTime;
     }
 
+    public SalesAdsObject(int salesID,String title){
+        this.salesID=salesID;
+        this.title=title;
+    }
+
     public int getSalesID() {
         return salesID;
     }

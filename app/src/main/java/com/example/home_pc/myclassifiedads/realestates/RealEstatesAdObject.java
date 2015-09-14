@@ -69,6 +69,10 @@ public class RealEstatesAdObject {
         this.tableCategory=tableCategory;
         this.userID=userID;
     }
+    public RealEstatesAdObject(int realestateID,String title){
+        this.realestateID=realestateID;
+        this.title=title;
+    }
 
     public int getRealestateID() {
         return realestateID;

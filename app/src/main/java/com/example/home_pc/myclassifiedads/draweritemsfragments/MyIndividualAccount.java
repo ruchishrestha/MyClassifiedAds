@@ -21,7 +21,7 @@ import org.json.JSONObject;
  */
 public class MyIndividualAccount extends Fragment {
 
-    ImageView profilePicture;
+    ImageView profilePicture,changePassword;
     EditText firstName,middleName,lastName,userName,passWord,aDdress,contactNo,mobileNo,emailId,webSite;
     String userNam;
 
@@ -37,6 +37,7 @@ public class MyIndividualAccount extends Fragment {
                 false);
 
         userNam = getArguments().getString("userID");
+        changePassword=(ImageView)view.findViewById(R.id.changePassword);
 
         new AsyncGetDetail(view).execute();
 

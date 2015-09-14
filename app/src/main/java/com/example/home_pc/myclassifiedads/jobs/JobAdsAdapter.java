@@ -126,7 +126,8 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
                                         if (userID.equals("Guest")) {
                                             navigatetohome();
                                         } else {
-                                            new AsyncSavetoWatchlist().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, jao.jobID);
+                                            JobAdsObject jo=new JobAdsObject(jao.jobID,jao.title);
+                                            new AsyncSavetoWatchlist().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, jo);
                                         }
                                 }
                                 return true;
@@ -209,14 +210,14 @@ public class JobAdsAdapter extends RecyclerView.Adapter<JobAdsAdapter.ViewHolder
         alertDialog.show();
     }
     protected class AsyncSavetoWatchlist extends
-            AsyncTask<Integer, Void, Boolean> {
+            AsyncTask<JobAdsObject, Void, Boolean> {
 
         Boolean flag=false;
         @Override
-        protected Boolean doInBackground(Integer... params) {
+        protected Boolean doInBackground(JobAdsObject... params) {
             RestAPI api = new RestAPI();
             try {
-                JSONObject jsonObject = api.PushtoWatchlist(params[0],"job",userID);
+                JSONObject jsonObject = api.PushtoWatchlist(params[0].jobID,"job",userID,params[0].title);
                 JSONParser parser = new JSONParser();
                 flag= parser.parseReturnedValue(jsonObject);
             } catch (Exception e) {

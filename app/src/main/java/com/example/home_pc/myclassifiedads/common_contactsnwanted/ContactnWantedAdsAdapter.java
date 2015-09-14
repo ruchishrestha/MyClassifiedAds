@@ -91,6 +91,7 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
         holder.adContact.setText(cao.contactNo);
         holder.aDdress.setText(cao.aDdress);
         holder.username.setText(cao.userName);
+        holder.mobileNo.setText(cao.mobileNo);
         if(!cao.adImageURL.equals("-")){
             String sub1 = cao.adImageURL.substring(0,61);
             String sub2 = "temp_"+cao.adImageURL.substring(61);
@@ -127,8 +128,8 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
                                         if (userID.equals("Guest")) {
                                             navigatetohome();
                                         } else {
-                                            ContactsnWantedAdObject co = new ContactsnWantedAdObject(cao.adid, tableCategory, userID);
-                                            new AsyncSavetoWatchlist().execute(co);
+                                            ContactsnWantedAdObject co = new ContactsnWantedAdObject(cao.adid, tableCategory, userID,cao.title);
+                                            new AsyncSavetoWatchlist().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,co);
                                         }
                                 }
                                 return true;
@@ -224,7 +225,7 @@ public class ContactnWantedAdsAdapter extends RecyclerView.Adapter<ContactnWante
         protected Boolean doInBackground(ContactsnWantedAdObject... params) {
             RestAPI api = new RestAPI();
             try {
-                JSONObject jsonObject = api.PushtoWatchlist(params[0].adid, params[0].tableCategory, params[0].userID);
+                JSONObject jsonObject = api.PushtoWatchlist(params[0].adid, params[0].tableCategory, params[0].userID,params[0].title);
                 JSONParser parser = new JSONParser();
               flag= parser.parseReturnedValue(jsonObject);
             } catch (Exception e) {

@@ -93,6 +93,7 @@
     <string name="title_activity_my_sales_edit">MySalesEditActivity</string>
     <string name="title_activity_my_jobs_edit">MyJobsEditActivity</string>
     <string name="title_activity_my_realestate_edit">MyRealestateEditActivity</string>
+    <string name="title_activity_my_watchlist">MyWatchlist</string>
 
 
 

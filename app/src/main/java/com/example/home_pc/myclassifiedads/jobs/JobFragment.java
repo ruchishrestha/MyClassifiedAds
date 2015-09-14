@@ -43,7 +43,6 @@ public class JobFragment extends Fragment {
     Context context;
     JobAdsAdapter jobAdsAdapter;
     String userID;
-    ImageView popupMenu;
 
 
     public JobFragment() {

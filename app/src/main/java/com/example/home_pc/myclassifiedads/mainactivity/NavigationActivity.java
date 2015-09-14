@@ -32,6 +32,7 @@ import com.example.home_pc.myclassifiedads.draweritemsfragments.MyAdsFragment;
 import com.example.home_pc.myclassifiedads.draweritemsfragments.MyIndividualAccount;
 import com.example.home_pc.myclassifiedads.draweritemsfragments.MyOrganizationAccount;
 import com.example.home_pc.myclassifiedads.draweritemsfragments.MyShopAccount;
+import com.example.home_pc.myclassifiedads.draweritemsfragments.MyWatchlist;
 import com.example.home_pc.myclassifiedads.draweritemsfragments.SettingsFragment;
 import com.example.home_pc.myclassifiedads.jobs.JobFragment;
 import com.example.home_pc.myclassifiedads.mainactivity.CustomDrawerAdapter;
@@ -217,6 +218,7 @@ public class NavigationActivity extends ActionBarActivity {
             lowerDrawerListItems.add(new DrawerItem("My Account", R.mipmap.ic_action_group, 3));
             lowerDrawerListItems.add(new DrawerItem("My Ads", R.mipmap.ic_action_email, 3));
             lowerDrawerListItems.add(new DrawerItem("Settings", R.mipmap.ic_action_settings, 3));
+            lowerDrawerListItems.add(new DrawerItem("My Watchlist",R.mipmap.ic_action_camera,3));
 
 
             navDrawerUpperItemListView.setVisibility(View.GONE);
@@ -291,6 +293,8 @@ public class NavigationActivity extends ActionBarActivity {
             case 13:
                 fragment = new SettingsFragment();
                 break;
+            case 14:
+                fragment=new MyWatchlist();
 
             default:
                 break;
