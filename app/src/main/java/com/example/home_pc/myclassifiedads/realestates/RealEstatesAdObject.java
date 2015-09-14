@@ -19,7 +19,7 @@ public class RealEstatesAdObject {
         this.aDdress=aDdress;
         this.contactNo=contactNo;
         this.mobileNo=mobileNo;
-       this.price=price;
+        this.price=price;
         this.latitude=latitude;
         this.longitude=longitude;
     }
