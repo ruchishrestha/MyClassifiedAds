@@ -117,7 +117,7 @@ public class RealEstateListFragment extends Fragment {
                 progressDialog.dismiss();
             }
             if(result!=null){
-                RealEstateAdsAdapter realEstateAdsAdapter=new RealEstateAdsAdapter(context,result,userID);
+                RealEstateAdsAdapter realEstateAdsAdapter=new RealEstateAdsAdapter(context,result,userID,0);
                 realestateList.setAdapter(realEstateAdsAdapter);
             } else{
                 Toast.makeText(getActivity(), "NO ADS FOUND :(", Toast.LENGTH_LONG).show();

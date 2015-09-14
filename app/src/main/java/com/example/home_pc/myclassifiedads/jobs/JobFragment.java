@@ -43,7 +43,6 @@ public class JobFragment extends Fragment {
     Context context;
     JobAdsAdapter jobAdsAdapter;
     String userID;
-    ImageView popupMenu;
 
 
     public JobFragment() {
@@ -123,7 +122,7 @@ public class JobFragment extends Fragment {
                 progressDialog.dismiss();
             }
             if(result!=null){
-                jobAdsAdapter=new JobAdsAdapter(context,result,userID);
+                jobAdsAdapter=new JobAdsAdapter(context,result,userID,0);
                 jobList.setAdapter(jobAdsAdapter);
             } else{
                 Toast.makeText(getActivity(), "NO ADS FOUND :(", Toast.LENGTH_LONG).show();

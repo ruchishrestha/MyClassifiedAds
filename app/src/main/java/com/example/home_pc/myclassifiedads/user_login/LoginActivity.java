@@ -1,7 +1,6 @@
 package com.example.home_pc.myclassifiedads.user_login;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -90,14 +89,11 @@ public class LoginActivity extends ActionBarActivity {
                 Intent loginIntent = new Intent(getApplicationContext(), NavigationActivity.class);
                 loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                SharedPreferences pref = getApplicationContext().getSharedPreferences("UserProfile", 0);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putInt("Selection",2);
-                editor.putString("FullUserName", result[1]);
-                editor.putString("userID", usrName);
-                editor.putString("userCategory", result[0]);
-                editor.putString("PictureURL", result[2]);
-                editor.commit();
+                loginIntent.putExtra("Selection", 2);
+                loginIntent.putExtra("userID", usrName);
+                loginIntent.putExtra("userCategory", result[0]);
+                loginIntent.putExtra("FullUserName", result[1]);
+                loginIntent.putExtra("PictureURL", result[2]);
                 startActivity(loginIntent);
                 finish();
             }

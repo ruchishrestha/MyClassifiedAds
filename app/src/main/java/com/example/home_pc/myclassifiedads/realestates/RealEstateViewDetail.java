@@ -328,7 +328,7 @@ public class RealEstateViewDetail extends ActionBarActivity {
 
     protected class AsyncLoadImages extends
             AsyncTask<Integer, Void, ArrayList<Bitmap>> {
-ArrayList<Bitmap> realestate_pics=null;
+        ArrayList<Bitmap> realestate_pics=null;
         ArrayList<String> realestate_pictures=null;
 
         @Override

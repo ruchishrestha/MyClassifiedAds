@@ -9,7 +9,7 @@ public class RealEstatesAdObject {
     String title,description,houseNo,propertyType,saleType,price,aDdress,contactNo,mobileNo,email,userName,userID,ad_insertdate,tableCategory;
     Double latitude,longitude;
 
-    public RealEstatesAdObject (String userName,String title,String description,String houseNo,String propertyType,String saleType,String aDdress,String contactNo,String mobileNo,String email,Double latitude,Double longitude ){
+    public RealEstatesAdObject (String userName,String title,String description,String houseNo,String propertyType,String saleType,String price,String aDdress,String contactNo,String mobileNo,Double latitude,Double longitude ){
         this.userName = userName;
         this.title=title;
         this.description=description;
@@ -19,7 +19,7 @@ public class RealEstatesAdObject {
         this.aDdress=aDdress;
         this.contactNo=contactNo;
         this.mobileNo=mobileNo;
-        this.email=email;
+       this.price=price;
         this.latitude=latitude;
         this.longitude=longitude;
     }
@@ -69,6 +69,10 @@ public class RealEstatesAdObject {
         this.tableCategory=tableCategory;
         this.userID=userID;
     }
+    public RealEstatesAdObject(int realestateID,String title){
+        this.realestateID=realestateID;
+        this.title=title;
+    }
 
     public int getRealestateID() {
         return realestateID;
@@ -111,8 +115,6 @@ public class RealEstatesAdObject {
     public void setMobileNo(String mobileNo) {
         this.mobileNo = mobileNo;
     }
-    public void setemail(String email){this.email=email;}
-    public String getemail(){return this.email;}
     public void setLatitude(Double latitude){this.latitude=latitude;}
     public Double getLatitude(){return this.latitude;}
     public void setLongitude(Double longitude){this.longitude = longitude;}

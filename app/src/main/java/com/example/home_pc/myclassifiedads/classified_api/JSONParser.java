@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.home_pc.myclassifiedads.comments.CommentObject;
 import com.example.home_pc.myclassifiedads.common_contactsnwanted.ContactsnWantedAdObject;
+import com.example.home_pc.myclassifiedads.draweritemsfragments.WatchlistObject;
 import com.example.home_pc.myclassifiedads.jobs.JobAdsObject;
 import com.example.home_pc.myclassifiedads.realestates.RealEstatesAdObject;
 import com.example.home_pc.myclassifiedads.sales.SalesAdsObject;
@@ -279,27 +280,6 @@ public class JSONParser {
         return arrayList;
     }
 
-    @SuppressLint("LongLogTag")
-    public ArrayList<RealEstatesAdObject> dummyRealestateList(JSONObject object)
-    {
-        ArrayList<RealEstatesAdObject> arrayList=new ArrayList<>();
-        try {
-            //JSONArray jsonArray=object.getJSONArray("Value");
-            //JSONObject jsonObj;
-            for(int i=0;i<1;i++)
-            {
-                //jsonObj=jsonArray.getJSONObject(i);
-                //arrayList.add(new RealEstatesAdObject(jsonObj.getInt("realestateID"),jsonObj.getString("title"),jsonObj.getDouble("price"),jsonObj.getString("saleType"),jsonObj.getString("addres"),jsonObj.getString("contact"),jsonObj.getString("username")));
-                arrayList.add(new RealEstatesAdObject(13,"Real","12000","ForSale","Here","5656567","t"));
-            }
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            Log.d("JSONParser => parseRealestateList", e.getMessage());
-        }
-        return arrayList;
-    }
-
 
     @SuppressLint("LongLogTag")
     public ArrayList<RealEstatesAdObject> parseRealestateDetails(JSONObject object)
@@ -519,6 +499,26 @@ public class JSONParser {
                 jsonObj=jsonArray.getJSONObject(i);
                 arrayList.add(new RealEstatesAdObject(jsonObj.getInt("realestateID"),jsonObj.getString("title"),jsonObj.getString("saleType"),
                         jsonObj.getString("price"),jsonObj.getString("contact"),jsonObj.getString("mobile"),jsonObj.getDouble("latitude"), jsonObj.getDouble("longitude")));
+            }
+
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            Log.d("JSONParser => parseRealEstateForMap", e.getMessage());
+        }
+        return arrayList;
+    }
+
+    @SuppressLint("LongLogTag")
+    public ArrayList<WatchlistObject> parseWatchlist(JSONObject object)
+    {
+        ArrayList<WatchlistObject> arrayList=new ArrayList<>();
+        try {
+            JSONArray jsonArray=object.getJSONArray("Value");
+            JSONObject jsonObj;
+            for(int i=0;i<jsonArray.length();i++)
+            {
+                jsonObj=jsonArray.getJSONObject(i);
+                arrayList.add(new WatchlistObject(jsonObj.getInt("adid"),jsonObj.getString("category"),jsonObj.getString("title")));
             }
 
         } catch (JSONException e) {

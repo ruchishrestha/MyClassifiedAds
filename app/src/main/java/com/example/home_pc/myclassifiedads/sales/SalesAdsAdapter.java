@@ -161,8 +161,8 @@ public class SalesAdsAdapter extends RecyclerView.Adapter<SalesAdsAdapter.ViewHo
                                         if (userID.equals("Guest")) {
                                             navigatetohome();
                                         } else {
-
-                                            new AsyncSavetoWatchlist().execute(sao.salesID);
+                                            SalesAdsObject so=new SalesAdsObject(sao.salesID,sao.title);
+                                            new AsyncSavetoWatchlist().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,so);
                                         }
                                 }
                                 return true;
@@ -250,14 +250,14 @@ public class SalesAdsAdapter extends RecyclerView.Adapter<SalesAdsAdapter.ViewHo
 
 
     protected class AsyncSavetoWatchlist extends
-            AsyncTask<Integer, Void, Boolean> {
+            AsyncTask<SalesAdsObject, Void, Boolean> {
 
         Boolean flag=false;
         @Override
-        protected Boolean doInBackground(Integer... params) {
+        protected Boolean doInBackground(SalesAdsObject... params) {
             RestAPI api = new RestAPI();
             try {
-                JSONObject jsonObject = api.PushtoWatchlist(params[0],salesCategory,userID);
+                JSONObject jsonObject = api.PushtoWatchlist(params[0].salesID,salesCategory,userID,params[0].title);
                 JSONParser parser = new JSONParser();
                 flag= parser.parseReturnedValue(jsonObject);
             } catch (Exception e) {

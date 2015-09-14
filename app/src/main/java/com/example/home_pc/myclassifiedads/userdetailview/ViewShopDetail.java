@@ -49,7 +49,7 @@ public class ViewShopDetail extends ActionBarActivity {
     }
 
     protected class AsyncGetDetail extends AsyncTask<Void,Void,ShopUser> {
-
+        ProgressDialog progressDialog;
         ShopUser shopUser;
 
         @Override
@@ -69,7 +69,7 @@ public class ViewShopDetail extends ActionBarActivity {
         }
         @Override
         protected void onPreExecute(){
-            ProgressDialog progressDialog=new ProgressDialog(ViewShopDetail.this);
+             progressDialog=new ProgressDialog(ViewShopDetail.this);
             progressDialog.setMessage("Loading...");
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setIndeterminate(true);
@@ -78,7 +78,9 @@ public class ViewShopDetail extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(ShopUser result) {
-
+            if(progressDialog.isShowing()){
+                progressDialog.dismiss();
+            }
             shopName = (TextView)findViewById(R.id.shopname);
             panNo = (TextView)findViewById(R.id.panNo);
             ownername=(TextView)findViewById(R.id.ownername);

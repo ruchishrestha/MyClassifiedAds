@@ -1,4 +1,4 @@
-package com.example.home_pc.myclassifiedads.myads;
+package com.example.home_pc.myclassifiedads.draweritemsfragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -17,24 +17,22 @@ import android.widget.Toast;
 import com.example.home_pc.myclassifiedads.R;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
 import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
-import com.example.home_pc.myclassifiedads.sales.SalesAdsAdapter;
-import com.example.home_pc.myclassifiedads.sales.SalesAdsObject;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 /**
- * Created by Ruchi on 2015-09-05.
+ * Created by Ruchi on 2015-09-14.
  */
-public class MySalesFragment extends Fragment {
-    RecyclerView salesList;
-    ProgressDialog progressDialog;
-    ArrayList<SalesAdsObject> salesAdsObjects;
-    Context context;
-    String userID,salesCategory;
+public class MyWatchlist extends Fragment {
+    RecyclerView mywatchlist;
     SwipeRefreshLayout mswipeRefreshLayout;
-    public MySalesFragment(){
+    ProgressDialog progressDialog;
+    Context context;
+    String userID;
+    WatchlistAdapter watchlistAdapter;
+    public MyWatchlist(){
 
     }
 
@@ -44,53 +42,50 @@ public class MySalesFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.ads_recycler_view, container,
                 false);
-        userID = getArguments().getString("userID");
-        salesList = (RecyclerView) view.findViewById(R.id.cardList);
-        mswipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipeRefreshLayout);
-        context = getActivity();
         setHasOptionsMenu(true);
-        salesList.setHasFixedSize(true);
+        userID=getArguments().getString("userID");
+        mywatchlist=(RecyclerView) view.findViewById(R.id.cardList);
+        mswipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipeRefreshLayout);
+        context=getActivity();
+        setHasOptionsMenu(true);
+        mywatchlist.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        salesList.setLayoutManager(llm);
-        loadSalesList();
+        mywatchlist.setLayoutManager(llm);
+        new AsyncLoadMyWatchlist().execute();
+
         mswipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadSalesList();
+                new AsyncLoadMyWatchlist().execute();
                 onItemLoadComplete();
             }
         });
-
-
         return view;
     }
+
     public void onItemLoadComplete(){
         mswipeRefreshLayout.setRefreshing(false);
     }
 
-    public void loadSalesList(){
-        new AsyncLoadSalesList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-    }
+    protected class AsyncLoadMyWatchlist extends
+            AsyncTask<Void, Void, ArrayList<WatchlistObject>> {
 
-    protected class AsyncLoadSalesList extends
-            AsyncTask<Void, Void, ArrayList<SalesAdsObject>> {
-
-
+ArrayList<WatchlistObject> watchlistObject;
         @Override
-        protected ArrayList<SalesAdsObject> doInBackground(Void... params) {
+        protected ArrayList<WatchlistObject> doInBackground(Void... params) {
 
             RestAPI api = new RestAPI();
             try {
-                salesAdsObjects=new ArrayList<>();
-                JSONObject jsonObj = api.GetMySalesList(userID);
+                watchlistObject=new ArrayList<>();
+                JSONObject jsonObj = api.GetWatchlist(userID);
                 JSONParser parser = new JSONParser();
-                salesAdsObjects = parser.parseMySalesList(jsonObj);
+                watchlistObject = parser.parseWatchlist(jsonObj);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                Log.d("AsyncLoadSalesList", "" + e);
+                Log.d("AsyncLoadWatchlist", e.getMessage());
             }
-            return salesAdsObjects;
+            return watchlistObject;
         }
 
         @Override
@@ -104,16 +99,15 @@ public class MySalesFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<SalesAdsObject> result) {
+        protected void onPostExecute(ArrayList<WatchlistObject> result) {
             if(progressDialog.isShowing()){
                 progressDialog.dismiss();
             }
             if(result!=null){
-                SalesAdsAdapter salesAdsAdapter=new SalesAdsAdapter(context,result,userID,1);
-                salesList.setAdapter(salesAdsAdapter);
-            }
-            else{
-                Toast.makeText(context, "NO ADS FOUND :(", Toast.LENGTH_LONG).show();
+                watchlistAdapter=new WatchlistAdapter(context,result,userID);
+                mywatchlist.setAdapter(watchlistAdapter);
+            } else{
+                Toast.makeText(getActivity(), "NO ADS FOUND :(", Toast.LENGTH_LONG).show();
             }
         }
     }

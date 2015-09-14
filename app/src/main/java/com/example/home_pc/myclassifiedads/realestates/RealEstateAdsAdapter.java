@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
@@ -16,12 +17,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.home_pc.myclassifiedads.R;
 import com.example.home_pc.myclassifiedads.classified_api.ImageLoaderAPI;
 import com.example.home_pc.myclassifiedads.classified_api.JSONParser;
 import com.example.home_pc.myclassifiedads.classified_api.RestAPI;
 import com.example.home_pc.myclassifiedads.mainactivity.MainActivity;
+import com.example.home_pc.myclassifiedads.myads.MyRealestateEditActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,11 +40,13 @@ public class RealEstateAdsAdapter extends RecyclerView.Adapter<RealEstateAdsAdap
     private ArrayList<RealEstatesAdObject> realEstatesAdObjects;
     View view;
     Intent intent;
+    int flag;
 
-    public RealEstateAdsAdapter(Context context,ArrayList<RealEstatesAdObject> realEstatesAdObjects,String userID) {
+    public RealEstateAdsAdapter(Context context,ArrayList<RealEstatesAdObject> realEstatesAdObjects,String userID,int flag) {
         this.context=context;
         this.realEstatesAdObjects=realEstatesAdObjects;
         this.userID=userID;
+        this.flag=flag;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -60,6 +65,11 @@ public class RealEstateAdsAdapter extends RecyclerView.Adapter<RealEstateAdsAdap
             saleType=(TextView)itemView.findViewById(R.id.saleType);
             realEstatepopupMenu=(ImageView)itemView.findViewById(R.id.realEstatePopupMenu);
         }
+    }
+    public void remove(RealEstatesAdObject reo) {
+        int position=realEstatesAdObjects.indexOf(reo);
+        realEstatesAdObjects.remove(position);
+        notifyItemRemoved(position);
     }
 
 
@@ -81,7 +91,7 @@ public class RealEstateAdsAdapter extends RecyclerView.Adapter<RealEstateAdsAdap
         holder.realEstateAddress.setText(reo.aDdress);
         holder.realEstateContact.setText(reo.contactNo);
         holder.username.setText(reo.userName);
-        new AsyncLoadImage(position,holder).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,reo.realestateID);
+        new AsyncLoadImage(position,holder).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, reo.realestateID);
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,30 +104,84 @@ public class RealEstateAdsAdapter extends RecyclerView.Adapter<RealEstateAdsAdap
                 context.startActivity(intent);
             }
         });
-
-        holder.realEstatepopupMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final PopupMenu popup = new PopupMenu(v.getContext(), v);
-                popup.inflate(R.menu.overflow_popup_menu);
-                popup.show();
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+        switch (flag) {
+            case 0:
+                holder.realEstatepopupMenu.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        switch (menuItem.getItemId()) {
-                            case R.id.item_watchlist:
-                                if (userID.equals("Guest")) {
-                                    navigatetohome();
-                                } else {
-
-                                    new AsyncSavetoWatchlist().execute(reo.realestateID);
+                    public void onClick(View v) {
+                        final PopupMenu popup = new PopupMenu(v.getContext(), v);
+                        popup.inflate(R.menu.overflow_popup_menu);
+                        popup.show();
+                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem menuItem) {
+                                switch (menuItem.getItemId()) {
+                                    case R.id.item_watchlist:
+                                        if (userID.equals("Guest")) {
+                                            navigatetohome();
+                                        } else {
+                                            RealEstatesAdObject ro=new RealEstatesAdObject(reo.realestateID,reo.title);
+                                            new AsyncSavetoWatchlist().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,ro);
+                                        }
                                 }
-                        }
-                        return true;
+                                return true;
+                            }
+                        });
                     }
                 });
-            }
-        });
+                break;
+            case 1:
+                holder.realEstatepopupMenu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final PopupMenu popup = new PopupMenu(v.getContext(), v);
+                        popup.inflate(R.menu.myoverflow_popup_menu);
+                        popup.show();
+                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem menuItem) {
+                                switch (menuItem.getItemId()) {
+                                    case R.id.item_edit:
+                                        int ad_id=reo.realestateID;
+                                        navigatetoEditActivity(ad_id);
+                                        break;
+                                    case R.id.item_delete:
+                                        final AlertDialog alertDialog = new AlertDialog.Builder(
+                                                context).create();
+                                        alertDialog.setMessage("Are you sure?");
+                                        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                deleteFromDb(reo.realestateID);
+                                                remove(reo);
+                                            }
+                                        });
+                                        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "CANCEL", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                alertDialog.dismiss();
+                                            }
+                                        });
+                                        alertDialog.show();
+                                        break;
+                                }
+                                return true;
+                            }
+                        });
+                    }
+                });
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void navigatetoEditActivity(int ad_id){
+        intent =new Intent(context, MyRealestateEditActivity.class);
+        intent.putExtra("userID", userID);
+        intent.putExtra("realestateID", ad_id);
+        context.startActivity(intent);
+
     }
 
     public void navigatetohome(){
@@ -144,14 +208,14 @@ public class RealEstateAdsAdapter extends RecyclerView.Adapter<RealEstateAdsAdap
 
 
     protected class AsyncSavetoWatchlist extends
-            AsyncTask<Integer, Void, Boolean> {
+            AsyncTask<RealEstatesAdObject, Void, Boolean> {
 
         Boolean flag=false;
         @Override
-        protected Boolean doInBackground(Integer... params) {
+        protected Boolean doInBackground(RealEstatesAdObject... params) {
             RestAPI api = new RestAPI();
             try {
-                JSONObject jsonObject = api.PushtoWatchlist(params[0],"RealEstate",userID);
+                JSONObject jsonObject = api.PushtoWatchlist(params[0].realestateID,"RealEstate",userID,params[0].title);
                 JSONParser parser = new JSONParser();
                 flag= parser.parseReturnedValue(jsonObject);
             } catch (Exception e) {
@@ -201,9 +265,10 @@ public class RealEstateAdsAdapter extends RecyclerView.Adapter<RealEstateAdsAdap
                 JSONObject jsonObject = api.GetRealestatePictureURL(params[0]);
                 JSONParser parser = new JSONParser();
                 picURL= parser.parseReturnedURL(jsonObject);
-                String sub1 = picURL.substring(0,61);
-                String sub2 = "temp_"+picURL.substring(61);
                 if(picURL!=null){
+                    String sub1 = picURL.substring(0,61);
+                    String sub2 = "temp_"+picURL.substring(61);
+                    System.out.println("here=>"+sub1+sub2);
                     realestatePic= ImageLoaderAPI.AzureImageDownloader(sub1+sub2);
                 }
                 else{
@@ -220,13 +285,45 @@ public class RealEstateAdsAdapter extends RecyclerView.Adapter<RealEstateAdsAdap
         @Override
         protected void onPostExecute(Bitmap result){
             if(result!=null){
-                //realestatePic=Bitmap.createScaledBitmap(result, dptopx(100), dptopx(100), true);
+                realestatePic= Bitmap.createScaledBitmap(result, dptopx(100), dptopx(100), true);
                 holder.realEstateImage.setImageBitmap(result);
             }
 
         }
 
+    }
+    public void deleteFromDb(int adid) {
+        Toast.makeText(context, "" + adid, Toast.LENGTH_LONG).show();
+        new AsyncDeleteRealestateAd().execute(adid);
+    }
+
+    protected class AsyncDeleteRealestateAd extends
+            AsyncTask<Integer, Void, Void> {
+        int adid;
+
+        @Override
+        protected Void doInBackground(Integer ...params) {
+            // TODO Auto-generated method stub
+
+            RestAPI api = new RestAPI();
+            try {
+                api.DeleteRealestateAd(adid,"RealEstate");
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                Log.d("AsyncLoadResult", e.getMessage());
+            }
+
+            return null;
         }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            // TODO Auto-generated method stub
+
+            Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show();
+
+        }
+    }
 
 
     @Override

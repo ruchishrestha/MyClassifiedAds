@@ -91,6 +91,9 @@
     <string name="title_activity_view_shop_detail">ViewShopDetail</string>
     <string name="title_activity_my_contacts_wanted_edit">MyContactsWantedEditActivity</string>
     <string name="title_activity_my_sales_edit">MySalesEditActivity</string>
+    <string name="title_activity_my_jobs_edit">MyJobsEditActivity</string>
+    <string name="title_activity_my_realestate_edit">MyRealestateEditActivity</string>
+    <string name="title_activity_my_watchlist">MyWatchlist</string>
 
     <string name="gcm_send_message">Token retrieved and sent to server! You can now use gcmsender to
         send downstream messages to this app.</string>

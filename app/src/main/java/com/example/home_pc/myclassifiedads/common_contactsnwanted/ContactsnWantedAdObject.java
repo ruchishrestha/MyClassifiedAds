@@ -59,11 +59,11 @@ public class ContactsnWantedAdObject /*implements Parcelable*/{
         this.tableCategory=tableCategory;
     }
 
-    public ContactsnWantedAdObject(int adid, String tableCategory, String userID){
+    public ContactsnWantedAdObject(int adid, String tableCategory, String userID,String title){
         this.adid=adid;
         this.tableCategory=tableCategory;
         this.userID=userID;
-
+this.title=title;
     }
 
     public ContactsnWantedAdObject(int adid,String adImageURL,String title,String category,String contactNo,String mobileNo,Double latitude,Double longitute){

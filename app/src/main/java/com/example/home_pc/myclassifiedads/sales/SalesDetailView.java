@@ -82,7 +82,6 @@ public class SalesDetailView extends ActionBarActivity {
         condition=(TextView)findViewById(R.id.condition);
         username=(TextView)findViewById(R.id.username);
         ad_postedDate=(TextView)findViewById(R.id.ad_postedDate);
-        condition=(TextView)findViewById(R.id.condition);
         ratenumber=(TextView)findViewById(R.id.ratenumber);
         description=(TextView)findViewById(R.id.description);
         brand=(TextView)findViewById(R.id.brand);

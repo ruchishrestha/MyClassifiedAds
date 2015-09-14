@@ -118,9 +118,9 @@ public class RestAPI {
         JSONObject result = null;
         JSONObject o = new JSONObject();
         JSONObject p = new JSONObject();
-        o.put("interface","RestAPI");
+        o.put("interface", "RestAPI");
         o.put("method", "wantedSearcher");
-        p.put("myQuery",mapObject(myQuery));
+        p.put("myQuery", mapObject(myQuery));
         o.put("parameters", p);
         String s = o.toString();
         String r = load(s);
@@ -662,7 +662,7 @@ public class RestAPI {
         return result;
     }
 
-    public JSONObject PushtoWatchlist(int adid,String category,String username) throws Exception {
+    public JSONObject PushtoWatchlist(int adid,String category,String username,String title) throws Exception {
         JSONObject result = null;
         JSONObject o = new JSONObject();
         JSONObject p = new JSONObject();
@@ -671,6 +671,7 @@ public class RestAPI {
         p.put("adid",mapObject(adid));
         p.put("category",mapObject(category));
         p.put("username",mapObject(username));
+        p.put("title",mapObject(title));
         o.put("parameters", p);
         String s = o.toString();
         String r = load(s);
@@ -1022,6 +1023,165 @@ public class RestAPI {
         result = new JSONObject(r);
         return result;
     }
+
+    public JSONObject GetMyJobsList(String userID) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetMyJobsList");
+        p.put("userID",mapObject(userID));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject DeleteJobsAd(int adid,String category) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "DeleteJobsAd");
+        p.put("adid",mapObject(adid));
+        p.put("category",mapObject(category));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject UpdateJobAds(int adid,String jobTitle,String jobDescription,String responsibility,String skills,String jobCategory,String jobTiming,String vacancy,String salary,String aDdress,String contactNo,String emailId,String webSite,double latitude,double longitude,String organizationLogoURL) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "UpdateJobAds");
+        p.put("adid",mapObject(adid));
+        p.put("jobTitle",mapObject(jobTitle));
+        p.put("jobDescription",mapObject(jobDescription));
+        p.put("responsibility",mapObject(responsibility));
+        p.put("skills",mapObject(skills));
+        p.put("jobCategory",mapObject(jobCategory));
+        p.put("jobTiming",mapObject(jobTiming));
+        p.put("vacancy",mapObject(vacancy));
+        p.put("salary",mapObject(salary));
+        p.put("aDdress",mapObject(aDdress));
+        p.put("contactNo",mapObject(contactNo));
+        p.put("emailId",mapObject(emailId));
+        p.put("webSite",mapObject(webSite));
+        p.put("latitude",mapObject(latitude));
+        p.put("longitude",mapObject(longitude));
+        p.put("organizationLogoURL",mapObject(organizationLogoURL));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject GetMyRealestateList(String userID) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetMyRealestateList");
+        p.put("userID",mapObject(userID));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject DeleteRealestateAd(int adid,String category) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "DeleteRealestateAd");
+        p.put("adid",mapObject(adid));
+        p.put("category",mapObject(category));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject UpdateRealEstateAds(int realestateID,String title,String description,String houseNo,String propertyType,String saleType,String price,String aDdress,String contactNo,String mobileNo,double latitude,double longitude) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "UpdateRealEstateAds");
+        p.put("realestateID",mapObject(realestateID));
+        p.put("title",mapObject(title));
+        p.put("description",mapObject(description));
+        p.put("houseNo",mapObject(houseNo));
+        p.put("propertyType",mapObject(propertyType));
+        p.put("saleType",mapObject(saleType));
+        p.put("price",mapObject(price));
+        p.put("aDdress",mapObject(aDdress));
+        p.put("contactNo",mapObject(contactNo));
+        p.put("mobileNo",mapObject(mobileNo));
+        p.put("latitude",mapObject(latitude));
+        p.put("longitude",mapObject(longitude));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject DeleteRealestateURL(int realestateID) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "DeleteRealestateURL");
+        p.put("realestateID",mapObject(realestateID));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject GetWatchlist(String userID) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "GetWatchlist");
+        p.put("userID",mapObject(userID));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+    public JSONObject DeleteWatchlist(int adid,String category) throws Exception {
+        JSONObject result = null;
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        o.put("interface","RestAPI");
+        o.put("method", "DeleteWatchlist");
+        p.put("adid",mapObject(adid));
+        p.put("category",mapObject(category));
+        o.put("parameters", p);
+        String s = o.toString();
+        String r = load(s);
+        result = new JSONObject(r);
+        return result;
+    }
+
+
+
+
 
 }
 

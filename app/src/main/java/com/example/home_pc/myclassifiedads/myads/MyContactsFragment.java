@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -33,6 +34,7 @@ public class MyContactsFragment extends Fragment {
     Context context;
     ContactnWantedAdsAdapter contactAdsAdapter;
     String tableCategory,userID,userCategory;
+    SwipeRefreshLayout mswipeRefreshLayout;
     public MyContactsFragment(){
 
     }
@@ -48,15 +50,25 @@ public class MyContactsFragment extends Fragment {
         tableCategory=getArguments().getString("tableCategory");
         userCategory=getArguments().getString("userCategory");
         contactsList=(RecyclerView) view.findViewById(R.id.cardList);
+        mswipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipeRefreshLayout);
         contactsList.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         contactsList.setLayoutManager(llm);
         loadContactAds();
+        mswipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadContactAds();
+                onItemLoadComplete();
+            }
+        });
 
         return view;
     }
-
+    public void onItemLoadComplete(){
+        mswipeRefreshLayout.setRefreshing(false);
+    }
 
     public void loadContactAds(){
         new AsyncLoadContactAds().execute();
